@@ -4,266 +4,269 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Your Name | Cybersecurity</title>
+    <title>Neslihan Gürgen | Cybersecurity</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <nav>
-        <div class="logo">YourName</div>
+    <!-- TOP NAVIGATION -->
+    <header class="navbar">
 
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#posts">Posts</a>
+            <a href="#research">Research</a>
             <a href="#projects">Projects</a>
-            <a href="#certificates">Certificates</a>
-            <a href="#experience">Experience</a>
-            <a href="#contact">Contact</a>
-        </div>
-    </nav>
+            <a href="#cheat-sheets">Cheat Sheets</a>
+        </nav>
+
+    </header>
 
 
-    <!-- HERO -->
-    <section class="hero">
-
-        <div class="hero-text">
-
-            <p class="small-title">CYBERSECURITY</p>
-
-            <h1>
-                Hi, I'm <span>Your Name</span>.
-            </h1>
-
-            <h2>
-                Cybersecurity Enthusiast
-            </h2>
-
-            <p>
-                I am interested in web application security,
-                penetration testing and application security.
-            </p>
-
-            <div class="buttons">
-                <a href="#projects" class="button">View Projects</a>
-                <a href="#contact" class="button secondary">Contact Me</a>
-            </div>
-
-        </div>
-
-    </section>
+    <!-- MAIN LAYOUT -->
+    <div class="layout">
 
 
-    <!-- ABOUT -->
-    <section id="about">
+        <!-- LEFT PROFILE / ABOUT -->
+        <aside class="sidebar">
 
-        <h2>About Me</h2>
+            <div class="profile">
 
-        <p>
-            Write a short introduction about yourself here.
-        </p>
+                <div class="profile-image">
+                    <!-- Fotoğrafını daha sonra buraya ekleyebiliriz -->
+                    <span>NG</span>
+                </div>
 
-        <p>
-            You can talk about your education, interests,
-            cybersecurity journey and areas you are currently
-            working on.
-        </p>
+                <h1>Neslihan Gürgen</h1>
 
-    </section>
-
-
-    <!-- SKILLS -->
-    <section id="skills">
-
-        <h2>Skills</h2>
-
-        <div class="skills-container">
-
-            <div class="skill">
-                <h3>Web Security</h3>
-                <p>
-                    OWASP Top 10, API Security, Burp Suite
-                </p>
-            </div>
-
-            <div class="skill">
-                <h3>Programming</h3>
-                <p>
-                    Python, C, Dart
-                </p>
-            </div>
-
-            <div class="skill">
-                <h3>Tools</h3>
-                <p>
-                    Burp Suite, Nmap, FFUF, Gobuster
-                </p>
-            </div>
-
-            <div class="skill">
-                <h3>Other</h3>
-                <p>
-                    Add your other skills here.
-                </p>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- PROJECTS -->
-    <section id="projects">
-
-        <h2>Projects & Labs</h2>
-
-        <div class="projects-container">
-
-            <div class="project">
-                <h3>Project Name</h3>
-
-                <p>
-                    Describe your project here.
+                <p class="role">
+                    Cybersecurity Enthusiast
                 </p>
 
-                <a href="#">GitHub →</a>
-            </div>
-
-
-            <div class="project">
-                <h3>Security Lab</h3>
-
-                <p>
-                    Describe your security laboratory or
-                    vulnerability research project.
+                <p class="description">
+                    Interested in web application security,
+                    API security and penetration testing.
                 </p>
 
-                <a href="#">GitHub →</a>
             </div>
 
 
-            <div class="project">
-                <h3>Project Name</h3>
+            <div class="sidebar-links">
 
-                <p>
-                    Describe another project here.
-                </p>
+                <a href="https://github.com/" target="_blank">
+                    GitHub
+                </a>
 
-                <a href="#">GitHub →</a>
+                <a href="#" target="_blank">
+                    LinkedIn
+                </a>
+
+                <a href="mailto:yourmail@example.com">
+                    Email
+                </a>
+
             </div>
 
-        </div>
-
-    </section>
+        </aside>
 
 
-    <!-- CERTIFICATES -->
-    <section id="certificates">
-
-        <h2>Certificates & Training</h2>
-
-        <div class="certificate-list">
-
-            <div class="certificate">
-                <h3>Certificate Name</h3>
-                <p>Organization — Year</p>
-            </div>
-
-            <div class="certificate">
-                <h3>Certificate Name</h3>
-                <p>Organization — Year</p>
-            </div>
-
-            <div class="certificate">
-                <h3>Certificate Name</h3>
-                <p>Organization — Year</p>
-            </div>
-
-        </div>
-
-    </section>
+        <!-- RIGHT CONTENT -->
+        <main class="content">
 
 
-    <!-- EXPERIENCE -->
-    <section id="experience">
+            <!-- HOME -->
+            <section id="home">
 
-        <h2>Experience</h2>
-
-        <div class="experience">
-
-            <h3>Job / Internship Title</h3>
-
-            <p class="company">
-                Company Name | Date
-            </p>
-
-            <p>
-                Describe your responsibilities,
-                projects and technologies here.
-            </p>
-
-        </div>
-
-    </section>
+                <div class="section-header">
+                    <h2>Recent Posts</h2>
+                </div>
 
 
-    <!-- BLOG -->
-    <section id="blog">
+                <!-- POST 1 -->
+                <article class="post">
 
-        <h2>Blog & Write-ups</h2>
+                    <div class="post-text">
 
-        <div class="blog-container">
+                        <span class="post-category">
+                            PORTSWIGGER
+                        </span>
 
-            <div class="blog">
-                <h3>Article Title</h3>
-                <p>
-                    Short description of your article.
-                </p>
-                <a href="#">Read →</a>
-            </div>
+                        <h3>
+                            Server-Side Parameter Pollution
+                        </h3>
 
-            <div class="blog">
-                <h3>Article Title</h3>
-                <p>
-                    Short description of your article.
-                </p>
-                <a href="#">Read →</a>
-            </div>
+                        <p class="date">
+                            July 25, 2026
+                        </p>
 
-        </div>
+                        <p>
+                            A technical write-up about
+                            server-side parameter pollution
+                            and the approach used to solve the lab.
+                        </p>
 
-    </section>
+                        <a href="#" class="read-more">
+                            Read more →
+                        </a>
 
+                    </div>
 
-    <!-- CONTACT -->
-    <section id="contact">
+                    <div class="post-image">
+                        IMAGE
+                    </div>
 
-        <h2>Contact</h2>
-
-        <p>
-            You can reach me through the following platforms.
-        </p>
-
-        <div class="socials">
-
-            <a href="#">GitHub</a>
-            <a href="#">LinkedIn</a>
-            <a href="mailto:yourmail@example.com">Email</a>
-
-        </div>
-
-    </section>
+                </article>
 
 
-    <!-- FOOTER -->
+                <!-- POST 2 -->
+                <article class="post">
+
+                    <div class="post-text">
+
+                        <span class="post-category">
+                            MACHINE
+                        </span>
+
+                        <h3>
+                            Machine Write-up
+                        </h3>
+
+                        <p class="date">
+                            July 20, 2026
+                        </p>
+
+                        <p>
+                            Reconnaissance, enumeration,
+                            initial access and privilege escalation.
+                        </p>
+
+                        <a href="#" class="read-more">
+                            Read more →
+                        </a>
+
+                    </div>
+
+                    <div class="post-image">
+                        IMAGE
+                    </div>
+
+                </article>
+
+
+                <!-- POST 3 -->
+                <article class="post">
+
+                    <div class="post-text">
+
+                        <span class="post-category">
+                            RESEARCH
+                        </span>
+
+                        <h3>
+                            API Security Research
+                        </h3>
+
+                        <p class="date">
+                            July 15, 2026
+                        </p>
+
+                        <p>
+                            Notes and research about API security,
+                            reconnaissance and common vulnerabilities.
+                        </p>
+
+                        <a href="#" class="read-more">
+                            Read more →
+                        </a>
+
+                    </div>
+
+                    <div class="post-image">
+                        IMAGE
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- POSTS -->
+            <section id="posts">
+
+                <div class="section-header">
+                    <h2>Posts</h2>
+                    <p>
+                        Write-ups, technical notes and security-related content.
+                    </p>
+                </div>
+
+                <div class="empty-section">
+                    Your posts will appear here.
+                </div>
+
+            </section>
+
+
+            <!-- RESEARCH -->
+            <section id="research">
+
+                <div class="section-header">
+                    <h2>Research</h2>
+                    <p>
+                        Security research, theoretical studies and technical investigations.
+                    </p>
+                </div>
+
+                <div class="empty-section">
+                    Your research will appear here.
+                </div>
+
+            </section>
+
+
+            <!-- PROJECTS -->
+            <section id="projects">
+
+                <div class="section-header">
+                    <h2>Projects</h2>
+                    <p>
+                        Security tools, vulnerable applications and personal projects.
+                    </p>
+                </div>
+
+                <div class="empty-section">
+                    Your projects will appear here.
+                </div>
+
+            </section>
+
+
+            <!-- CHEAT SHEETS -->
+            <section id="cheat-sheets">
+
+                <div class="section-header">
+                    <h2>Cheat Sheets</h2>
+                    <p>
+                        Quick references and practical security checklists.
+                    </p>
+                </div>
+
+                <div class="empty-section">
+                    Your cheat sheets will appear here.
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
     <footer>
-
-        <p>
-            © 2026 Your Name. All rights reserved.
-        </p>
-
+        <p>© 2026 Neslihan Gürgen</p>
     </footer>
 
 </body>
