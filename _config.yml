@@ -1,0 +1,9 @@
+title: "Neslihan Gürgen"
+description: "Cybersecurity Enthusiast | Application Security | Penetration Testing"
+
+url: "https://grgnes.github.io"
+
+markdown: kramdown
+highlighter: rouge
+
+permalink: /posts/:title/

@@ -1,263 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+---
+layout: default
+title: Home
+---
 
-    <title>Neslihan Gürgen | Cybersecurity</title>
 
-    <link rel="stylesheet" href="./style.css">
-</head>
+<section>
 
-<body>
-
-<header class="navbar">
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#posts">Posts</a>
-        <a href="#research">Research</a>
-        <a href="#projects">Projects</a>
-        <a href="#categories">Categories</a>
-        <a href="#cheatsheets">Cheat Sheets</a>
-    </nav>
-</header>
-
-
-<div class="page">
-
-    <!-- LEFT SIDEBAR -->
-    <aside class="sidebar">
-
-        <div class="profile-image">
-            <img src="assets/pinguu.jpg" alt="Neslihan Gürgen">
-        </div>
-
-        <h1>Neslihan Gürgen</h1>
-
-        <p class="role">
-            Cybersecurity Enthusiast
-        </p>
-
-        <p class="bio">
-            Application Security |
-            Penetration Testing
-        </p>
-
-        <div class="social-links">
-            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
-            <a href="mailto:ngurgen08@gmail.com">Email</a>
-            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
-            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN CONTENT -->
-    <main class="content">
-
-        <!-- HOME -->
-        <section id="home">
-
-            <div class="section-title">
-                <span>Home</span>
-                <h2>Recent Posts</h2>
-            </div>
-
-
-            <!-- POST -->
-            <article class="post">
-
-                <div class="post-info">
-
-                    <span class="category">
-                        PORTSWIGGER
-                    </span>
-
-                    <h3>
-                        Server-Side Parameter Pollution
-                    </h3>
-
-                    <div class="date">
-                        July 25, 2026
-                    </div>
-
-                    <p>
-                        A technical write-up about server-side
-                        parameter pollution and the approach used
-                        to solve the lab.
-                    </p>
-
-                    <div class="tags">
-                        <span>Web Security</span>
-                        <span>API</span>
-                        <span>PortSwigger</span>
-                    </div>
-
-                </div>
-
-                <div class="post-image">
-                    <span>IMAGE</span>
-                </div>
-
-            </article>
-
-
-            <!-- POST -->
-            <article class="post">
-
-                <div class="post-info">
-
-                    <span class="category">
-                        MACHINE
-                    </span>
-
-                    <h3>
-                        Machine Write-up
-                    </h3>
-
-                    <div class="date">
-                        July 20, 2026
-                    </div>
-
-                    <p>
-                        Reconnaissance, enumeration, initial access
-                        and privilege escalation.
-                    </p>
-
-                    <div class="tags">
-                        <span>Linux</span>
-                        <span>Enumeration</span>
-                        <span>Privilege Escalation</span>
-                    </div>
-
-                </div>
-
-                <div class="post-image">
-                    <span>IMAGE</span>
-                </div>
-
-            </article>
-
-
-            <!-- POST -->
-            <article class="post">
-
-                <div class="post-info">
-
-                    <span class="category">
-                        RESEARCH
-                    </span>
-
-                    <h3>
-                        API Security Research
-                    </h3>
-
-                    <div class="date">
-                        July 15, 2026
-                    </div>
-
-                    <p>
-                        Research and technical notes about API
-                        security, reconnaissance and vulnerabilities.
-                    </p>
-
-                    <div class="tags">
-                        <span>API Security</span>
-                        <span>Recon</span>
-                    </div>
-
-                </div>
-
-                <div class="post-image">
-                    <span>IMAGE</span>
-                </div>
-
-            </article>
-
-
-        </section>
-
-
-        <!-- POSTS -->
-        <section id="posts" class="page-section">
-
-            <h2>Posts</h2>
-
-            <p>
-                Technical write-ups, lab solutions and security notes.
-            </p>
-
-        </section>
-
-
-        <!-- RESEARCH -->
-        <section id="research" class="page-section">
-
-            <h2>Research</h2>
-
-            <p>
-                Security research and theoretical studies.
-            </p>
-
-        </section>
-
-
-        <!-- PROJECTS -->
-        <section id="projects" class="page-section">
-
-            <h2>Projects</h2>
-
-            <p>
-                Security projects and applications developed by me.
-            </p>
-
-        </section>
-
-        <!-- CATEGORIES -->
-<section id="categories" class="page-section">
-
-    <h2>Categories</h2>
-
-    <div class="category-list">
-
-        <a href="#portswigger">PortSwigger</a>
-
-        <a href="#htb">Hack The Box</a>
-
-        <a href="#thm">TryHackMe</a>
-
-        <a href="#vulnhub">VulnHub</a>
-
-        <a href="#research">Security Research</a>
-
-        <a href="#projects">Projects</a>
-
-        <a href="#cheatsheets">Cheat Sheets</a>
-
+    <div class="section-title">
+        <span>Home</span>
+        <h2>Recent Posts</h2>
     </div>
 
-</section>
+    {% for post in site.posts limit:5 %}
 
-        <!-- CHEAT SHEETS -->
-        <section id="cheatsheets" class="page-section">
+    <article class="post">
 
-            <h2>Cheat Sheets</h2>
+        <div class="post-info">
+
+            <a class="category"
+            href="/categories/{{ post.category | slugify }}/"
+                {{ post.category }}
+
+            </a>
+
+            <h3>
+
+                <a href="{{ post.url }}">
+
+                    {{ post.title }}
+
+                </a>
+
+            </h3>
+
+            <div class="date">
+
+                {{ post.date | date: "%B %d, %Y" }}
+
+            </div>
 
             <p>
-                Practical security notes, checklists and quick references.
+
+                {{ post.excerpt | strip_html | truncate:150 }}
+
             </p>
 
-        </section>
+            <div class="tags">
 
-    </main>
+                {% for tag in post.tags %}
 
-</div>
+                <span>{{ tag }}</span>
 
+                {% endfor %}
 
-<footer>
-    © 2026 Neslihan Gürgen
-</footer>
+            </div>
 
-</body>
-</html>
+        </div>
+
+        <div class="post-image">
+
+            IMAGE
+
+        </div>
+
+    </article>
+
+    {% endfor %}
+
+</section>
