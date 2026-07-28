@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Pinning Nedir? Frida ile Bypass Örnekleri | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>SSL Pinning Nedir? Frida ile Bypass Örnekleri</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>Application Security</span>
+        
+        <span>SSL Pinning</span>
+        
+        <span>Frida</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="ssl-pinning-nedir-frida-ile-bypass-örnekleri">SSL Pinning Nedir? Frida ile Bypass Örnekleri</h2>
+
+<p>Android uygulamalarımız, arka planda iletişim kurduğu API sunucularıyla veri alışverişi yaparken güvenliği sağlamak için HTTPS protokolünü kullanmaktadır. Öncelikle HTTPS protokolünün çalışma mantığına bakacak olursak,</p>
+
+<p><img src="/assets/posts/ssl-pinning/ssl.png" width="500" /></p>
+
+<p>HTTPS, HTTP protokolünün SSL/TLS ile şifrelenmiş halidir. İlk olarak TCP üçlü el sıkışması (3-way handshake) ile bağlantı kurulur, ardından SSL/TLS katmanı devreye girerek iletişim güvenliğini sağlar.</p>
+
+<p>Kısaca,</p>
+
+<blockquote>
+  <p>HTTPS = HTTP+ SSL/TLS</p>
+
+</blockquote>
+
+<p>Peki SSL/TLS nedir?</p>
+
+<p>Internet üzerindeki iletişimi şifreleyerek güvenliği hale getiren protokoldür. SSL ilk olarak Netscape Communications tarafından geliştirilmiş, sonra TLS olarak güncellenmiştir. Günümüzde ise SSL/TLS olarak ifade edilmektedir. SSL/TLS, client (android uygulama) ile server (API) arasında gerçekleşen iletişimi şifreler.</p>
+
+<p>Nasıl Çalışır?</p>
+
+<ol>
+  <li>Client server’e bağlanmak ister ve bir istek gönderir.</li>
+  <li>Server, kendi dijital sertifikasını ve public key’inin gönderir.</li>
+  <li>Client, gönderilen dijital sertifikanın doğruluğun kontrol eder. Bir session key üretir ve bunu server’ın public key’i ile asimetrik olarak şifreler, sonra server’a gönderir.</li>
+  <li>Server, kendi private key’iyle şifreli session key’i çözer ve artık client ile aynı session key’e sahip olur.</li>
+  <li>İki tarafta aynı session key’e sahiptir. Tüm iletişim session key ile (yani simetrik şifreleme) üzerinden devam eder.</li>
+</ol>
+
+<p>SSL/TLS ‘i anladığımıza göre şimdi gelelim SSL Pinning’e.</p>
+
+<p><img src="/assets/posts/ssl-pinning/SSL-Pinning.png" width="500" /></p>
+
+<p>Client, serverdan gelen ve geçerliliğini kontrol ettiği her sertifikaya güvenir. SSL Pinning bu riski ortadan kaldırmak için kullanılır.</p>
+
+<p>SSL Pinning, belirli bir sertifika veya public key’in istemci (client) uygulamasına önceden sabitlenmesi (pinlenmesi) işlemidir. Bağlantı kurulduğunda gelen sunucu sertifikası, istemcide sabitlenmiş olan ile karşılaştırılır. Eğer eşleşme varsa iletişim devam eder, değilse bağlantı reddedilir. Böylece, istemci sadece belirli bir sunucuya güvenmiş olur ve Man-in-the-Middle (MitM) gibi saldırılar engellenmiş olur.</p>
+
+<p>SSL Pinning olduğunu nasıl anlarım?</p>
+
+<p>1)  Kodda özel sertifika veya public key var mı?
+Uygulamada <code class="language-plaintext highlighter-rouge">res/raw/</code>, <code class="language-plaintext highlighter-rouge">assets/</code> veya <code class="language-plaintext highlighter-rouge">raw</code> klasöründe <code class="language-plaintext highlighter-rouge">.crt</code>, <code class="language-plaintext highlighter-rouge">.pem</code>, <code class="language-plaintext highlighter-rouge">.cer</code> gibi <strong>sertifika dosyaları</strong> varsa bunların içerisinde sertifika eklenmiş olabilir. → app/src/main/res/raw/my_cert.crt</p>
+
+<p>2) Kodda sertifika doğrulaması yapılıyor mu?
+Kod içerisinde bazı sınıflar veya metotlar varsa örneğin, X509TrustManager gibi.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// bu örnekte raw klasöründen sertifika alınıyor.</span>
+
+<span class="nc">CertificateFactory</span> <span class="n">cf</span> <span class="o">=</span> <span class="nc">CertificateFactory</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"X.509"</span><span class="o">);</span>
+<span class="nc">InputStream</span> <span class="n">caInput</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getResources</span><span class="o">().</span><span class="na">openRawResource</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">raw</span><span class="o">.</span><span class="na">my_cert</span><span class="o">);</span>
+<span class="nc">Certificate</span> <span class="n">ca</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="na">generateCertificate</span><span class="o">(</span><span class="n">caInput</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>X.509 formatında sertifika işlemek için bir <code class="language-plaintext highlighter-rouge">CertificateFactory</code> oluşturuyoruz.</li>
+  <li>Uygulamanın kaynaklarından <code class="language-plaintext highlighter-rouge">my_cert</code> adlı sertifika dosyasını okuyoruz.</li>
+  <li>Okuduğumuz dosyadan gerçek bir <code class="language-plaintext highlighter-rouge">Certificate</code> nesnesi oluşturuyoruz.</li>
+</ul>
+
+<p>3) OkHttp kullanıyor mu?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Uygulama OkHttp kullanıyorsa ve CertificatePinner nesnesi varsa public key pinning yapılıyor demektir.
+
+OkHttpClient: Android'de internete bağlanmak için kullanılan bir HTTP istemcisidir. 
+
+CertificatePinner : OkHttp içinde gelen bir özellik, **sertifika pinleme** yapmamızı sağlar.
+
+```java
+//Bu örnekte public key pinning yapılıyor.
+
+CertificatePinner certificatePinner = new CertificatePinner.Builder()
+    .add("example.com", "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
+    .build();
+
+OkHttpClient client = new OkHttpClient.Builder()
+    .certificatePinner(certificatePinner)
+    .build();
+```
+</code></pre></div></div>
+
+<p>4) Network Security Config var mı?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>res/xml/network_security_config.xml dosyasında özel CA belirtilmiş olabilir.
+
+```java
+// xml dosyası ile pinning yapılmış.
+
+&lt;network-security-config&gt; //Android’e özel bir güvenlik yapılandırmasının başladığını söyler.
+    &lt;domain-config&gt; //  Belirli bir domain (örneğin example.com) için ayar yapacağım demek.
+        &lt;domain includeSubdomains="true"&gt;example.com&lt;/domain&gt; 
+        &lt;pin-set expiration="2025-01-01"&gt;
+            &lt;pin digest="SHA-256"&gt;abc123456789=&lt;/pin&gt;
+        &lt;/pin-set&gt;
+    &lt;/domain-config&gt;
+&lt;/network-security-config&gt;
+```
+
+```xml
+&lt;application
+    android:networkSecurityConfig="@xml/network_security_config"
+    android:usesCleartextTraffic="false" //HTTP gibi şifrelenmemiş bağlantıları da engeller
+    ... &gt;
+
+```
+</code></pre></div></div>
+
+<h2 id="frida-ile-ssl-pinning-bypass-genel-yapısı-örnekleri">Frida ile SSL Pinning Bypass Genel Yapısı Örnekleri</h2>
+
+<ol>
+  <li>Uygulamanın TLS bağlantısının yaptığı sertifika doğrulamasını tamamen etkisiz hale getirmek ve sahte sertifikayı geçerliymiş gibi göstermek:</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Java</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// TrustManager sınıfına erişiliyor</span>
+    <span class="kt">var</span> <span class="nc">X509TrustManager</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"javax.net.ssl.X509TrustManager"</span><span class="o">);</span>
+
+    <span class="c1">// Uygulamanın sertifika doğrulama görevini devralacak kendi sınıfımızı oluşturuluyor</span>
+    <span class="kt">var</span> <span class="nc">FakeTrustManager</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">registerClass</span><span class="o">({</span>
+        <span class="nl">name:</span> <span class="s">"com.example.FakeTrustManager"</span><span class="o">,</span> <span class="c1">// sahte sınıfa verilen isim</span>
+        <span class="kd">implements</span><span class="o">:</span> <span class="o">[</span><span class="nc">X509TrustManager</span><span class="o">],</span> <span class="c1">// X509TrustManager arayüzünü uyguluyor</span>
+        <span class="nl">methods:</span> <span class="o">{</span> <span class="c1">// TrustManager da gerekli metotlar override ediliyor</span>
+            <span class="nl">checkClientTrusted:</span> <span class="n">function</span> <span class="o">(</span><span class="n">chain</span><span class="o">,</span> <span class="n">authType</span><span class="o">)</span> <span class="o">{},</span> <span class="c1">// client tarafının sertifika kontrolünü yapar.</span>
+            <span class="nl">checkServerTrusted:</span> <span class="n">function</span> <span class="o">(</span><span class="n">chain</span><span class="o">,</span> <span class="n">authType</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// Sunucudan gelen sertifikayı doğrulayan metodun içini boşaltılıyor</span>
+                <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"[+] checkServerTrusted bypass edildi"</span><span class="o">);</span>
+            <span class="o">},</span>
+            
+            <span class="c1">// Uygulamanın hangi sertifika otoritelerine (CA) güveneceğini belirten metot</span>
+            <span class="nl">getAcceptedIssuers:</span> <span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="o">[];</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+<span class="o">});</span>
+
+</code></pre></div></div>
+
+<p>2) SSL bağlantısını yapılandırmak için TrustManager atamak ve pinning mekanizmasını aktifleştirmek</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Java</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// SSLContext sınıfı çağırılır ( TLS/SSL bağlantısını başlatmak için kullanılır)</span>
+    <span class="kt">var</span> <span class="nc">SSLContext</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"javax.net.ssl.SSLContext"</span><span class="o">);</span>
+
+    <span class="c1">// init metodu ile diziler override edilir çünkü hangisine müdahale edeceğimizi bilmezsek hata verir</span>
+    <span class="nc">SSLContext</span><span class="o">.</span><span class="na">init</span><span class="o">.</span><span class="na">overload</span><span class="o">(</span>
+        <span class="s">"[Ljavax.net.ssl.KeyManager;"</span><span class="o">,</span> <span class="c1">// keyManager dizisi</span>
+        <span class="s">"[Ljavax.net.ssl.TrustManager;"</span><span class="o">,</span> <span class="c1">// TrustManager dizisi</span>
+        <span class="s">"java.security.SecureRandom"</span>  <span class="c1">// Rastgelelik sağlayan yapı</span>
+    <span class="o">)</span>
+    <span class="c1">// init() metodu override edilir</span>
+    <span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">(</span><span class="n">km</span><span class="o">,</span> <span class="n">tm</span><span class="o">,</span> <span class="n">sr</span><span class="o">)</span> <span class="o">{</span> 
+        <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"[+] SSLContext.init() override edildi"</span><span class="o">);</span>
+        <span class="c1">//tm yani TrustManager parametresi olarak uygulamanın orijinal TrustManager'ını değil, bizim sahte (Fake) TrustManager'ımızı verilir</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">km</span><span class="o">,</span> <span class="o">[</span><span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"com.example.FakeTrustManager"</span><span class="o">).</span><span class="n">$new</span><span class="o">()],</span> <span class="n">sr</span><span class="o">);</span> 
+    <span class="o">};</span>
+<span class="o">});</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">km</code>: key manager (şifreleme anahtarları)</li>
+  <li><code class="language-plaintext highlighter-rouge">tm</code>: uygulamanın sertifika doğrulayıcıları (pinning buradadır!)</li>
+  <li><code class="language-plaintext highlighter-rouge">sr</code>: rastgelelik sağlayan sınıf</li>
+</ul>
+
+<p>3) OkHttp kullanan uygulamalarda SSL Pinning’i devre dışı bırakmak, CertificatePinner.check() fonksiyonunu devre dışı bırakmak</p>
+
+<p>Bu yapıda try-catch kullanıldı çünkü bazı uygulamalar OkHttp kullanmayabilir bu durumda hata alınabilir bu yüzden script kırılsın istenmez.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Java</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="c1">// OkHttp kütüphanesinin SSL pinning yapan sınıf alınır</span>
+        <span class="kt">var</span> <span class="nc">CertificatePinner</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"okhttp3.CertificatePinner"</span><span class="o">);</span>
+        <span class="c1">//CertificatePinner sınıfındaki check(domain, certificateList) fonksiyonunu boş hale getiriliyor yani uygulama sertifikayı kontrol edilmiyor</span>
+        <span class="nc">CertificatePinner</span><span class="o">.</span><span class="na">check</span><span class="o">.</span><span class="na">overload</span><span class="o">(</span><span class="s">"java.lang.String"</span><span class="o">,</span> <span class="s">"java.util.List"</span><span class="o">).</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">(</span><span class="n">hostname</span><span class="o">,</span> <span class="n">peerCertificates</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"[+] OkHttp CertificatePinner bypass edildi: "</span> <span class="o">+</span> <span class="n">hostname</span><span class="o">);</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">};</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">err</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"[-] CertificatePinner sınıfı bulunamadı"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+
+</code></pre></div></div>
+
+<p>4) Sunucu sertifikasındaki hostname ile bağlanılmak istenen domain’in eşleşip eşleşmediğini kontrol ermek</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Java</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// SSL/TLS bağlantılarda hostname doğrulaması yapan arayüzünü çağırır</span>
+    <span class="kt">var</span> <span class="nc">HostnameVerifier</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"javax.net.ssl.HostnameVerifier"</span><span class="o">);</span>
+
+    <span class="c1">//Bu kısımda bağlanılmak istenen hostname ile sertifikadaki CN eşleniyor mu diye kontrol ediliyor</span>
+    <span class="nc">HostnameVerifier</span><span class="o">.</span><span class="na">verify</span><span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">(</span><span class="n">hostname</span><span class="o">,</span> <span class="n">session</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"[+] HostnameVerifier bypass edildi: "</span> <span class="o">+</span> <span class="n">hostname</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span> <span class="c1">// her zaman onaylanır</span>
+    <span class="o">};</span>
+<span class="o">});</span>
+
+</code></pre></div></div>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

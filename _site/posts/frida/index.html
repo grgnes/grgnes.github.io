@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRİDA | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>FRİDA</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>Application Security</span>
+        
+        <span>Dinamic Analysis</span>
+        
+        <span>Frida</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h1 id="fri̇da">FRİDA</h1>
+
+<p>Dynamic binary instrumentation yani çalışma zamanı analizi yapmak için <strong>frida</strong> kullanılır.</p>
+
+<p>Frida, uygulamalara dışarıdan müdahale etmek, çalışma anında bellek değişiklikleri yapmak, güvenlik analizleri yürütmek ve tersine mühendislik çalışmaları gerçekleştirmek için oldukça güçlü bir araçtır.</p>
+
+<p>Açık kaynak kodlu, birden fazla platformda çalışan, programlanabilir çalışma zamanı aracıdır.</p>
+
+<p>Hedefteki uygulamaya çalışma zamanıda JavaScript kodu ekler.</p>
+
+<h2 id="fridanın-ana-bileşenleri-türleri"><strong>Frida’nın Ana Bileşenleri (Türleri)</strong></h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Bileşen</strong></th>
+      <th><strong>Tanım</strong></th>
+      <th><strong>Kullanım Alanı</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Frida Server</strong></td>
+      <td>Rootlu cihazlarda çalışan bir sunucu.</td>
+      <td>Root erişimi olan cihazlarda Frida kullanımı için.</td>
+    </tr>
+    <tr>
+      <td><strong>Frida Gadget</strong></td>
+      <td>Uygulamanın içine entegre edilebilen Frida versiyonu.</td>
+      <td>Root erişimi olmayan cihazlarda kullanılır.</td>
+    </tr>
+    <tr>
+      <td><strong>Frida CLI</strong></td>
+      <td>Terminal üzerinden Frida komutlarını çalıştırmanı sağlar.</td>
+      <td>Komut satırında Frida kullanımı.</td>
+    </tr>
+    <tr>
+      <td><strong>Frida Python API</strong></td>
+      <td>Python ile Frida scriptleri yazmanı sağlar.</td>
+      <td>Otomasyon ve özel testler için.</td>
+    </tr>
+    <tr>
+      <td><strong>Frida Trace</strong></td>
+      <td>Çalışan uygulamalarda belirli fonksiyonları otomatik izler.</td>
+      <td>Dinamik analiz, fonksiyon takibi ve API çağrılarının izlenmesi.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Frida Server</strong></p>
+
+<p>→ Android cihazımıza yüklediğimiz <code class="language-plaintext highlighter-rouge">frida-server</code> dosyasıdır.</p>
+
+<p><strong>Frida Client</strong></p>
+
+<p>→ Bilgisayarında çalışan ve Frida Server’a bağlanmayı sağlayan araçtır.</p>
+
+<p><strong>Frida Trace</strong></p>
+
+<p>→ Çalışan uygulamalarda belirli fonksiyonları otomatik izler.</p>
+
+<p>→ Dinamik analiz, fonksiyon takibi ve API çağrılarının izlenmesini sağlar.</p>
+
+<h3 id="frida-temel-çalışma-modları"><strong>Frida Temel Çalışma Modları</strong></h3>
+
+<p><strong>Injected</strong></p>
+
+<p>Android uygulamada fridanın ajanı uygulamanın bellek alanına yazılır ve bu ajanla komut satırı üzerinden haberleşilir. Bu modun kısıtı hedefimizde ki cihaz Android ise rootlu olması, IOS ise jailbreak olması gerekir.</p>
+
+<p><strong>Embedded (Gömülü) →</strong> Frida Gadget</p>
+
+<p>Hedefimizdeki cihaz rootlu veya jailbreak değilse kullanılır. Elimizde ki uygulamayı decompile edip içerisine frida gadget denilen frida ajanını ekleyip uygulamayı tekrar paketlenir. Uygulama cihaza kurulduğunda içinde frida gadget ile kurulmuş olur ve injected modta olduğu gibi frida ile haberleşilir.</p>
+
+<p><strong>Preloaded (Önyüklü)</strong></p>
+
+<p>Aynı embedded modtaki gibi çalışır. Gömülüden farklı olarak frida gadget’ın içerisine önceden eklenmiş script kodunu bizden girdi almadan kendi başına tetikleyebiliyor olmasıdır.</p>
+
+<h3 id="frida-ile-neler-yapılabilir"><strong>Frida ile Neler Yapılabilir?</strong></h3>
+
+<ul>
+  <li>Diğer uygulamalar ile haberleşebilir.</li>
+  <li>Yerel diske erişim sağlayabilir.</li>
+  <li>Metotların parametrelerini dönüş değerlerini inceleyebilir.</li>
+  <li>Metot gerçeklemelerini değiştirebilir.</li>
+  <li>Yeni metotlar yazıp bu metotları çağırabilir.</li>
+  <li>Mevcut uygulamanın yetkilerini kullanır.</li>
+</ul>
+
+<h3 id="kurulumu"><strong>Kurulumu</strong></h3>
+
+<p>Frida’nın cihaza kurulumu :</p>
+
+<p>Cihazda python olmalısı önemlidir. Güncel sürümüne göre indirin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip3 <span class="nb">install </span>frida
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip3 <span class="nb">install </span>frida-tools
+</code></pre></div></div>
+
+<p>Android cihaz için kurulum :</p>
+
+<p>1)  frida.re sayfasına gidilir, tutorials ‘tan android kısmındaki maddeleri takibe başlanır.
+2) Frida-server kurulumu için https://github.com/frida/frida/releases dan cihaza uygun sürüm indirilir.</p>
+
+<p><img src="/assets/posts/frida/fridadownload.png" width="500" /></p>
+
+<p>3) Cihaza uygun sürüm bulma :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> adb shell getprop ro.product.cpu.abi
+x86
+</code></pre></div></div>
+
+<p>4) Uygun olan sürüm dosyası indirildikten sonra indirilen sıkıştırılmış dosya halinden kurtarılır ve adı düzenlenilir.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> &amp; <span class="s2">"C:</span><span class="se">\P</span><span class="s2">rogram Files</span><span class="se">\7</span><span class="s2">-Zips|7z.exe"</span> x frida-server-16.6.6-android-x86.xz
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">mv</span> .<span class="se">\f</span>rida-server-16.6.6-android-x86 frida-server
+</code></pre></div></div>
+
+<p>5) İndirilen dosya mobil cihaza gönderilir.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> adb push frida-server /data/local/tmp
+</code></pre></div></div>
+
+<p>6) Frida-server dosyasını çalıştırılabilir hale getirilir</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> adb shell <span class="nb">chmod</span> +x /data/local/tmp/frida-server
+</code></pre></div></div>
+
+<p>7) Sunucu başlatılır</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> adb shell
+</code></pre></div></div>
+
+<h3 id="frida-client-komutları--frida-tools"><strong>Frida Client Komutları / Frida Tools</strong></h3>
+
+<ul>
+  <li><strong>frida-ps</strong></li>
+</ul>
+
+<p>frida’nın bağlı olup olmadığını ve cihazdaki sistem uygulamaları/kullanıcıları listeler.
+Sadece bilgisayarındaki (lokal) işlemleri listeler.</p>
+
+<p><img src="/assets/posts/frida/01.png" width="500" /></p>
+
+<ul>
+  <li><strong>frida-ps -U</strong></li>
+</ul>
+
+<p>Cihazdaki çalışan processleri ,USB veya emülatör ile bağlı cihazdaki (Android/iOS) kullanıcı uygulamalarını listeler.</p>
+
+<p><img src="/assets/posts/frida/02.png" width="500" /></p>
+
+<ul>
+  <li><strong>frida-ps -Ua</strong></li>
+</ul>
+
+<p>Cihazdaki çalışan uygulamaları, bağlı cihazdaki kullanıcı + arka plan uygulamalarını listeler.</p>
+
+<p><img src="/assets/posts/frida/03.png" width="500" /></p>
+
+<ul>
+  <li><strong>frida-ps -Uai</strong></li>
+</ul>
+
+<p>Bağlı cihazdaki tüm yüklü uygulamaları (sistem uygulamaları dahil) listeler.</p>
+
+<p><img src="/assets/posts/frida/04.png" width="500" /></p>
+
+<ul>
+  <li><strong>frida-ls-devices</strong></li>
+</ul>
+
+<p>Bilgisayardaki açık olan cihazları listeler.</p>
+
+<p><img src="/assets/posts/frida/05.png" width="500" /></p>
+
+<ul>
+  <li><strong>frida-ps -D cihazAdı -ai</strong></li>
+</ul>
+
+<p>Istenilen cihazdaki işlemleri gösterir.</p>
+
+<p><img src="/assets/posts/frida/06.png" width="500" /></p>
+
+<ul>
+  <li>**frida -U <paketAdı>**</paketAdı></li>
+</ul>
+
+<p>Çalışan uygulamaya bağlanarak Frida CLI’yi başlatır.</p>
+
+<p><img src="/assets/posts/frida/07.png" width="500" /></p>
+
+<ul>
+  <li><strong>adb shell pm list packages</strong></li>
+</ul>
+
+<p>Paket adı alınır.</p>
+
+<ul>
+  <li><strong>frida -U -n com.example.app</strong></li>
+</ul>
+
+<p>Çalışan bir uygulamaya bağlanır.</p>
+
+<ul>
+  <li><strong>frida -U -f com.example.app</strong></li>
+</ul>
+
+<p>Uygulamayı başlatır ve bağlanır.</p>
+
+<ul>
+  <li>**frida -U -p <PID>**</PID></li>
+</ul>
+
+<p>Uygulamaya PID ile bağlanır.</p>
+
+<ul>
+  <li><strong>adb shell pidof com.example.myapplication</strong></li>
+</ul>
+
+<p>Paketin pid i bulma</p>
+
+<h3 id="fridanın-farklı-kullanım-ve-analiz-yöntemleri">Frida’nın farklı kullanım ve analiz yöntemleri</h3>
+
+<h3 id="1-ptrace"><strong>1. ptrace()</strong></h3>
+
+<ul>
+  <li><strong>ptrace()</strong>, <strong>Linux sistem çağrısıdır</strong> ve bir sürecin başka bir süreci izlemesine veya kontrol etmesine izin verir.</li>
+  <li><strong>Frida’da doğrudan bir modül olarak bulunmaz</strong> ama anti-debug korumalarını atlatmak için kullanılır.</li>
+  <li><strong>Uygulamalar bazen ptrace() kullanarak kendilerini analiz edilmekten korurlar</strong> (örneğin <code class="language-plaintext highlighter-rouge">ptrace(PTRACE_TRACEME, 0, 0, 0)</code> ile).</li>
+  <li>Frida ile çalışırken <strong>anti-debug mekanizmalarını atlatmak için ptrace patching (yama) yapabiliriz.</strong></li>
+</ul>
+
+<h3 id="2-frida-gadget"><strong>2. Frida Gadget</strong></h3>
+
+<ul>
+  <li><strong>Root/Jailbreak gerekmeyen Frida kullanım şeklidir.</strong></li>
+  <li>Uygulamayı <strong>decompile edip içerisine gadget ekleyerek</strong> Frida’yı içine gömeriz.</li>
+  <li><strong>Özellikle kapalı sistemlerde (root’suz telefonlar gibi) kullanılır.</strong></li>
+  <li><strong>İki modda çalışabilir:</strong>
+    <ul>
+      <li><strong>Injected Mode</strong>: Komut satırından yönetilir.</li>
+      <li><strong>Preloaded Mode</strong>: Önceden belirlenen bir script çalıştırır.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="3-frida-trace"><strong>3. Frida Trace</strong></h3>
+
+<ul>
+  <li><strong>Frida’nın API çağrılarını dinlemek için kullandığı bir araçtır.</strong></li>
+  <li>Örneğin, bir Android uygulamasında <code class="language-plaintext highlighter-rouge">open()</code>, <code class="language-plaintext highlighter-rouge">read()</code>, <code class="language-plaintext highlighter-rouge">write()</code>, <code class="language-plaintext highlighter-rouge">send()</code>, <code class="language-plaintext highlighter-rouge">recv()</code> gibi fonksiyonları izlemek için kullanılır.</li>
+  <li>
+    <p>Şu şekilde başlatılır:</p>
+
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="n">frida</span><span class="w"> </span><span class="nt">-U</span><span class="w"> </span><span class="nt">-n</span><span class="w"> </span><span class="nx">com.example.app</span><span class="w"> </span><span class="nt">-i</span><span class="w"> </span><span class="nx">open</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <p>Bu komut, <strong><code class="language-plaintext highlighter-rouge">open()</code> sistem çağrısını izler ve hangi dosyaların açıldığını gösterir.</strong></p>
+  </li>
+  <li><strong>Dinamik analiz yapmak için güçlü bir araçtır</strong></li>
+</ul>
+
+<h3 id="4-jnitrace"><strong>4. jnitrace()</strong></h3>
+
+<ul>
+  <li><strong>JNI (Java Native Interface) çağrılarını izlemek için kullanılır.</strong></li>
+  <li>Android uygulamalarında <strong>C/C++ koduna yapılan çağrıları görmek için idealdir.</strong></li>
+  <li>
+    <p>Şu komutla başlatılır:</p>
+
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="n">frida</span><span class="w"> </span><span class="nt">-U</span><span class="w"> </span><span class="nt">-n</span><span class="w"> </span><span class="nx">com.example.app</span><span class="w"> </span><span class="nt">-e</span><span class="w"> </span><span class="s2">"Java.perform(function() { jnitrace('*'); });"</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+  <li><strong>Özellikle şifreleme algoritmalarını ve güvenlik kontrollerini analiz etmek için kullanılır.</strong></li>
+</ul>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobil Uygulama Güvenliği Statik Analiz Araçları | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>Mobil Uygulama Güvenliği Statik Analiz Araçları</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>Application Security</span>
+        
+        <span>Static Analysis Tools</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="statik-analiz-araçları">Statik Analiz Araçları</h2>
+
+<p>Statik analiz, uygulamayı çalıştırmadan kaynak kodu ve dosyalarını inceleyerek uygulama hakkında bilgi edinme aşamasıdır.</p>
+
+<h3 id="apktool">APKTool</h3>
+
+<p>APKTool, APK dosyalarını <strong>Smali seviyesinde decompile</strong> eder ve tekrar derlemeye olanak sağlar.</p>
+
+<p><strong>Kullanım Alanları</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">AndroidManifest.xml</code> dosyası düzenlenebilir.</li>
+  <li>Smali kodları üzerinde değişiklik yapılabilir.</li>
+  <li>Değiştirilen uygulama yeniden derlenerek test edilebilir.</li>
+</ul>
+
+<p><strong>Kurulum ve Kullanım</strong></p>
+
+<p>1) APKTool sitesinden <code class="language-plaintext highlighter-rouge">apktool.jar</code> dosyasını indirin.
+2) APK dosyasını decompile edin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-jar</span> apktool.jar d uygulama.apk
+</code></pre></div></div>
+
+<p>veya</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apktool d uygulama.apk <span class="nt">-o</span> cikis_klasoru
+</code></pre></div></div>
+
+<p>3) APK’yı yeniden derleyin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apktool b cikis_klasoru <span class="nt">-o</span> yeni.apk
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="dex2jar">Dex2Jar</h3>
+
+<p>Dex2Jar, <code class="language-plaintext highlighter-rouge">.dex</code> dosyalarını <code class="language-plaintext highlighter-rouge">.jar</code> formatına çeviren bir araçtır.</p>
+
+<p><strong>Kullanım Alanları</strong></p>
+
+<ul>
+  <li>Java decompiler araçları ile daha rahat analiz yapılmasını sağlar.</li>
+  <li>Kodun daha okunabilir hale gelmesine yardımcı olur.</li>
+</ul>
+
+<p><strong>Kurulum ve Kullanım</strong></p>
+
+<p>1) Dex2Jar’ın son sürümünü indirin.
+2) APK dosyasını açarak <code class="language-plaintext highlighter-rouge">.dex</code> dosyalarını çıkarın.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unzip uygulama.apk <span class="nt">-d</span> uygulama_dosyalar
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">uygulama.apk</code> dosyası açılır ve <code class="language-plaintext highlighter-rouge">classes.dex</code> dosyaları <code class="language-plaintext highlighter-rouge">uygulama_dosyalar</code> klasörüne çıkarılır.</p>
+</blockquote>
+
+<p>3) <code class="language-plaintext highlighter-rouge">.dex</code> dosyasını <code class="language-plaintext highlighter-rouge">.jar</code> formatına çevirin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>d2j-dex2jar.bat uygulama_dosyalar<span class="se">\c</span>lasses.dex
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">classes-dex2jar.jar</code> dosyası oluşturulur.</p>
+</blockquote>
+
+<p>4) Oluşan JAR dosyasını açın.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jd-gui classes-dex2jar.jar
+</code></pre></div></div>
+
+<p>5) Analize <code class="language-plaintext highlighter-rouge">AndroidManifest.xml</code> dosyasından başlayın.</p>
+
+<hr />
+
+<h3 id="cfr">CFR</h3>
+
+<p>CFR, Java <code class="language-plaintext highlighter-rouge">.class</code> ve <code class="language-plaintext highlighter-rouge">.jar</code> dosyalarını orijinal kaynak koduna en yakın şekilde decompile etmek için kullanılan bir Java decompiler aracıdır.</p>
+
+<p>Android analizinde özellikle Dex2Jar ile oluşturulan <code class="language-plaintext highlighter-rouge">.jar</code> dosyalarını Java kaynak koduna dönüştürmek için kullanılır.</p>
+
+<p><strong>Kurulum ve Kullanım</strong></p>
+
+<p>1) CFR’ı indirin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/leibnitz27/cfr/releases/download/0.152/cfr-0.152.jar
+</code></pre></div></div>
+
+<p>2) JAR dosyasını Java kaynak koduna çevirin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-jar</span> cfr-0.152.jar classes-dex2jar.jar <span class="nt">--outputdir</span> kaynak_kodu
+</code></pre></div></div>
+
+<p>3) Tek bir <code class="language-plaintext highlighter-rouge">.class</code> dosyasını Java koduna dönüştürün.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-jar</span> cfr-0.152.jar MainActivity.class
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="jadx">JADX</h3>
+
+<p>JADX, APK içerisindeki <code class="language-plaintext highlighter-rouge">.dex</code> dosyalarını Java kaynak koduna geri dönüştüren bir decompiler aracıdır.</p>
+
+<p><strong>Kullanım Alanları</strong></p>
+
+<ul>
+  <li>Java kaynak kodu incelenebilir.</li>
+  <li>APK içerisindeki sınıflar ve paketler kolayca analiz edilebilir.</li>
+</ul>
+
+<p><strong>Kurulum ve Kullanım</strong></p>
+
+<p>1) JADX’yı yükleyin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>winget <span class="nb">install </span>jadx
+</code></pre></div></div>
+
+<p>2) APK’yı Java koduna dönüştürün.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jadx <span class="nt">-d</span> output_folder uygulama.apk
+</code></pre></div></div>
+
+<p>3) Grafik arayüzünü kullanın.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jadx-gui uygulama.apk
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="mobsf">MobSF</h3>
+
+<p>MobSF (Mobile Security Framework), mobil uygulamalar için otomatik güvenlik analizi yapan bir framework’tür.</p>
+
+<p><strong>Kullanım Alanları</strong></p>
+
+<ul>
+  <li>Güvenlik açıklarını tespit eder.</li>
+  <li>Native ve Smali kodlarını analiz eder.</li>
+  <li>Sertifikaları, API anahtarlarını ve şüpheli bağlantıları bulur.</li>
+  <li>İzinleri, kullanılan kütüphaneleri ve güvenlik kontrollerini analiz eder.</li>
+</ul>
+
+<p><strong>Kurulum ve Kullanım</strong></p>
+
+<p>1)  Depoyu klonlayın.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
+</code></pre></div></div>
+
+<p>2) Proje dizinine girin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>Mobile-Security-Framework-MobSF
+</code></pre></div></div>
+
+<p>3) Gerekli paketleri yükleyin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+</code></pre></div></div>
+
+<p>4) Sunucuyu başlatın.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python manage.py runserver
+</code></pre></div></div>
+
+<p>5) Tarayıcıdan aşağıdaki adrese gidin.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://127.0.0.1:8000
+</code></pre></div></div>
+
+<p>6) APK dosyanızı yükleyerek otomatik taramayı başlatın.
+7) Oluşturulan raporu analiz edin.</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

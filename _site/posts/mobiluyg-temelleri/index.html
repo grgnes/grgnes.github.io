@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobil Uygulama Güvenlik Temelleri | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>Mobil Uygulama Güvenlik Temelleri</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>Application Security</span>
+        
+        <span>101</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="mobil-uygulama-güvenlik-temelleri"><strong>Mobil Uygulama Güvenlik Temelleri</strong></h2>
+
+<p><strong>ANDROİD İŞLETİM SİSTEMİ</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Google yama yayınlar→ işlemci üreticisi qualcomm gönderir, kendi yamasını oluşturur→ telefon üreticisine gönderir → telekom şirketleri(operator) kendi yazılımlarını ekler → telefonumuz
+</code></pre></div></div>
+
+<h2 id="çeki̇rdek">ÇEKİRDEK</h2>
+
+<p><strong>LİNUX KERNEL</strong></p>
+
+<ul>
+  <li>İşletim sisteminin kalbidir.</li>
+  <li>Güvenlik, hafıza yönetimi, süreç yönetimi, ağ yığınları ve sürücü modellerini içerir</li>
+  <li>C diliyle oluşturulmuş bir çekirdek</li>
+  <li>Donanım kaynaklarını ( CPU, bellek(ram), disk(HDD/SSD), ağ) yönetir ve kullanıcı programlarının donanımla doğrudan iletişim kurması sağlar</li>
+  <li>Kullanıcı tabanlı izin modeli : bir uygulama indirdiğimizde onun başka uygulamalara erişmemesini sağlar.</li>
+</ul>
+
+<p><img src="/assets/posts/mobiluyg-temelleri/kernel.png" width="500" /></p>
+
+<h3 id="donanim-katmani">DONANIM KATMANI</h3>
+
+<p>Yerleşik donanım birimleriyle etkileşimi sağlar. Örnek cihaz üzerindeki mikrofon, hoparlör, kamera gibi donanımlar ile iletişimi sağlar.</p>
+
+<h3 id="kütüphaneler">KÜTÜPHANELER</h3>
+
+<ul>
+  <li>Android çekirdeği ile uygulamalar arasında köprü görevi görür.</li>
+  <li>Android uygulamalarının çekirdek hizmetlerine erişmesini sağlar.</li>
+  <li>İşletim sisteminin çekirdeğiyle ve Android Runtime (ART) ile etkileşime giren, uygulamalara temel işlevsellik sağlayan yazılım bileşenleridir</li>
+  <li>Bu kütüphaneler, donanım ve yazılım arasındaki köprü görevi görür.</li>
+  <li><strong>Webkit :</strong> Web tarayıcı motorlarının çalışması için kullanılır.</li>
+  <li><strong>SQLite</strong> : Veri yapıları kontrolü için kullanılır.</li>
+  <li><strong>OpenGl</strong>  : Grafik işlemleri için kullanılır.</li>
+  <li><strong>Surface Manager</strong> : Görüntüleme kontrolü yapan kütüphanedir.</li>
+  <li><strong>libc (C Kütüphanesi):</strong> Temel sistem işlevlerini sağlar.</li>
+  <li><strong>SSL/TLS:</strong> Güvenli ağ iletişimi (şifreleme) için kullanılan kütüphanelerdir.</li>
+</ul>
+
+<h3 id="androi̇d-runti̇me">ANDROİD RUNTİME</h3>
+
+<ul>
+  <li>Dalvik VM ve ART VM</li>
+  <li>Android 5.0 sonrasında adı Dalvik kaldırıldı yerine ART geldi.</li>
+  <li>Dalvik vm ve android runtime farkları</li>
+  <li>Garbage collection -&gt; Pointer kullandığınızda ve sildiğinizde artık yer kaplamıyor java onu kendisi siliyor.</li>
+  <li>Dalvik, android 2.2 sürümünden beri <strong>“tam zamanında”</strong> derleme <strong>(Just-in-time ( JIT compilation))</strong> kullanarak kodu derliyor bu da demek oluyor ki uygulamayı yazıp cihaza yüklediğimizde kod belli bir oranda derleniyor ve esas derleme uygulama çalışmaya başladığında yapılıyor. bu işlem uygulama her çalıştığında yapılıyor. bu da uygulama her çalıştığında fazladan yük getiriyor ve daha az verimli çalışılmasına sebep oluyor</li>
+  <li>ART, bu durumu ortadan kaldırmak için <strong>“zamanın ötesinde derleme” (Ahead-of-time (AOT compilation)</strong> denilen <em>**</em>bir işlemle bytecode derlemesini uygulama cihaza kurulurken yapıyor ve bytecode’u makine diline çeviriyor. böylece her uygulama açılırken yeni bir sanal makine başlatma, konu yeniden derleme durumu olmuyor.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Özellik</th>
+      <th><strong>Dalvik</strong></th>
+      <th><strong>Android Runtime (ART)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Derleme Yöntemi</strong></td>
+      <td>Just-In-Time (JIT) Derleme</td>
+      <td>Ahead-of-Time (AOT) Derleme</td>
+    </tr>
+    <tr>
+      <td><strong>Performans</strong></td>
+      <td>Düşük performans, çünkü her seferinde derleme yapılır</td>
+      <td>Daha hızlı, çünkü uygulamalar önceden derlenir</td>
+    </tr>
+    <tr>
+      <td><strong>Bellek Yönetimi</strong></td>
+      <td>Daha fazla bellek tüketimi</td>
+      <td>Daha az bellek tüketimi</td>
+    </tr>
+    <tr>
+      <td><strong>Uygulama Başlangıcı</strong></td>
+      <td>Daha yavaş başlar</td>
+      <td>Daha hızlı başlar</td>
+    </tr>
+    <tr>
+      <td><strong>Desteklenen Uygulama Türü</strong></td>
+      <td>Java bytecode’u çalıştırır</td>
+      <td>Java bytecode’u çalıştırır (AOT ile optimize edilmiş)</td>
+    </tr>
+    <tr>
+      <td><strong>Ne Zaman Derlenir?</strong></td>
+      <td>Uygulama her çalıştığında</td>
+      <td>Uygulama yüklenirken</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="android-sanal-makine-nasıl-çalışır">Android Sanal Makine nasıl çalışır?</h4>
+
+<ol>
+  <li>uygulama, java veya kotlin ile yazılır</li>
+  <li>kod önce java bytecode’a, sonra da .dex formatına çevirilir</li>
+  <li>bu .dex formatı diske kaydedilir</li>
+  <li>ART bu dosyaları cihaza özel(işlemci) makine koduna (native code) çevirir ve önceden derleme (AOT) yapar</li>
+  <li>uygulama açıldığında ART önceden derlenmiş kodu doğrudan çalıştırır</li>
+  <li>bu sayede CPU ve RAM daha az yük altına girer ve uygulama hızlı açılır</li>
+  <li>ART garbage collecter kullanarak gereksiz ram kullanımını azaltır, sistem belleği dolarsa kullanılmayan uygulamalar ram den temizlenir</li>
+  <li>uygulama kapatılınca da çalışan işlemler sonlandırılır, ancak bazı veriler cache(önbellek) de tutabilir, diske kayıtlı olan AOT derlenmiş kod, bir sonraki çalıştırmada tekrar kullanılır</li>
+</ol>
+
+<p>! Android runtime(ART), uygulamaları donanımdan bağımsız hale getirerek her cihazda çalışmasını sağlar.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apk → .class <span class="o">(</span>javabytecode<span class="o">)</span> → .dex → dalvik <span class="o">(</span>JIT<span class="o">)</span>
+</code></pre></div></div>
+
+<p>! Yeniden başlattığımızda bytecode dan itibaren derlenir.</p>
+
+<p><img src="/assets/posts/mobiluyg-temelleri/dalvik.png" width="400" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apk → .class <span class="o">(</span>javabytecode<span class="o">)</span> → .dex → art <span class="o">(</span>machine code<span class="o">)</span> <span class="o">(</span>AOT<span class="o">)</span>
+</code></pre></div></div>
+<p>→ Yeniden başlattığımızda uygulamayı makine kodundan itibaren derlenir.</p>
+
+<p><img src="/assets/posts/mobiluyg-temelleri/3.png" width="400" /></p>
+
+<ul>
+  <li><strong>Platform Bağımsızlık (Java Bytecode ve .class):</strong>
+    <ul>
+      <li>Java, platform bağımsız çalışabilen bir dil olduğu için, <strong>.class</strong> dosyasındaki bytecode, farklı cihazlarda çalışabilmek için ilk adımı oluşturur. JVM, bytecode’u çalıştırmak için cihazın işlemci mimarisine göre makine koduna dönüştürür.</li>
+    </ul>
+  </li>
+  <li><strong>Android İçin Optimize Edilmiş Format (.dex):</strong>
+    <ul>
+      <li>Android, <strong>.class</strong> dosyalarını doğrudan çalıştırmaz. Bunun yerine, <strong>.dex</strong> formatına dönüştürür, çünkü Android cihazları sınırlı bellek ve işlemci gücüne sahiptir. <strong>Dex</strong>, bu özelliklere uygun ve optimize edilmiş bir formattır.</li>
+    </ul>
+  </li>
+  <li><strong>Performans (Makine Kodu):</strong>
+    <ul>
+      <li><strong>Makine kodu</strong>, doğrudan işlemci tarafından çalıştırılabilen en hızlı formattır. <strong>ART</strong>, uygulamayı çalıştırmadan önce <strong>.dex</strong> dosyasını makine koduna dönüştürür, böylece uygulama hızlı başlar ve daha verimli çalışır.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="uygulama-çatisi">UYGULAMA ÇATISI</h3>
+
+<p>Android işletim sisteminin orta katmanıdır ve uygulama geliştirme için gerekli olan temel bileşenleri ve API’leri sağlar.</p>
+
+<ul>
+  <li><strong>Kullanıcı arayüzü yönetimi</strong> : <code class="language-plaintext highlighter-rouge">Activity</code>, <code class="language-plaintext highlighter-rouge">Fragment</code>, <code class="language-plaintext highlighter-rouge">ViewV</code></li>
+  <li><strong>Veri yönetimi</strong> : <code class="language-plaintext highlighter-rouge">content provider</code>  , <code class="language-plaintext highlighter-rouge">SQLite</code></li>
+  <li><strong>Arkaplan işlemleri</strong> : <code class="language-plaintext highlighter-rouge">Services</code> , <code class="language-plaintext highlighter-rouge">Broadcast Receivers</code></li>
+  <li><strong>Uygulama iletişimi</strong> : <code class="language-plaintext highlighter-rouge">Intent</code></li>
+</ul>
+
+<p><strong>API’ler</strong>: Veritabanı işlemleri, ağ bağlantıları, kullanıcı arayüzü bileşenleri gibi işlevleri kolayca kullanmanızı sağlayan araçlar sunar.</p>
+
+<p><img src="/assets/posts/mobiluyg-temelleri/uygkatmanı.png" width="400" /></p>
+
+<h3 id="uygulama-katmani">UYGULAMA KATMANI</h3>
+
+<p>Android sisteminin kullanıcıya yönelik en üst katmanıdır. Uygulama kodu, kullanıcı arayüzü ve işlevler burada yer alır ve kullanıcıların cihazla doğrudan etkileşimde olduğu bölümdür.</p>
+
+<h3 id="özet-olarak-fotoğraf-çekme-süreci"><strong>Özet Olarak:</strong> Fotoğraf Çekme Süreci</h3>
+
+<ol>
+  <li><strong>Uygulama Katmanı:</strong> Kullanıcı fotoğraf çekme butonuna basar.</li>
+  <li><strong>Uygulama Çatısı:</strong> Bu isteği <strong>Camera Manager</strong> aracılığıyla işler ve kamerayı başlatır.</li>
+  <li><strong>Android Runtime:</strong> Fotoğraf çekme kodlarını çalıştırır.</li>
+  <li><strong>Native Libraries:</strong> Görüntü işleme işlemleri burada optimize edilir.</li>
+  <li><strong>Donanım Soyutlama Katmanı:</strong> Kamerayı başlatır ve görüntüyü alır.</li>
+  <li><strong>Linux Kernel:</strong> Kamera sürücüsünü yönetir ve görüntü verisini işler.</li>
+</ol>
+
+<p>Son olarak, bu görüntü <strong>Uygulama Katmanı</strong>na geri döner ve kullanıcıya gösterilir. Eğer kullanıcı fotoğrafı kaydetmek isterse, dosya sistemine yazılır ve <strong>Gallery</strong> uygulamasında görünür hale gelir.</p>
+
+<p><img src="/assets/posts/mobiluyg-temelleri/01.png" width="400" /></p>
+
+<h3 id="kodun-apkya-dönüşme-süreci">Kodun APK’ya Dönüşme Süreci</h3>
+
+<h4 id="1-javakotlin-kodlarının-yazılması">1. Java/Kotlin Kodlarının Yazılması</h4>
+
+<ul>
+  <li>Uygulamanın kaynak kodları (<code class="language-plaintext highlighter-rouge">MainActivity.java</code>, <code class="language-plaintext highlighter-rouge">MainActivity.kt</code> vb.) yazılır.</li>
+  <li>Arayüz dosyaları (<code class="language-plaintext highlighter-rouge">activity_main.xml</code> gibi) hazırlanır.</li>
+</ul>
+
+<h4 id="2-java-kodlarının-derlenmesi-compilation">2. Java Kodlarının Derlenmesi (Compilation)</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">javac</code> derleyicisi, <code class="language-plaintext highlighter-rouge">.java</code> dosyalarını <code class="language-plaintext highlighter-rouge">.class</code> (Java Bytecode) dosyalarına dönüştürür.</li>
+</ul>
+
+<h4 id="3-dex-formatına-dönüştürme-dexing">3. DEX Formatına Dönüştürme (Dexing)</h4>
+
+<ul>
+  <li>Oluşturulan <code class="language-plaintext highlighter-rouge">.class</code> dosyaları, <strong>D8</strong> veya <strong>R8</strong> kullanılarak <code class="language-plaintext highlighter-rouge">.dex</code> (Dalvik Executable) formatına çevrilir.</li>
+</ul>
+
+<h4 id="4-kaynak-dosyalarının-derlenmesi">4. Kaynak Dosyalarının Derlenmesi</h4>
+
+<ul>
+  <li><strong>AAPT (Android Asset Packaging Tool)</strong>; XML dosyalarını, resimleri ve diğer kaynakları derleyerek Android’in kullanabileceği binary formata dönüştürür.</li>
+</ul>
+
+<h4 id="5-apknın-paketlenmesi-packaging">5. APK’nın Paketlenmesi (Packaging)</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">AndroidManifest.xml</code>, <code class="language-plaintext highlighter-rouge">.dex</code> dosyaları ve derlenmiş kaynaklar bir araya getirilerek APK oluşturulur.</li>
+</ul>
+
+<h4 id="6-apknın-i̇mzalanması-signing">6. APK’nın İmzalanması (Signing)</h4>
+
+<ul>
+  <li>APK’nın güvenilirliğini sağlamak için <code class="language-plaintext highlighter-rouge">apksigner</code> veya <code class="language-plaintext highlighter-rouge">jarsigner</code> ile dijital olarak imzalanır.</li>
+</ul>
+
+<h4 id="7-apknın-cihaza-yüklenmesi">7. APK’nın Cihaza Yüklenmesi</h4>
+
+<ul>
+  <li>APK, aşağıdaki komut ile Android cihaza yüklenir:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>adb <span class="nb">install </span>myapp.apk
+</code></pre></div></div>
+
+<ul>
+  <li>Uygulama yüklendikten sonra Android Runtime (ART) tarafından çalıştırılır.</li>
+</ul>
+
+<p><img src="/assets/posts/mobiluyg-temelleri/process.png" width="400" /></p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

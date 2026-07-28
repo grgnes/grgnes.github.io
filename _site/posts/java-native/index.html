@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java'da Native Kod Kullanımı ve JNI Temelleri | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>Java'da Native Kod Kullanımı ve JNI Temelleri</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Java</span>
+        
+        <span>JNI</span>
+        
+        <span>Android</span>
+        
+        <span>Native</span>
+        
+        <span>Mobile Security</span>
+        
+        <span>Reverse Engineering</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="1-java-kodu-yazmak">1-Java kodu yazmak</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.example.karslan</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">deneme</span> <span class="o">{</span>
+    <span class="c1">// JNI üzerinden C++/C fonksiyonunu çağıracağız</span>
+    <span class="kd">public</span> <span class="kd">native</span> <span class="nc">String</span> <span class="nf">stringFromJNI</span><span class="o">();</span>
+
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">loadLibrary</span><span class="o">(</span><span class="s">"native-lib"</span><span class="o">);</span> <span class="c1">// native-lib.so kütüphanesini yükle</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">public native String stringFromJNI();</code> — Bu, Java’dan C/C++ tarafındaki fonksiyona bağlanmak için <em>native</em> fonksiyon bildirimi.</li>
+  <li><code class="language-plaintext highlighter-rouge">System.loadLibrary("native-lib");</code> — Android cihazda ya da emülatörde <code class="language-plaintext highlighter-rouge">libnative-lib.so</code> dosyasını yükler (native kütüphanemiz).</li>
+</ul>
+
+<h2 id="2--java-kodunu-derleyip-jni-header-dosyasını-oluşturmak">2- Java kodunu derleyip JNI header dosyasını oluşturmak</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">javac</span> <span class="o">-</span><span class="n">h</span> <span class="n">app</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">main</span><span class="o">/</span><span class="n">cpp</span> <span class="n">app</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">main</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">example</span><span class="o">/</span><span class="n">karslan</span><span class="o">/</span><span class="n">deneme</span><span class="o">.</span><span class="na">java</span>
+</code></pre></div></div>
+
+<p>Bu komut hem java dosyasını derler → .class ı oluşturur,</p>
+
+<p>hemde JNI için “com_example_karslan_deneme.h” header dosyasını cpp klasörünün içine oluşturur.</p>
+
+<p>neden header dosyası oluşturur ?</p>
+
+<p>çünkü header dosyası C/C++ tarafında java fonksiyonun imzasını bildirir yani,</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">native</span> <span class="nc">String</span> <span class="nf">stringFromJNI</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>burdaki “native” keyini kullanıma açar.</p>
+
+<p><code class="language-plaintext highlighter-rouge">native</code>, bu fonksiyonun gövdesinin Java’da değil, C veya C++ gibi dış (native) bir dilde yazılacağını söyler.</p>
+
+<p>C/C++ dosyan, Java’daki <code class="language-plaintext highlighter-rouge">stringFromJNI()</code> fonksiyonuna tam olarak nasıl bağlanacağını bu header dosyasından öğrenir.</p>
+
+<h2 id="3--cc-native-kodu-yazmak">3- C/C++ native kodu yazmak</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">jni</span><span class="o">.</span><span class="na">h</span><span class="o">&gt;</span>
+<span class="err">#</span><span class="n">include</span> <span class="s">"com_example_karslan_deneme.h"</span>
+
+<span class="no">JNIEXPORT</span> <span class="n">jstring</span> <span class="no">JNICALL</span> <span class="nf">Java_com_example_karslan_deneme_stringFromJNI</span><span class="o">(</span><span class="nc">JNIEnv</span><span class="o">*</span> <span class="n">env</span><span class="o">,</span> <span class="n">jobject</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">NewStringUTF</span><span class="o">(</span><span class="s">"Merhaba JNI'den!"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Java_com_example_karslan_deneme_stringFromJNI</code> fonksiyonu, Java tarafındaki native metodun imzasına uygun isimlendirilir.</li>
+  <li><code class="language-plaintext highlighter-rouge">env-&gt;NewStringUTF</code> fonksiyonu, C stringini Java String’ine dönüştürür.</li>
+</ul>
+
+<h2 id="4--native-kütüphaneyi-derlemendk">4- Native kütüphaneyi derleme(ndk)</h2>
+
+<ul>
+  <li>CMakeList.txt ve build.gradle uygun şekilde ayarlanır</li>
+  <li>android studio doğrudan build yapınca libnative-lib.so oluşturulur ve lib klasörüne gömülür.</li>
+</ul>
+
+<h2 id="5--java-tarafında-native-fonksiyonu-çağırmak">5- Java tarafında native fonksiyonu çağırmak</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.example.karslan</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">android.os.Bundle</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.TextView</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">androidx.appcompat.app.AppCompatActivity</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="nc">AppCompatActivity</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="nc">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+        <span class="nc">TextView</span> <span class="n">tv</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TextView</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="n">deneme</span> <span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="n">deneme</span><span class="o">();</span>
+        <span class="n">tv</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">d</span><span class="o">.</span><span class="na">stringFromJNI</span><span class="o">());</span> <span class="c1">// C++ fonksiyonu çağrılır</span>
+        <span class="n">setContentView</span><span class="o">(</span><span class="n">tv</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>mainactivityde deneme classından d nesnesi oluşturarak stringFromJNI() fonksiyonu çağrılır.</p>
+
+<p>bu fonksiyon java da tanımlanmış ama gövdesi c kodundan çağrılıyor</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

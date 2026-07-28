@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Root Detection | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>Root Detection</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>Application Security</span>
+        
+        <span>Root Detection</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="rooting-nedir">Rooting nedir?</h2>
+
+<p>Rooting yani rootlama, kök erişimi veya süper kullanıcı erişimi olarak adlandırılan bir cihazın yönetici ayrıcalıkları elde etme işlemidir. Cihazdaki normal kullanıcı sınırlı erişimi aşıp, işletim sistemi seviyesine erişmeyi sağlar.</p>
+
+<h2 id="android-root-detection-nedir">Android Root Detection Nedir?</h2>
+
+<p>Mobil uygulamaların root’lu cihazları tespit ederek bazı işlemleri engelleme yöntemidir. Genellikle finans, bankacılık, e-devlet gibi uygulamalarda kullanılır.</p>
+
+<h3 id="neden-root-detection">Neden Root Detection?</h3>
+
+<p>Root erişimi, saldırganın uygulama içindeki verileri okumasına / değiştirmesine olanak tanır.</p>
+
+<ul>
+  <li>Root cihazlarda:
+    <ul>
+      <li>Uygulama dosyaları dışarı taşınabilir</li>
+      <li><code class="language-plaintext highlighter-rouge">Frida</code>, <code class="language-plaintext highlighter-rouge">Xposed</code>, <code class="language-plaintext highlighter-rouge">Magisk</code> gibi araçlar rahatlıkla çalışabilir</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Bu yüzden uygulamalar, root’lu cihazlarda çalışmayı bilerek engelleyebilir.</p>
+
+<h2 id="magisk-nedir"><strong>Magisk Nedir?</strong></h2>
+
+<p>Magisk, Android cihazlarda root erişimi sağlamanın ve sistemi modifiye etmenin modern ve gizli yoludur. İşlevi sistemin en alt katmanına (boot seviyesine) root erişimi enjekte etmektir.</p>
+
+<h3 id="magisk-ne-i̇şe-yarar">Magisk Ne İşe Yarar?</h3>
+
+<ul>
+  <li>Root erişimi sağlar</li>
+  <li>Root detection bypass edebilir</li>
+  <li>Modül desteği vardır (frida, xposed, sslunpinning)</li>
+</ul>
+
+<h3 id="magisk-nasıl-çalışır">Magisk Nasıl Çalışır?</h3>
+
+<p>Magisk, boot image üzerinden çalışır. (<strong>boot image</strong>, Android cihazın açılması için gereken “ilk çalışan dosyadır)</p>
+
+<p>Root erişimi sistem bölümlerini modifiye etmeden verilir.</p>
+
+<p>Bu sayede:</p>
+
+<ul>
+  <li>Google SafetyNet testlerinden geçilebilir</li>
+  <li>Uygulamalar root’u algılayamaz (gizlersen)</li>
+</ul>
+
+<h3 id="ne-zaman-gerekli-olur">Ne Zaman Gerekli Olur?</h3>
+
+<ul>
+  <li>Gerçek cihazda root detection’ı bypass etmek istiyorsak,</li>
+  <li>SafetyNet geçilsin istiyorsak (<strong>SafetyNet</strong>, cihazın “güvenilir” olup olmadığını uygulamalara bildirir.)</li>
+</ul>
+
+<h3 id="nasıl-i̇ndirilir">Nasıl İndirilir?</h3>
+
+<ul>
+  <li>https://github.com/newbit1/rootAVD?tab=readme-ov-file dan indirilir.</li>
+  <li>emülatör çalıştırılır.</li>
+  <li>indirilen dosyanın dizininde .\rootAVD.bat ListAllAVDs komutu çalıştırılır.</li>
+  <li>api’ya göre seçilir ve indirilir.</li>
+</ul>
+
+<p>→ rootAVD.bat system-images\android-29\google_apis\x86\ramdisk.img</p>
+
+<ul>
+  <li>cihazda indikten sonra uygulamadan magisk install’a basılır.</li>
+  <li>direct install seçeneğini seçerek, let’s go butonuna basılır.</li>
+  <li>reboot butonu ile cihaz rebootlanır.</li>
+</ul>
+
+<h2 id="xposed">Xposed</h2>
+
+<p>Xposed, telefona sistemin içine gizli eklentiler yüklemeye yarayan bir sistemdir. Bu eklentiler sayesinde uygulamaları kandırabilir, rootu gizleyebilir, davranışları değiştirebilirsin.</p>
+
+<h3 id="xposed-ne-i̇şe-yarar">Xposed Ne İşe Yarar?</h3>
+
+<ul>
+  <li>Uygulama rootlu mu diye bakıyorsa kandırmak</li>
+  <li>Reklamları kaldırmak</li>
+  <li>Gizli mesajları göstermek</li>
+  <li>Uygulamanın davranışını değiştirmek</li>
+  <li>GPS konumunu sahte göstermek</li>
+</ul>
+
+<h3 id="modül-örneği-">Modül Örneği :</h3>
+
+<ol>
+  <li>RootCloak → root kontrolü yapan uygulamaları kaldırır</li>
+  <li>JustTrustMe → Uygulamanın SSL pinning kontrolünü kalıdırır
+    <ul>
+      <li>Bazı uygulamalar, HTTPS bağlantısını sadece kendi tanıdığı sertifikayla kurar (SSL Pinning). Bu da <strong>burpsuite, mitmproxy gibi araçlarla veri dinlemeni engeller. JustTrustMe</strong>, uygulamanın bu sertifika kontrolünü iptal eder. Böylece güvenli sandığı bağlantı üzerinden veri okuyabilirsin.</li>
+    </ul>
+  </li>
+  <li>FakeGApps → Google servislerini taklit eder</li>
+  <li>XPrivacyLua → Uygulamalara sahte bilgiler verir</li>
+</ol>
+
+<h2 id="native-root-detection-nedir">Native Root Detection Nedir?</h2>
+
+<blockquote>
+  <p>Android uygulamaları root kontrolünü yalnızca Java değil, C/C++ ile yazılmış native katmanda da yapabilir. Bu yöntemler, doğrudan sistem dosyalarını kontrol ederek daha derin ve zor tespit edilebilen analizler gerçekleştirir.</p>
+
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>Fonksiyon</th>
+      <th>Amaç</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">access()</code></td>
+      <td>Dosya var mı?</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">system()</code></td>
+      <td>Komut çalıştırmak</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stat()</code></td>
+      <td>Dosya özellikleri</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fopen()</code></td>
+      <td>Dosya açılıp okunabilir mi?</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Native Root Detection Kodu (C dilinde örnek)</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span><span class="nx">unistd</span><span class="p">.</span><span class="nx">h</span><span class="o">&gt;</span>
+
+<span class="nx">int</span> <span class="nx">is_rooted</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">access</span><span class="p">(</span><span class="dl">"</span><span class="s2">/system/xbin/su</span><span class="dl">"</span><span class="p">,</span> <span class="nx">F_OK</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// root</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// değil</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="root-detection-i̇çin-yaygın-yöntemler">Root Detection İçin Yaygın Yöntemler</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kategori</th>
+      <th>Yöntem</th>
+      <th>Açıklama</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Binary Kontrolü</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">/system/xbin/su</code> var mı?</td>
+      <td><code class="language-plaintext highlighter-rouge">su</code> komutunun varlığı kontrol edilir. Root erişimi sağlar.</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code class="language-plaintext highlighter-rouge">which su</code> komutu</td>
+      <td><code class="language-plaintext highlighter-rouge">su</code> komutunun yolu terminalde aranır.</td>
+    </tr>
+    <tr>
+      <td><strong>2. Dosya Kontrolü</strong></td>
+      <td>Magisk dosyaları (<code class="language-plaintext highlighter-rouge">.magisk</code>)</td>
+      <td><code class="language-plaintext highlighter-rouge">/sbin/.magisk</code>, <code class="language-plaintext highlighter-rouge">/data/adb/magisk</code> gibi dizinler kontrol edilir.</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Xposed dosyaları</td>
+      <td><code class="language-plaintext highlighter-rouge">/data/data/de.robv.android.xposed.installer/</code> gibi yollar kontrol edilir.</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>BusyBox binary’si</td>
+      <td><code class="language-plaintext highlighter-rouge">/system/xbin/busybox</code> varsa rootlu olabilir.</td>
+    </tr>
+    <tr>
+      <td><strong>3. Build.prop Kontrolü</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">ro.debuggable=1</code>, <code class="language-plaintext highlighter-rouge">ro.secure=0</code></td>
+      <td>Sistem debug moddaysa ya da <code class="language-plaintext highlighter-rouge">secure=0</code> ise root işareti olabilir.</td>
+    </tr>
+    <tr>
+      <td><strong>4. Paket Kontrolü</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">com.noshufou.android.su</code> gibi</td>
+      <td>SuperSU veya Magisk gibi root yöneticisi uygulamaların varlığına bakılır.</td>
+    </tr>
+    <tr>
+      <td><strong>5. Komut Çalıştırma</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">id</code>, <code class="language-plaintext highlighter-rouge">whoami</code>, <code class="language-plaintext highlighter-rouge">mount</code> komutları</td>
+      <td>Komut çıktılarından root olup olmadığı anlaşılır.</td>
+    </tr>
+    <tr>
+      <td><strong>6. System partition yazılabilir mi?</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">mount</code> ile <code class="language-plaintext highlighter-rouge">rw</code> kontrolü</td>
+      <td><code class="language-plaintext highlighter-rouge">/system</code> bölümünün yazılabilir olması root göstergesidir.</td>
+    </tr>
+    <tr>
+      <td><strong>7. SELinux kontrolü</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">getenforce</code> çıktısı <code class="language-plaintext highlighter-rouge">Permissive</code> mi?</td>
+      <td>Normalde Enforcing olur. Permissive root ipucu olabilir.</td>
+    </tr>
+    <tr>
+      <td><strong>8. Frida/Xposed Detection</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">frida</code>, <code class="language-plaintext highlighter-rouge">xposed</code> kelimeleri bellekte var mı?</td>
+      <td><code class="language-plaintext highlighter-rouge">/proc/self/maps</code> içinde Frida/Xposed izleri aranır.</td>
+    </tr>
+    <tr>
+      <td><strong>9. Native API Kullanımı</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">access()</code>, <code class="language-plaintext highlighter-rouge">fopen()</code>, <code class="language-plaintext highlighter-rouge">stat()</code></td>
+      <td>C/C++ tarafında dosya varlığı veya erişim kontrol edilir.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="root-gizleme-araçları-nedir">Root gizleme araçları nedir?</h2>
+
+<p>Root gizleme araçları, Android işletim sisteminde root (köklendirme) erişiminin varlığını maskelemek veya gizlemek için tasarlanmış yazılımlardır. Bu araçlar, root erişimini tespit eden uygulamaları “yanıltarak” cihazın root’lu olmadığı izlenimini verir.</p>
+
+<p><strong>Popüler Root Gizleme Araçları:</strong></p>
+
+<ol>
+  <li><strong>Magisk Hide</strong> (Magisk içinde yer alır)</li>
+  <li><strong>Shamiko</strong> (Magisk modülü)</li>
+  <li><strong>KernelSU</strong></li>
+  <li><strong>TaiChi</strong></li>
+  <li><strong>XPrivacy</strong></li>
+</ol>
+
+<h3 id="bu-araçlar-rootu-nasıl-gizler">Bu araçlar rootu nasıl gizler?</h3>
+
+<p>1) Süreç ile Gizleme</p>
+
+<ul>
+  <li><strong>Ne yapar?</strong> Uygulamaların process listesinde su, magisk gibi root ile ilgili süreçleri görmesini engeller</li>
+  <li><strong>Nasıl?</strong> Sistem çağrılarını intercept ederek (yakalayarak) listelerden root süreçlerini çıkarır</li>
+</ul>
+
+<p><br /></p>
+
+<p>2) Dosya Sistemi ile Gizleme</p>
+
+<ul>
+  <li><strong>Ne yapar?</strong> Klasik root dosya yollarını (/system/bin/su, /system/xbin/su gibi) gizler</li>
+  <li><strong>Nasıl?</strong> Dosya sistemi çağrılarını yönlendirerek:
+    <ul>
+      <li>Uygulama root dosyasına erişmek istediğinde “dosya bulunamadı” hatası alır</li>
+      <li>Aslında dosya oradadır, ama sadece o uygulama göremez
+<br /></li>
+    </ul>
+  </li>
+</ul>
+
+<p>3) Zygote Enjeksiyonu (Magisk’te Zygisk) ile Gizleme</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Uygulama Başlatma Süreci:
+Uygulama → Zygote (Ana proses) → Yeni uygulama prosesi
+                    ↓
+         Zygisk enjeksiyonu yapılır
+                    ↓
+    Uygulama root'u göremez hale gelir
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Zygote:</strong> Android’de tüm uygulamaların doğduğu ana proses</li>
+  <li><strong>Zygisk:</strong> Magisk’in Zygote’a kendini enjekte ederek her uygulamada root’u gizleyebilmesi</li>
+</ul>
+
+<p><br /></p>
+
+<p>4) API Seviyesinde Gizleme</p>
+
+<ul>
+  <li><strong>SafetyNet/Play Integrity:</strong> Google’ın güvenlik API’lerine sahte “güvenli” yanıtlar döndürür</li>
+  <li>Safetynet ve play integrity, cihazın güvenli olup olmadığını kontrol eden apilardır. Safetynet eski sürüm, play integrity daha güncel ve daha sıkı kontrollerin yapıldığı sürüm</li>
+</ul>
+
+<p><br /></p>
+
+<p>5) Sistem Çağrılarına Müdahale ile Gizleme</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">open(), stat(), access()</code> gibi sistem fonksiyonlarını değiştirir</li>
+  <li>Uygulama root dosyasını kontrol etmek istediğinde, fonksiyon “dosya yok” der</li>
+</ul>
+
+<p>Örneğin, uygulamada</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Root'lu mu diye kontrol eden örnek kod</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">access</span><span class="p">(</span><span class="dl">"</span><span class="s2">/system/bin/su</span><span class="dl">"</span><span class="p">,</span> <span class="nx">F_OK</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Dosya varsa → ROOT'LU!</span>
+    <span class="nx">exit</span><span class="p">();</span> <span class="c1">// Uygulamayı kapat</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>şeklinde bir kontrol varsa.</p>
+
+<p><br />
+<strong>open() Fonksiyonu Nedir?</strong></p>
+
+<ul>
+  <li><strong>open()</strong>, Unix/Linux sistemlerinde dosya açmak için kullanılan sistem çağrısı</li>
+  <li><strong>Prototip:</strong> <code class="language-plaintext highlighter-rouge">int open(const char *pathname, int flags);</code></li>
+  <li><strong>args[0]:</strong> Dosya yolunu içeren string pointer (<code class="language-plaintext highlighter-rouge">pathname</code>)</li>
+  <li><strong>args[1]:</strong> Dosya açma flag’leri (<code class="language-plaintext highlighter-rouge">O_RDONLY</code>, <code class="language-plaintext highlighter-rouge">O_WRONLY</code>, vb.)</li>
+  <li>Uygulama her dosya açmaya çalıştığında bu fonksiyon tetikleniyor</li>
+  <li>Hangi dosyaların açılmaya çalışıldığını logluyor</li>
+  <li>Root detection için kritik dosyaları (/system/bin/su, /proc/self/status, vb.) tespit etmeye yarıyor</li>
+</ul>
+
+<p><strong>snprintf() Fonksiyonu Nedir?</strong></p>
+
+<ul>
+  <li><strong>snprintf()</strong>, string formatlama ve buffer’a güvenli yazma fonksiyonu</li>
+  <li><strong>Prototip:</strong> <code class="language-plaintext highlighter-rouge">int snprintf(char *str, size_t size, const char *format, ...);</code></li>
+  <li><strong>args[0]:</strong> Yazılacak buffer (<code class="language-plaintext highlighter-rouge">str</code>), <strong>args[1]:</strong> Buffer boyutu (<code class="language-plaintext highlighter-rouge">size</code>), <strong>args[2]:</strong> Format string’i (<code class="language-plaintext highlighter-rouge">format</code>), <strong>…:</strong> Değişken sayıda argüman</li>
+  <li><strong>onEnter:</strong> Buffer pointer’ını saklıyor</li>
+  <li><strong>onLeave:</strong> Buffer’daki string’i okuyor, manipüle ediyor ve logluyor</li>
+</ul>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

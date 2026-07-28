@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 101: OOP'ye Giriş | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>Java 101: OOP'ye Giriş</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Java</span>
+        
+        <span>OOP</span>
+        
+        <span>101</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="class">Class</h2>
+
+<ul>
+  <li>Şablon, kalıp</li>
+  <li>Bir şeyin nasıl yapılacağını, hangi değişkenlere(özelliklere) ve metotlara(davranışlara) sahip olduğunu tanımlar.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Araba</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">renk</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">hiz</span><span class="o">;</span>
+
+    <span class="kt">void</span> <span class="nf">calistir</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Araba çalışıyor"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="object">Object</h2>
+
+<ul>
+  <li>Class’tan oluşturulmuş bir gerçek örnektir.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Araba</span> <span class="nf">benimArabam</span><span class="o">(</span><span class="n">object</span><span class="o">)</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Araba</span><span class="o">();</span>
+<span class="n">benimArabam</span><span class="o">.</span><span class="na">renk</span> <span class="o">=</span> <span class="s">"Kırmızı"</span><span class="o">;</span>
+<span class="n">benimArabam</span><span class="o">.</span><span class="na">hiz</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+<span class="n">benimArabam</span><span class="o">.</span><span class="na">calistir</span><span class="o">();</span>
+</code></pre></div></div>
+
+<h2 id="method">Method</h2>
+
+<p>Class içerisinde tanımlanan fonksiyondur.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Araba</span> <span class="o">{</span>
+
+    <span class="kt">void</span> <span class="nf">calistir</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Araba çalışıyor"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">hizlan</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Araba hızlanıyor"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Araba</span> <span class="n">benimArabam</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Araba</span><span class="o">();</span>
+<span class="n">benimArabam</span><span class="o">.</span><span class="na">calistir</span><span class="o">();</span>  <span class="c1">// “Araba çalışıyor” yazdırır</span>
+<span class="n">benimArabam</span><span class="o">.</span><span class="na">hizlan</span><span class="o">();</span>    <span class="c1">// “Araba hızlanıyor” yazdırır</span>
+</code></pre></div></div>
+
+<p>Javada cast yapma mantığı, bir objectin türünü belirlenmemişse ona tür atamak için kullanılır. Peki neden türünü belirlemeyiz, daha esnek kullanmak için yani ben onu int olarakta belirlemek isteyebilirim, string olarakta belirleyebilirim.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">liste</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+<span class="n">liste</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"merhaba"</span><span class="o">);</span>
+<span class="n">liste</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">123</span><span class="o">);</span>
+<span class="n">liste</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">MyClass</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h2 id="method-çeşi̇tleri̇">METHOD ÇEŞİTLERİ</h2>
+
+<ol>
+  <li>Public Method</li>
+</ol>
+
+<p>Her yerden erişilebilir.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Ornek</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">genelMetot</span><span class="o">()</span> <span class="o">{</span> <span class="o">}</span>   <span class="c1">// her yerden erişilebilir</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Private Method</li>
+</ol>
+
+<p>Sadece tanımlandığı sınıf içinden erişilebilir.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Ornek</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">gizliMetot</span><span class="o">()</span> <span class="o">{</span> <span class="o">}</span>  <span class="c1">// sadece bu sınıf içinden</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Protected Method</li>
+</ol>
+
+<p>Aynı paket veya alt sınıflardan erişilebilir.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SuperSinif</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">korumaliMetot</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Ben protected metodum."</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AltSinif</span> <span class="kd">extends</span> <span class="nc">SuperSinif</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">korumaliMetot</span><span class="o">();</span>  <span class="c1">// Aynı paket içinden erişim mümkün</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Static Method</li>
+</ol>
+
+<p>Class’ a aittir, nesne oluşturulmadan çağrılabilir.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Ornek</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">selamla</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Merhaba!"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Ornek</span><span class="o">.</span><span class="na">selamla</span><span class="o">();</span>  <span class="c1">// Nesne oluşturmadan çağrıldı</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Instance Mehod</li>
+</ol>
+
+<p>Nesne oluşturularak çağrılan metotlardır. Statik kullanılmaz.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Ornek</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">yaz</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Ben nesneye ait bir metodum."</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Ornek</span> <span class="n">o</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Ornek</span><span class="o">();</span> <span class="c1">// nesne oluşturuldu</span>
+        <span class="n">o</span><span class="o">.</span><span class="na">yaz</span><span class="o">();</span>  <span class="c1">// nesne üzerinden çağrıldı</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Abstract Method</li>
+</ol>
+
+<p>Sadece bildirimi yapılır, gövdesi yazılmaz. Classlarda kullanılır.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Hayvan</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">sesCikar</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Kedi</span> <span class="kd">extends</span> <span class="nc">Hayvan</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sesCikar</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Miyav"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Hayvan</span> <span class="n">kedi</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Kedi</span><span class="o">();</span>
+        <span class="n">kedi</span><span class="o">.</span><span class="na">sesCikar</span><span class="o">();</span>   <span class="c1">// Miyav</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Final Method</li>
+</ol>
+
+<p>Alt class’larda override edilemez/değiştirilemez.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hayvan</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">hareketEt</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hareket ediyorum"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<ol>
+  <li>Constructor Method</li>
+</ol>
+
+<p>Sınıf ismi ile aynı olur, geri dönüş tipi yoktur, nesne ilk oluşturulduğunda çağrılır.</p>
+
+<p>Sınıftan nesne oluşturulurken, başlangıç ayarlarını yapmak için kullanılır. → ilk önce nesne oluştu yazacak terminalde</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Ornek</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">Ornek</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Nesne oluştu"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Ornek</span> <span class="n">o</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Ornek</span><span class="o">();</span>  <span class="c1">// ← Constructor otomatik çalışır</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Overloaded Method</li>
+</ol>
+
+<p>Aynı isimde, farklı parametrelerle birden fazla metot tanımıdır.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">yaz</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">yaz</span><span class="o">(</span><span class="kt">int</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>  <span class="c1">// farklı parametre = overload</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Override Edilmiş Method</li>
+</ol>
+
+<p>Kalıtımda (inheritance) alt sınıf, üst sınıftaki metodu yeniden tanımlar.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Hayvan</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">ses</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Ses çıkar"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Kedi</span> <span class="kd">extends</span> <span class="nc">Hayvan</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">ses</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Miyav"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>extends → class başka bir classtan miras alıyorsa</p>
+
+<p>override → üst sınıftaki bir metodu alt sınıfta yeniden yazmak (hooklamak)</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

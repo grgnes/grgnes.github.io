@@ -498,11 +498,18 @@ footer {
     line-height: 1.9;
 }
 
-.post-content h2,
-.post-content h3{
+.post-content h2 {
+    font-size: 32px;
+    font-weight: 700;
     margin-top: 30px;
-    margin-bottom: 13px;
-    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.post-content h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 25px;
+    margin-bottom: 12px;
 }
 
 .post-content p{
@@ -591,4 +598,16 @@ footer {
     width: auto;
     height: auto;
     object-fit: contain;
+}
+table {
+    margin-bottom: 2rem;
+}
+
+table + h3,
+table + h2,
+table + h4 {
+    margin-top: 2rem;
+}
+.post-content p {
+    margin-bottom: 18px;
 }
