@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siber Güvenliğe Giriş Notlarım | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>Siber Güvenliğe Giriş Notlarım</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Siber Güvenlik</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="siber-güvenliğe-giriş">Siber Güvenliğe Giriş</h2>
+
+<p>Hack → bir sisteme erişim izni olmadan o sisteme erişebilmek</p>
+
+<p>Hacklemek terimi yasal da olabilir yasa dışı da olabilir. burada white hat ve black hat kavramları devreye giriyor</p>
+
+<p>Black hat → yasa dışı bir sistemde açık arayan ve o sisteme erişen kişilerdir</p>
+
+<p>White hat → yasal olarak, bir şirkette çalışan sistemde açık arayan ve o açığı kapatan daha güvenli hale getirmek için uğraşan kişilerdir. Bu kişilere etik hacker veya siber güvenlik uzmanları da denilir.</p>
+
+<p>Tüm bu terimleri içerisinde bulunduran alan ise siber güvenliktir.</p>
+
+<p>Siber Güvenlik ise içerisinde 2 ye ayrılır:</p>
+
+<p>Defensive tarafı → Bir şirketin tüm güvenliğini sağlayan, daha iyi nasıl güvenlik sağlanır, ağlar nasıl olucak, şirket içindeki insanlara siber güvenlik bilinci nasıl aşılanacak gibi sorular ile ilgilenen uzmanlardır. koruyucu tarafta denilebilir</p>
+
+<p>Ofansive tarafı → sistemde açık var mı, varsa nasıl erişim sağlanabilir, erişim sağlandıktan sonra sistemde neler yapılabilir gibi soruları anlamaya çalışan uzmanlardır. saldırı tarafı da denilebilir. bu tarz senaryoları öngörebilmek için yapılan saldırı simülasyonlarına da sızma testi/penetrasyon testi nedir.</p>
+
+<h3 id="sızma-testleri-ne-içerir-hacker-metodolojisi">Sızma Testleri ne içerir: Hacker Metodolojisi</h3>
+
+<ol>
+  <li>Information Gathering → bilgi toplamak (aktif ve pasif tarama)</li>
+  <li>Threat Modeling → Tehditleri modellemek</li>
+  <li>Vulnerability Analysis → açık var mı onu analiz etmek</li>
+  <li>Exploitation → bulduğumuz zafiyeti kullanarak sömürülebiliniyor mu</li>
+  <li>Post Exploitation → erişim sağladıktan sonra neler yapılabiliyor</li>
+  <li>Reporting → bulguları raporlama</li>
+</ol>
+
+<h3 id="cyber-kill-chain-mitre-attack">Cyber Kill Chain (mitre attack)</h3>
+
+<p>Saldıraları daha iyi anlamamıza yarayan 7 aşamalı bir frameworktür.</p>
+
+<ol>
+  <li>Keşif</li>
+  <li>Silahlandırma</li>
+  <li>İletme</li>
+  <li>Sömürme</li>
+  <li>Yükleme</li>
+  <li>Komuta kontrol</li>
+  <li>Eylemler</li>
+</ol>
+
+<h3 id="zararlı-yazılımlar-malware">Zararlı Yazılımlar (malware)</h3>
+
+<ul>
+  <li>Virüs → malware in spesifik bir türüdür, kendini diğer yazılımlara entegre ederek zarar veren yazılımlardır, kullanıcı etkileşimi ile çalışırlar yani kullanıcı bir resmi açar ve o virüs yayılır</li>
+  <li>trojan → güvenli duran(resim,pdf gibi) zararlı yazılımlardır</li>
+  <li>solucan (warm) → kullanıcı etkileşimine ihtiyaç duymayan ağ aracılığı ile kendini kopyalayarak yayılan zararlı yazılım. kopyalayarak çoğaldığı için sistem kaynaklarını çabuk tüketir bu da performans düşüklüğüne sebep olur</li>
+  <li>spyware → internetten indirdiğimiz uygulamaların içerisine konulan zararlı yazılımlardır</li>
+  <li>ronsomware → fidye yazılımları, bilgisayara indirdiğimizde bilgisayarı kitleyen para karşılığında verilen şifre ile kurtarılabilen zararlı yazılımlardır</li>
+  <li>cryptojacking → kripto para madenciliği yapmak için kullanılan zararlı yazılımlardır, bizim adımıza kripto para üretmeye çalışır ordan kazanılan parayı da hacker a yollar</li>
+  <li>scareware → korkutma yazılımları, sahte virüs kaldırma programları</li>
+</ul>
+
+<h3 id="tehditler">Tehditler</h3>
+
+<ul>
+  <li>DoS (denial of service) → kişilerin sunucuya erişimini engelleme saldırısı</li>
+  <li>DDoS → birçok farklı yönden saldırarak, koordineli çalışarak ölü bilgisayarlar kullanarak kişilerin sunucuya erişimini engellemek</li>
+  <li>Spoofing → kandırmak, belli bir kaynaktan istek geldiğini göstererek kandırmaktır</li>
+  <li>Sosyal Mühendislik → psikolojik manipülasyon</li>
+  <li>Man in the middle →  saldırganın birbiri ile doğrudan iletişim kuran iki taraf arasındaki iletişimi gizlice ilettiği veya değiştirdiği saldırı türüdür</li>
+  <li>pasif tarama → hedef sistem ile herhangi bir şekilde etkileşime girmeden, herhangi bir iz bırakmadan yani tespit edilemeyecek şekilde bilgi toplamak.</li>
+  <li>aktif tarama → hedef sisteme erişim sağlayarak, güvenlik sistemleri tarafından izlenebilir ayak izleri bırakarak bilgi toplamak</li>
+</ul>
+
+<h2 id="sanallaştırma">Sanallaştırma</h2>
+
+<p>Tek bir donanım kullanarak birden fazla işletim sistemi çalıştırmak</p>
+
+<p>Sanal Makine → gerçek bir bilgisayarın içinde çalışan, tamamen yazılımla oluşturulmuş başka bir bilgisayardır.</p>
+
+<p>Linux</p>
+
+<p>→ Açık kaynaklı, ücretsiz bir işletim sistemi</p>
+
+<p>→ linus torvalds</p>
+
+<p>→ linux distribution(dağılım) → ubuntu, debian, kali, fedora</p>
+
+<p>kali linux</p>
+
+<p>→ penetration testing distribution</p>
+
+<p>→ sızma testinde kullanılacak tüm toolların bulunduğu işletim sistemi</p>
+
+<p>→ parrot os, black arch os</p>
+
+<hr />
+
+<h2 id="network-temellerine-giriş">Network Temellerine Giriş</h2>
+
+<h3 id="ağlara-giriş">Ağlara Giriş</h3>
+
+<p><strong>Ağ (Network):</strong> Birbirleri ile iletişim kurabilen cihazların oluşturduğu yapıdır.</p>
+
+<p>Bilgisayardaki ağ bilgilerini görmek için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig
+</code></pre></div></div>
+
+<p>veya</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ipconfig
+</code></pre></div></div>
+
+<p>komutları kullanılabilir.</p>
+
+<h3 id="ağ-arayüzleri">Ağ Arayüzleri</h3>
+
+<p><strong>eth0</strong> → Kablolu ağ arayüzüdür.</p>
+
+<ul>
+  <li><strong>inet</strong> → IPv4 adresi (Örn: <code class="language-plaintext highlighter-rouge">192.168.0.1</code>)</li>
+  <li><strong>inet6</strong> → IPv6 adresi</li>
+  <li><strong>ether</strong> → MAC adresi</li>
+</ul>
+
+<p><strong>lo (localhost)</strong> → Bilgisayarın kendisini temsil eden sanal ağ arayüzüdür.</p>
+
+<h3 id="nic-network-interface-card--ethernet-kartı">NIC (Network Interface Card / Ethernet Kartı)</h3>
+
+<p>NIC, cihazların internete veya bir ağa bağlanmasını sağlayan donanımdır.</p>
+
+<p>IP adresi ve MAC adresi gibi ağ bilgileri bu arayüz üzerinden kullanılır.</p>
+
+<h3 id="switch">Switch</h3>
+
+<p>Birden fazla cihazın aynı ağ içerisinde birbiriyle iletişim kurmasını sağlar.</p>
+
+<p>Switch, cihazlar arasında yönlendirme yaparken <strong>IP adreslerini değil, MAC adreslerini</strong> kullanır.</p>
+
+<h3 id="router">Router</h3>
+
+<p>Bir veya birden fazla switch’i birbirine bağlar.</p>
+
+<p>Farklı ağlar (<strong>networkler</strong>) arasında <strong>IP adreslerine göre yönlendirme (routing)</strong> yapar.</p>
+
+<h3 id="firewall">Firewall</h3>
+
+<p>Gelen ve giden ağ paketlerini inceler.</p>
+
+<p>Belirlenen kurallara göre paketlere izin verir veya engeller.</p>
+
+<h3 id="lan-local-area-network">LAN (Local Area Network)</h3>
+
+<p>Yerel ağdır.</p>
+
+<p>Örneğin;</p>
+
+<ul>
+  <li>Ev ağı</li>
+  <li>Okul ağı</li>
+  <li>Ofis ağı</li>
+</ul>
+
+<h3 id="wan-wide-area-network">WAN (Wide Area Network)</h3>
+
+<p>Birden fazla LAN’ın birleşmesiyle oluşan geniş alan ağıdır.</p>
+
+<p>En büyük örneği <strong>İnternet</strong>‘tir.</p>
+
+<h3 id="subnet-mask-alt-ağ-maskesi">Subnet Mask (Alt Ağ Maskesi)</h3>
+
+<p>IP adresini <strong>Network ID</strong> ve <strong>Host ID</strong> olarak ayırmayı sağlayan yapıdır.</p>
+
+<p>Hangi kısmın ağı (<strong>Network ID</strong>), hangi kısmın cihazı (<strong>Host ID</strong>) temsil ettiğini belirler.</p>
+
+<h3 id="network-id">Network ID</h3>
+
+<p>Aynı ağdaki cihazlarda ortak olan IP adresi kısmıdır.</p>
+
+<p>Örneğin:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>192.168.32.x
+</code></pre></div></div>
+
+<p>Burada:</p>
+
+<p><strong>Network ID → 192.168.32</strong></p>
+
+<p>Aynı ağdaki tüm cihazlarda aynıdır.</p>
+
+<h3 id="host-id">Host ID</h3>
+
+<p>Ağ içerisindeki cihazı temsil eden bölümdür.</p>
+
+<p>Örneğin:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>192.168.32.170
+</code></pre></div></div>
+
+<p>Burada:</p>
+
+<p><strong>Host ID → 170</strong></p>
+
+<p>Aynı ağdaki her cihazın <strong>Host ID’si farklı olmak zorundadır.</strong></p>
+
+<hr />
+
+<h2 id="osi-modeli">OSI Modeli</h2>
+
+<p><img src="/assets/posts/introduction-to-cybersecurity/image.png" width="700" /></p>
+
+<h3 id="1-physical-fiziksel-katman">1. Physical (Fiziksel Katman)</h3>
+
+<p>Donanım katmanıdır.</p>
+
+<ul>
+  <li>Fiziksel cihazlar</li>
+  <li>Kablolar</li>
+  <li>Bitlerin iletimi</li>
+</ul>
+
+<h3 id="2-data-link-veri-bağlantı-katmanı">2. Data Link (Veri Bağlantı Katmanı)</h3>
+
+<p>Veri transferini sağlayan katmandır.</p>
+
+<ul>
+  <li>MAC adresi kullanılır.</li>
+  <li>Aynı ağ içerisindeki cihazlar arasında iletişim sağlar.</li>
+</ul>
+
+<h3 id="3-network-ağ-katmanı">3. Network (Ağ Katmanı)</h3>
+
+<p>Verilerin farklı ağlar arasında iletilmesini sağlar.</p>
+
+<ul>
+  <li>IP adresleri kullanılır.</li>
+  <li>Yönlendirme (Routing) işlemleri burada yapılır.</li>
+</ul>
+
+<h3 id="4-transport-ulaşım-katmanı">4. Transport (Ulaşım Katmanı)</h3>
+
+<p>Verinin uygulamalara güvenli şekilde ulaştırılmasını sağlar.</p>
+
+<ul>
+  <li>TCP</li>
+  <li>UDP</li>
+</ul>
+
+<h3 id="5-session-oturum-katmanı">5. Session (Oturum Katmanı)</h3>
+
+<p>Cihazlar arasındaki bağlantıları (oturumları) oluşturur, yönetir ve sonlandırır.</p>
+
+<p>Örneğin WAN bağlantıları.</p>
+
+<h3 id="6-presentation-sunum-katmanı">6. Presentation (Sunum Katmanı)</h3>
+
+<p>Verilerin uygulamaların kabul edeceği hâle dönüştürülmesini sağlar.</p>
+
+<p>Örneğin:</p>
+
+<ul>
+  <li>JPG</li>
+  <li>PNG</li>
+</ul>
+
+<h3 id="7-application-uygulama-katmanı">7. Application (Uygulama Katmanı)</h3>
+
+<p>Kullanıcının doğrudan etkileşim kurduğu katmandır.</p>
+
+<hr />
+
+<h2 id="ağ-protokolü">Ağ Protokolü</h2>
+
+<p>Ağ protokolleri, cihazların birbiriyle nasıl iletişim kuracağını belirleyen <strong>kurallar ve kural setleridir.</strong></p>
+
+<h3 id="tcp">TCP</h3>
+
+<p>TCP daha yavaştır.</p>
+
+<p>Çünkü gönderdiği verinin karşı tarafa ulaşıp ulaşmadığını kontrol eder.</p>
+
+<p>Bağlantı kurulurken:</p>
+
+<ul>
+  <li>SYN</li>
+  <li>SYN-ACK</li>
+  <li>ACK</li>
+</ul>
+
+<p>paketleri kullanılır.</p>
+
+<h3 id="udp">UDP</h3>
+
+<p>UDP daha hızlıdır.</p>
+
+<p>Ancak verinin ulaşıp ulaşmadığını kontrol etmediği için TCP kadar güvenilir değildir.</p>
+
+<p>Genellikle;</p>
+
+<ul>
+  <li>Ses iletimi</li>
+  <li>Video iletimi</li>
+</ul>
+
+<p>gibi gecikmenin önemli olduğu alanlarda kullanılır.</p>
+
+<h3 id="portlar">Portlar</h3>
+
+<p>Portlar, uygulamaların giriş kapıları gibidir.</p>
+
+<p>TCP ve UDP bağlantılarının doğru uygulamaya ulaştırılması için port numaraları kullanılır.</p>
+
+<hr />
+
+<h2 id="mac--ip">MAC / IP</h2>
+
+<h3 id="arp">ARP</h3>
+
+<p>ARP, IP adresini MAC adresine çeviren protokoldür.</p>
+
+<p>IP ve MAC bilgilerini görmek için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>arp
+</code></pre></div></div>
+
+<p>Aynı ağdaki cihazları keşfetmek için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netdiscover-i eth0-r10.0.2.0/24-c100
+</code></pre></div></div>
+
+<p>Bu komut ARP istek paketleri göndererek aynı ağdaki cihazların IP ve MAC adreslerini keşfetmemizi sağlar.</p>
+
+<h3 id="dns">DNS</h3>
+
+<p><strong>DNS (Domain Name System)</strong></p>
+
+<p>Domain isimleri ile IP adreslerini eşleştiren sistemdir.</p>
+
+<p>Bir sitenin IP adresini görmek için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ping google.com
+</code></pre></div></div>
+
+<p>gibi bir komut kullanılabilir.</p>
+
+<h2 id="dhcp">DHCP</h2>
+
+<p>DHCP, istemcilere otomatik IP adresi dağıtan sunucudur.</p>
+
+<p>Normalde IP adresleri otomatik dağıtılır.</p>
+
+<p>Ancak elle dağıtılması istenirse DHCP yapılandırılabilir.</p>
+
+<h2 id="nat">NAT</h2>
+
+<p><strong>NAT (Network Address Translation)</strong></p>
+
+<p>Ağ adresi dönüştürme mekanizmasıdır.</p>
+
+<p>İki tür IP adresi vardır.</p>
+
+<ul>
+  <li>Private IP → Yerel ağlarda kullanılır.</li>
+  <li>Public IP → İnternette görünen IP adresidir.</li>
+</ul>
+
+<p>NAT, private ve public IP adresleri arasında dönüşüm yaparak iletişimi sağlar.</p>
+
+<p>Modemde ISS tarafından atanmış bir <strong>public IP</strong> bulunur.</p>
+
+<p>NAT, istemcinin private IP adresini modemin public IP adresi üzerinden hedefe göndererek internet erişimini sağlar.</p>
+
+<h2 id="vpn">VPN</h2>
+
+<p><strong>VPN (Virtual Private Network)</strong></p>
+
+<p>İki temel VPN türü vardır.</p>
+
+<h3 id="client-to-site">Client-to-Site</h3>
+
+<p>Tek bir kullanıcının uzaktan kurumsal ağa bağlanması.</p>
+
+<p>Örneğin uzaktan çalışanlar.</p>
+
+<h3 id="site-to-site">Site-to-Site</h3>
+
+<p>İki fiziksel ağın birbirine bağlanması.</p>
+
+<p>Örneğin şube ve merkez ofis bağlantıları.</p>
+
+<p>VPN’e bağlanmak için örnek:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo openvpn abc.ovpn
+</code></pre></div></div>
+
+<h3 id="vpn-bağlandıktan-sonra-çalışmıyorsa">VPN bağlandıktan sonra çalışmıyorsa</h3>
+
+<p>İlk olarak kullanılan DNS sunucularına bakılabilir.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/resolv.conf
+</code></pre></div></div>
+
+<p>DNS sunucularını değiştirmek için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /etc/resolv.conf
+</code></pre></div></div>
+
+<p>VPN bağlandıktan sonra internet çalışmıyorsa bunun nedeni çoğu zaman <strong>domain isimlerinin çözümlenememesidir.</strong></p>
+
+<p>Örneğin DNS sunucusu <strong>8.8.8.8</strong> olarak ayarlandığında bilgisayar, <strong>google.com</strong> gibi alan adlarının IP adresini doğrudan Google’ın açık DNS sunucusundan öğrenmeye başlar.</p>
+
+<p>İsim çözümlemesi tekrar çalışınca internet erişimi de düzelir.</p>
+
+<p>Yeni IP adresi:</p>
+
+<ul>
+  <li>whatismyip</li>
+</ul>
+
+<p>DNS sızıntısı kontrolü:</p>
+
+<ul>
+  <li>dnsleaktest</li>
+</ul>
+
+<h2 id="ağ-i̇çi-saldırılar">Ağ İçi Saldırılar</h2>
+
+<p>Kullanılan bazı araçlar:</p>
+
+<ul>
+  <li>ARP</li>
+  <li>Nmap</li>
+  <li>Netdiscover</li>
+</ul>
+
+<h2 id="arp-zehirlenmesi-arp-spoofing">ARP Zehirlenmesi (ARP Spoofing)</h2>
+
+<p>Saldırgan, hem kurbana hem de router’a sahte ARP cevapları gönderir.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Saldırgan → Kurban:
+"192.168.1.1'in MAC adresi AA:BB:CC:DD:EE:FF"
+
+Saldırgan → Router:
+"192.168.1.10'un MAC adresi AA:BB:CC:DD:EE:FF"
+</code></pre></div></div>
+
+<p>Sonuç:</p>
+
+<ul>
+  <li>Kurban paketi router’a göndermek ister.</li>
+  <li>Ancak router’ın MAC adresi olarak saldırganın MAC adresini bilir.</li>
+  <li>Paket fiziksel olarak saldırgana gider.</li>
+</ul>
+
+<h2 id="arpspoof">arpspoof</h2>
+
+<p>Windows (kurban) için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>arpspoof-i eth0-t192.168.1.1192.168.1.10
+</code></pre></div></div>
+
+<p>Router için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>arpspoof-i eth0-t192.168.1.10192.168.1.1
+</code></pre></div></div>
+
+<p>Hem kurbanın hem de router’ın ARP tabloları saldırganın MAC adresi ile güncellenirse <strong>MITM (Man-in-the-Middle)</strong> gerçekleşmiş olur.</p>
+
+<h2 id="wireshark">Wireshark</h2>
+
+<p>Ağ üzerinden gelen ve giden paketleri analiz etmek için kullanılır.</p>
+
+<h2 id="ip-forwarding">IP Forwarding</h2>
+
+<p>IP iletiminin açık olup olmadığını kontrol etmek için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /proc/sys/net/ipv4/ip_forward
+</code></pre></div></div>
+
+<p>Sonuç:</p>
+
+<ul>
+  <li><strong>0</strong> → Etkin değil. Bilgisayar router gibi davranmaz.</li>
+  <li><strong>1</strong> → Etkin. Bilgisayar router gibi paket iletebilir.</li>
+</ul>
+
+<p>Bu değer <strong>nano</strong> ile düzenlenebilir.</p>
+
+<p>Amaç, saldırganın sistemi paket iletimi yapan bir router gibi davranmasını sağlamaktır.</p>
+
+<h2 id="bettercap">Bettercap</h2>
+
+<p>Bettercap, ağdaki cihazları keşfetmek, dinlemek ve test etmek için kullanılan bir araçtır.</p>
+
+<p>Başlatmak için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bettercap-iface eth0
+</code></pre></div></div>
+
+<p>Kullanılan temel komutlar:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net.probe on
+</code></pre></div></div>
+
+<p>Ağdaki cihazları keşfetmeyi etkinleştirir.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net.show
+</code></pre></div></div>
+
+<p>Ağdaki cihazları listeler.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set arp.spoof.fullduplextrue
+</code></pre></div></div>
+
+<p>Saldırganın hem kurbanı hem de router’ı kandırmasını sağlar.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set arp.spoof.targets192.168.1.1
+</code></pre></div></div>
+
+<p>Saldırı hedefini belirler.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>arp.spoof on
+</code></pre></div></div>
+
+<p>ARP Spoofing saldırısını başlatır (MITM).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net.sniff on
+</code></pre></div></div>
+
+<p>Ağ trafiğini dinlemeye başlar.</p>
+
+<p>Wireshark benzeri şekilde paketleri yakalayabilir.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>caplets.show
+</code></pre></div></div>
+
+<p>Hazır Bettercap scriptlerini (caplet) listeler.</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

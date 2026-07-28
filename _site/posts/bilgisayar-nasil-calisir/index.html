@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilgisayar Nasıl Çalışır? | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>Bilgisayar Nasıl Çalışır?</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="bilgisayar-açıldığında-arka-planda-neler-oluyor">Bilgisayar Açıldığında Arka Planda Neler Oluyor?</h2>
+
+<p>İlk olarak bilgisayarın power tuşuna basıldığında, <strong>PSU (Power Supply Unit)</strong> elektriği bileşenlere dağıtır.</p>
+
+<p>Sonra <strong>CPU resetlenir.</strong></p>
+
+<h3 id="peki-cpu-nedir">Peki CPU nedir?</h3>
+
+<p>CPU (<strong>Central Processing Unit</strong>) bilgisayarın beynidir. Bilgisayarın talimatlarını gerçekleştirir, matematiksel ve mantıksal işlemler yapar, bellek ile donanımı yönetir.</p>
+
+<h3 id="nasıl-çalışır">Nasıl çalışır?</h3>
+
+<p>Örneğin bir program açıldı ve <strong>3+1</strong> işlemi yapıldı.</p>
+
+<ol>
+  <li>Komut RAM’den gelir (<strong>Fetch</strong>).</li>
+</ol>
+
+<blockquote>
+  <p>RAM’i büyük bir depo, CPU’yu ise küçük ama çok hızlı çalışan bir fabrika gibi düşünebiliriz.</p>
+
+  <ol>
+    <li>Gelen komut CPU içindeki <strong>register</strong>‘a gelir. Register, CPU’nun içindeki mini bir not kağıdı gibidir.</li>
+    <li>Komut çözülür (<strong>Decode</strong>). Control Unit, “3+1” işleminin bir toplama işlemi olduğunu anlar ve bunu <strong>ALU</strong>‘ya gönderir.</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <p>ALU, bir nevi hesap makinesi gibidir.</p>
+
+  <ol>
+    <li>İşlem yapılır (<strong>Execute</strong>) → <strong>3 + 1 = 4</strong></li>
+    <li>Sonuç (<strong>4</strong>) tekrar register’a yazılır.</li>
+    <li>Sonuç geri gönderilir (<strong>RAM → Ekran → Program</strong>).</li>
+  </ol>
+</blockquote>
+
+<p>CPU’nun içi milyarlarca minik <strong>transistörden</strong> oluşur.</p>
+
+<p><strong>Transistör = Elektrikli aç/kapa anahtarı</strong></p>
+
+<ul>
+  <li>Elektrik var → <strong>1</strong></li>
+  <li>Elektrik yok → <strong>0</strong></li>
+</ul>
+
+<h3 id="cpunun-siber-güvenlik-açısından-kritik-noktaları">CPU’nun siber güvenlik açısından kritik noktaları</h3>
+
+<ul>
+  <li>Yanlış yere zıplatılırsa → <strong>Buffer Overflow</strong></li>
+  <li>Başka kod çalıştırılırsa → <strong>Shellcode</strong></li>
+  <li>Gizli veri sızdırılırsa → <strong>Spectre</strong></li>
+</ul>
+
+<hr />
+
+<h2 id="peki-neden-cpu-resetlenir">Peki neden CPU resetlenir?</h2>
+
+<p>Resetleme işlemi, işlemcinin her şeyi sıfırlayıp en başlangıç noktasından tekrar çalıştırılmasıdır.</p>
+
+<p>Bilgisayar açılırken CPU resetlenir.</p>
+
+<p>Bu sırada:</p>
+
+<ul>
+  <li>O anki komutlar durur.</li>
+  <li>Register’lar temizlenir.</li>
+  <li>Program sayacı başlangıç noktasına döner.</li>
+  <li>CPU yeniden boot sürecine girer.</li>
+  <li>Resetten sonra CPU’nun baktığı ilk komut firmware’den okunur.</li>
+</ul>
+
+<p>Bilgisayar kapatılırken resetleme olmaz. Çünkü elektrik doğrudan kesilir ve CPU’nun yukarıdaki işlemleri yapacak zamanı olmaz.</p>
+
+<p>Kapatıldıktan sonra yeniden açıldığında ise reset türüne göre farklı davranışlar görülebilir.</p>
+
+<ul>
+  <li><strong>Cold Reset</strong> → Elektriğin tamamen kesilmesi.</li>
+  <li><strong>Warm Reset</strong> → Elektriğin kesilmemesi (Restart / Yeniden Başlat).</li>
+</ul>
+
+<blockquote>
+  <p><strong>Not:</strong> Bazı zararlılar RAM’de kalabilir.</p>
+
+</blockquote>
+
+<hr />
+
+<h2 id="bilgisayarın-açılış-süreci">Bilgisayarın Açılış Süreci</h2>
+
+<p><strong>Power Tuşu → PSU → CPU → BIOS → Disk (İşletim Sistemi) → Bootloader → Kernel</strong></p>
+
+<h3 id="1-güç-verilmesi">1. Güç verilmesi</h3>
+
+<p>Power tuşuna basınca kasa üzerindeki buton, anakart üzerindeki güç yönetim devresine <strong>“başla”</strong> sinyali gönderir.</p>
+
+<p>Bu devre, PSU’daki <strong>PS_ON</strong> hattını aktive eder ve bilgisayara elektrik vermeye başlar.</p>
+
+<p>Elektrik stabil hâle gelince PSU, <strong>PWR_OK</strong> sinyalini göndererek “hazırım” der.</p>
+
+<h3 id="2-cpunun-çalışmaya-başlaması">2. CPU’nun çalışmaya başlaması</h3>
+
+<p>Elektrik geldiğinde, yani CPU güç aldığında donanımsal olarak <strong>reset durumuna</strong> girer.</p>
+
+<ul>
+  <li>Register’lar temel değerlerine sıfırlanır.</li>
+  <li>Program Counter (PC) register’ına <strong>Reset Vector</strong> adresi yazılır.</li>
+</ul>
+
+<p>Bu nedenle CPU otomatik olarak BIOS çipindeki ilk komutu çalıştırmaya başlar.</p>
+
+<h3 id="3-bios--uefi-ve-post">3. BIOS / UEFI ve POST</h3>
+
+<p>BIOS/UEFI açıldığında ilk yapılan işlem <strong>POST (Power On Self Test)</strong> prosedürüdür.</p>
+
+<p>Bu aşamada bilgisayarın temel donanımlarının çalışıp çalışmadığı kontrol edilir.</p>
+
+<p>İlk olarak RAM adresleme testi yapılır. Yani RAM’in gerçekten çalışıp çalışmadığı ve her adrese veri yazılıp yazılamadığı test edilir.</p>
+
+<p>Sonra CPU mikro kodu kontrol edilir. Mikro kod bozuk mu, resetleme sırasında bir sorun oluşmuş mu diye bakılır.</p>
+
+<p>Bunun yanında;</p>
+
+<ul>
+  <li>Klavye denetleyicisi</li>
+  <li>Ekran kartı</li>
+  <li>Diğer temel donanımlar</li>
+</ul>
+
+<p>kontrol edilir.</p>
+
+<p>POST sırasında herhangi bir hata tespit edilirse BIOS <strong>beep kodları</strong> veya hata mesajları üretir.</p>
+
+<p>Eğer herhangi bir sorun yoksa temel donanımların çalıştığı doğrulanmış olur.</p>
+
+<h3 id="4-boot-cihazının-seçilmesi">4. Boot cihazının seçilmesi</h3>
+
+<p>POST tamamlandıktan sonra BIOS/UEFI boot sırasını kontrol eder.</p>
+
+<ul>
+  <li>Disk</li>
+  <li>USB</li>
+  <li>Ağ üzerinden boot</li>
+</ul>
+
+<p>gibi seçeneklere bakar.</p>
+
+<p>İşletim sistemi bulunan diski seçer ve diskteki uygun <strong>bootloader</strong> dosyasını belleğe yükleyerek kontrolü ona teslim eder.</p>
+
+<h3 id="5-bootloader">5. Bootloader</h3>
+
+<p>Bootloader’ın temel görevi işletim sisteminin <strong>kernel</strong> dosyasını diskten bulup RAM’e yüklemektir.</p>
+
+<p>Bu sırada gerekli temel sürücüleri veya dosya sistemi sürücülerini geçici olarak kullanır.</p>
+
+<p>Kernel tamamen yüklendiğinde kontrolü ona teslim eder.</p>
+
+<p>Artık tüm kontrol işletim sistemindedir.</p>
+
+<h3 id="6-kernel">6. Kernel</h3>
+
+<p>Kernel çalışmaya başladığında ilk olarak bellek yönetimini başlatır.</p>
+
+<p>RAM’de hangi bölgelerin kullanılabileceğini analiz eder ve <strong>Memory Map</strong> oluşturur.</p>
+
+<p>Ardından donanım soyutlama katmanını kullanarak sistemde bulunan donanımları tespit eder.</p>
+
+<p>Her donanım için gerekli sürücüler RAM’e yüklenir.</p>
+
+<p>Sürücülerin yüklenmesinin amacı, işletim sisteminin donanımlarla iletişim kurabilmesini sağlamaktır.</p>
+
+<p>Diskler bu sayede erişilebilir olur ve kök dosya sistemi (<strong>C:</strong> vb.) aktif hâle gelir.</p>
+
+<p>Buna <strong>dosya sistemini mount etmek</strong> denir.</p>
+
+<h3 id="7-i̇şlem-yöneticisi-scheduler">7. İşlem yöneticisi (Scheduler)</h3>
+
+<p>Kernel daha sonra işlem yöneticisini (<strong>Scheduler</strong>) başlatır.</p>
+
+<p>CPU aynı anda yalnızca tek bir komutu çalıştırırken, scheduler sayesinde birçok işlem sırayla çalıştırılarak aynı anda çalışıyormuş gibi görünür.</p>
+
+<p>Artık kullanıcı alanı (<strong>User Space</strong>) hazırdır ve giriş ekranı açılır.</p>
+
+<hr />
+
+<h2 id="terimler">Terimler</h2>
+
+<ul>
+  <li><strong>PSU (Power Supply Unit):</strong> Prizdeki elektriği bilgisayarın ihtiyaç duyduğu temiz ve düzenli elektriğe çeviren parça.</li>
+  <li><strong>PWR_OK Sinyali:</strong> Güç kaynağının “Her şey yolunda, çalışabilirsin.” demesi.</li>
+  <li><strong>Anakart (Motherboard):</strong> Tüm parçaların bağlı olduğu ana devre kartı.</li>
+  <li><strong>CPU (İşlemci):</strong> Bilgisayarın beyni; tüm hesaplamaları yapar.</li>
+  <li><strong>Reset State:</strong> İşlemcinin fabrika ayarına dönmüş hâli.</li>
+  <li><strong>Reset Vector:</strong> İşlemcinin ilk çalıştıracağı komutun adresi.</li>
+  <li><strong>BIOS / UEFI:</strong> Bilgisayarın açılmasını sağlayan firmware.</li>
+  <li><strong>BIOS (Basic Input Output System):</strong> Eski sistemlerde açılışı yöneten yazılım.</li>
+  <li><strong>UEFI (Unified Extensible Firmware Interface):</strong> Yeni nesil, daha gelişmiş açılış sistemi.</li>
+  <li><strong>Firmware:</strong> Donanımların içinde gömülü bulunan küçük yazılımlar.</li>
+  <li><strong>POST (Power On Self Test):</strong> Açılışta yapılan donanım sağlık testi.</li>
+  <li><strong>Disk:</strong> Bilgisayardaki verilerin kalıcı olarak saklandığı yer.</li>
+  <li><strong>Boot Order:</strong> Hangi diskin önce kontrol edileceği.</li>
+  <li><strong>Bootloader:</strong> İşletim sistemini RAM’e yükleyen küçük program (ör. Windows Boot Manager veya GRUB).</li>
+  <li><strong>SSD / HDD:</strong> İşletim sisteminin depolandığı yer.</li>
+  <li><strong>Kernel:</strong> İşletim sisteminin beyni; donanım ile programlar arasında iletişim kurar.</li>
+  <li><strong>GRUB:</strong> Linux sistemlerde kullanılan bootloader.</li>
+  <li><strong>Windows Boot Manager:</strong> Windows’un bootloader’ı.</li>
+  <li><strong>RAM:</strong> Çalışan programların geçici olarak bulunduğu hızlı bellek.</li>
+  <li><strong>Driver (Sürücü):</strong> Donanımların işletim sistemiyle konuşmasını sağlayan yazılımlar.</li>
+  <li><strong>File System (Dosya Sistemi):</strong> Diskteki dosyaları düzenleyen yapı (NTFS, ext4).</li>
+  <li><strong>Process:</strong> İşletim sistemi üzerinde çalışan program.</li>
+</ul>
+
+<hr />
+
+<h2 id="ram">RAM</h2>
+
+<p>RAM, çalışan bilgisayarın tüm aktif verilerini tutar.</p>
+
+<p>Her RAM hücresinin bir adresi vardır.</p>
+
+<p>Örneğin:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Adres      → Veri
+1000       → 0xAA
+</code></pre></div></div>
+
+<p>CPU RAM’e veri yazarken:</p>
+
+<blockquote>
+  <p>“Şu adrese git, şu veriyi koy.”</p>
+
+</blockquote>
+
+<p>şeklinde işlem yapar.</p>
+
+<p>Her RAM hücresinin kendine ait bir adres numarası bulunur.</p>
+
+<h3 id="neden-adresleme-testi-yapılır">Neden adresleme testi yapılır?</h3>
+
+<p>Çünkü RAM bozuksa;</p>
+
+<ul>
+  <li>İşletim sistemi çöker.</li>
+  <li>Uygulamalar hata verir.</li>
+  <li>Boot işlemi tamamlanamaz.</li>
+</ul>
+
+<p>Bu nedenle BIOS önce RAM’in temel adresleme mantığının doğru çalıştığını kontrol eder.</p>
+
+<hr />
+
+<h2 id="i̇şletim-sistemi-operating-system">İşletim Sistemi (Operating System)</h2>
+
+<p>İşletim sistemi, bilgisayarda gerçekleşen her şeyi koordine eden temel yazılımdır.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User
+   ↓
+Applications
+   ↓
+Operating System
+   ↓
+Hardware
+</code></pre></div></div>
+
+<p>Görevleri:</p>
+
+<ul>
+  <li><strong>Süreç Yönetimi:</strong> Çalışan programları oluşturur ve her işlemin ne kadar CPU süresi alacağına karar verir. Böylece çoklu görev yürütme sağlanır.</li>
+  <li><strong>Bellek Yönetimi:</strong> İşlemlere RAM tahsis eder ve işlemleri birbirinden izole eder.</li>
+  <li><strong>Dosya Sistemi Yönetimi:</strong> Dosyaları dizinler, yollar, izinler ve metadata ile düzenler.</li>
+  <li><strong>Kullanıcı Yönetimi:</strong> Kullanıcı hesaplarını, kimlik doğrulamayı ve yetkileri yöneterek kimin neye erişebileceğini belirler.</li>
+  <li><strong>Aygıt Yönetimi:</strong> Sürücüleri yükler ve uygulamaların donanımlarla ortak bir arayüz üzerinden iletişim kurmasını sağlar.</li>
+</ul>
+
+<h2 id="i̇şletim-sistemiyle-iki-şekilde-iletişim-kurabiliriz">İşletim sistemiyle iki şekilde iletişim kurabiliriz</h2>
+
+<ol>
+  <li><strong>GUI (Graphical User Interface)</strong></li>
+  <li><strong>CLI (Command Line Interface)</strong></li>
+</ol>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

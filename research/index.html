@@ -1,28 +1,23 @@
 ---
 layout: default
-title: Posts
+title: Research
 ---
 
 <div class="section-title">
-    <span>Posts</span>
-    <h2>All Write-ups</h2>
+    <span>Research</span>
+    <h2>Security Research</h2>
 </div>
 
-{% assign posts = site.posts | reverse %}
+{% for post in site.posts %}
 
-{% for post in posts %}
-
-{% unless post.category == "Research" %}
+{% if post.category == "Research" %}
 
 <article class="post">
 
     <div class="post-info">
 
-        <a class="category"
-           href="/categories/{{ post.category | slugify }}/">
-
-            {{ post.category }}
-
+        <a class="category" href="/research/">
+            Research
         </a>
 
         <h3>
@@ -53,6 +48,6 @@ title: Posts
 
 </article>
 
-{% endunless %}
+{% endif %}
 
 {% endfor %}
