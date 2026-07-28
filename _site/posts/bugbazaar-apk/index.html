@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBazaar APK Walkthrough | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/apk/">
+        APK
+    </a>
+
+    <h1>BugBazaar APK Walkthrough</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>APK</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h1 id="bugbaazar">BugBaazar</h1>
+
+<h2 id="1genel-bilgiler">1.Genel Bilgiler</h2>
+
+<ul>
+  <li><strong>Uygulama Adı</strong>: BugBaazar</li>
+  <li><strong>Paket Adı</strong>: “com.bugbaazar”</li>
+  <li><strong>Versiyon</strong>: “1.0”</li>
+  <li><strong>Hash Bilgileri</strong>:
+    <ul>
+      <li>MD5: B0151366A3211610FDBDFFAA2061E8AC</li>
+      <li>SHA1: B6C6E2A1749C1AB0F56086CC0B9055B341385039</li>
+      <li>SHA256: C307C7856B270DA40357006EAA763C06BCDC2913D0D0B0BAB7E0B2ED564F5F4C</li>
+    </ul>
+  </li>
+  <li><strong>Test Ortamı</strong>:
+    <ul>
+      <li>Cihaz/Emülatör: Pixel 3a XL</li>
+      <li>Android Sürümü: 9.0</li>
+      <li>Kullanılan Araçlar: jadx, apktool, frida</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="uygulama-i̇şleyişi">Uygulama İşleyişi</h2>
+
+<p><img src="/assets/posts/bugbazaar-apk/image.png" width="400" /></p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (1).png" width="400" /></p>
+
+<ul>
+  <li>
+    <p><strong>Giriş / Kayıt:</strong></p>
+
+    <p>Uygulama açıldığında kullanıcıyı bir <strong>Splash Screen</strong> karşılıyor. Ardından kullanıcı <strong>kullanıcı adı / şifre</strong> ile giriş yapabiliyor (<code class="language-plaintext highlighter-rouge">Signin</code> activity).</p>
+
+    <p>Alternatif olarak <code class="language-plaintext highlighter-rouge">ExternalAuthLogin</code> activity üzerinden harici yetkilendirme (Google, Facebook vb.) destekleniyor olabilir.</p>
+  </li>
+  <li>
+    <p><strong>Ana Ekran / Dashboard:</strong></p>
+
+    <p>Giriş yaptıktan sonra kullanıcı ürünleri görüntüleyebiliyor, kategoriler arasında gezinebiliyor ve sepete ürün ekleyebiliyor (<code class="language-plaintext highlighter-rouge">Deeplink</code> activity’de “cart/add” parametreleri mevcut).</p>
+  </li>
+  <li>
+    <p><strong>Kullanıcı Profili:</strong></p>
+
+    <p><code class="language-plaintext highlighter-rouge">MyProfile</code> activity ile kullanıcı bilgileri ve geçmiş işlemleri gösteriliyor.</p>
+
+    <p>Kullanıcı bilgileri <code class="language-plaintext highlighter-rouge">UserProfileProvider</code> üzerinden erişilebiliyor.</p>
+  </li>
+  <li>
+    <p><strong>Arkadaşına Öner / İletişim:</strong></p>
+
+    <p>Uygulama içerisinde <code class="language-plaintext highlighter-rouge">ReferUs</code> ve <code class="language-plaintext highlighter-rouge">Contact_us</code> activity’leri mevcut. Kullanıcı arkadaşına davet gönderebiliyor veya destek ekibine ulaşabiliyor.</p>
+  </li>
+  <li>
+    <p><strong>Adres ve Ödeme:</strong></p>
+
+    <p><code class="language-plaintext highlighter-rouge">AddressContentProvider</code> ile kullanıcı adresleri yönetiliyor.</p>
+
+    <p>Ödeme altyapısı için <strong>Razorpay</strong> entegrasyonu mevcut (<code class="language-plaintext highlighter-rouge">RzpTokenReceiver</code>).</p>
+  </li>
+  <li><strong>Bildirimler ve Arka Plan Servisleri:</strong>
+    <ul>
+      <li>Firebase push bildirimleri destekleniyor (<code class="language-plaintext highlighter-rouge">FirebaseMessagingService</code>).</li>
+      <li>Uygulama açılmasa bile arka planda servisler (<code class="language-plaintext highlighter-rouge">SMSService</code>, <code class="language-plaintext highlighter-rouge">WorkManager</code>, <code class="language-plaintext highlighter-rouge">Evernote JobService</code>) çalışabiliyor.</li>
+      <li><code class="language-plaintext highlighter-rouge">RECEIVE_BOOT_COMPLETED</code> izni sayesinde cihaz yeniden başlatıldığında servisler otomatik başlatılıyor.</li>
+    </ul>
+  </li>
+  <li><strong>Ekstra İşlevler:</strong>
+    <ul>
+      <li>SMS tabanlı doğrulama ve OTP yakalama mekanizmaları (<code class="language-plaintext highlighter-rouge">SMSService</code>).</li>
+      <li>Kullanıcı rehberi erişimi (<code class="language-plaintext highlighter-rouge">MyContactsProvider</code>).</li>
+      <li>Dosya erişimi ve paylaşımı (<code class="language-plaintext highlighter-rouge">MANAGE_EXTERNAL_STORAGE</code>).</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="3-manifest-analizi">3. Manifest Analizi</h2>
+
+<ul>
+  <li><strong>İzinler</strong></li>
+</ul>
+
+<p>| İzin | Değerlendirme |
+| — | — |
+| <code class="language-plaintext highlighter-rouge">INTERNET</code> | Normal – uygulamanın ağ üzerinden iletişim kurması için gerekli |
+| <code class="language-plaintext highlighter-rouge">READ_CONTACTS</code> | Kritik – kullanıcı rehberine erişim  |
+| <code class="language-plaintext highlighter-rouge">READ_PHONE_STATE</code> | Kritik – cihaz bilgilerine erişim |
+| <code class="language-plaintext highlighter-rouge">SEND_SMS</code>, <code class="language-plaintext highlighter-rouge">RECEIVE_SMS</code> | Kritik – SMS üzerinden işlem yapılabilir |
+| <code class="language-plaintext highlighter-rouge">MANAGE_EXTERNAL_STORAGE</code> | Kritik – tüm dosya sistemine erişim |
+| <code class="language-plaintext highlighter-rouge">REQUEST_INSTALL_PACKAGES</code> | Kritik – uygulama dışarıdan APK yükleyebilir |
+| <code class="language-plaintext highlighter-rouge">RECEIVE_BOOT_COMPLETED</code> | Normal/Kritik – cihaz açıldığında başlatılır |
+| <code class="language-plaintext highlighter-rouge">POST_NOTIFICATIONS</code> | Normal – bildirim göndermek için |</p>
+<ul>
+  <li><strong>Exported Activity / Service / Receiver</strong></li>
+</ul>
+
+<p>| Bileşen | Tür | Exported | Risk |
+| — | — | — | — |
+| <code class="language-plaintext highlighter-rouge">com.BugBazaar.ExternalAuthLogin</code> | Activity | true | Yetkisiz erişimle oturum açma akışı tetiklenebilir |
+| <code class="language-plaintext highlighter-rouge">com.BugBazaar.ui.Deeplink</code> | Activity | true | Deeplink üzerinden kötü amaçlı veri gönderilebilir |
+| <code class="language-plaintext highlighter-rouge">com.BugBazaar.provider.UserProfileProvider</code> | ContentProvider | true | Kullanıcı profili dışarıya sızdırılabilir |
+| <code class="language-plaintext highlighter-rouge">com.BugBazaar.ui.addresses.AddressContentProvider</code> | ContentProvider | true | Adres bilgileri dışarı açılabilir |
+| <code class="language-plaintext highlighter-rouge">com.BugBazaar.ui.components.SMSService</code> | Service | true | Yetkisiz SMS işlevleri tetiklenebilir |
+| <code class="language-plaintext highlighter-rouge">com.BugBazaar.ui.components.CustomBR</code> | BroadcastReceiver | true | Broadcast Injection riski |
+| <code class="language-plaintext highlighter-rouge">com.razorpay.RzpTokenReceiver</code> | BroadcastReceiver | true | Harici uygulamalar tarafından tetiklenebilir |</p>
+<ul>
+  <li><strong>Debuggable Flag</strong></li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">android:debuggable="true"</code> → Riskli (production uygulamada olmamalı).</p>
+
+<ul>
+  <li><strong>Backup Flag</strong></li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">android:allowBackup="true"</code> → Kullanıcı verileri ADB yedeği ile alınabilir.</p>
+
+<h2 id="4bulgular">4.Bulgular</h2>
+
+<ul>
+  <li><strong>Insecure Logging</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (2).png" width="700" /></p>
+
+<ul>
+  <li><strong>Insecure Storage</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (3).png" width="700" /></p>
+
+<ul>
+  <li><strong>Improper Input Validation</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (4).png" width="400" /></p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (5).png" width="400" /></p>
+
+<p>Buradaki zafiyet, email kısmına @ gerekmeden input değerini kabul etmesidir.</p>
+
+<ul>
+  <li><strong>WebView Ayarları</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (6).png" width="700" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">webView</span><span class="o">.</span><span class="na">getSettings</span><span class="o">().</span><span class="na">setJavaScriptEnabled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span> <span class="o">-&gt;</span> <span class="n">xss</span> <span class="n">saldırılarına</span> <span class="n">açık</span>
+<span class="n">webView</span><span class="o">.</span><span class="na">getSettings</span><span class="o">().</span><span class="na">setAllowFileAccess</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span> <span class="o">-&gt;</span> <span class="nl">file:</span><span class="c1">// ile lokal dosyaları okumaya açık</span>
+<span class="n">webView</span><span class="o">.</span><span class="na">getSettings</span><span class="o">().</span><span class="na">setAllowUniversalAccessFromFileURLs</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span> <span class="o">-&gt;</span> <span class="nl">file:</span><span class="c1">// ile açılan sayfaya request atmaya açık</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Arbitrary File Read (path traversal)</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (7).png" width="700" /></p>
+
+<ul>
+  <li>Kullanıcı <code class="language-plaintext highlighter-rouge">http://…/local_cache/XYZ</code> gibi bir şey çağırırsa:
+    <ul>
+      <li>Uygulama <code class="language-plaintext highlighter-rouge">getCacheDir()</code> içine <code class="language-plaintext highlighter-rouge">XYZ</code> adında bir dosya bakıyor.</li>
+      <li>Dosya varsa → <code class="language-plaintext highlighter-rouge">FileInputStream</code> ile okunup WebView’e dönüyor.</li>
+      <li>Dosya yoksa → <code class="language-plaintext highlighter-rouge">url.toString().replace("/local_cache", "")</code> ile dış URL’den indiriliyor, cache’e kaydediliyor ve tekrar okunuyor.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Buradaki sıkıntı: path kontrolü çok zayıf.</p>
+
+<ul>
+  <li>Sadece <code class="language-plaintext highlighter-rouge">lastPathSegment</code> kullanılıyor.</li>
+  <li>
+    <p>Yani <code class="language-plaintext highlighter-rouge">"../../../../data/data/com.BugBazaar/shared_prefs/UserAuthSave.xml"</code> gibi manipülasyonlar yapılıp uygulamanın local storage’ındaki dosyalar okunabilir.</p>
+  </li>
+  <li><strong>WebView</strong></li>
+</ul>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nx">getIntent</span><span class="p">().</span><span class="nx">getExtras</span><span class="p">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">getIntent</span><span class="p">().</span><span class="nx">hasExtra</span><span class="p">(</span><span class="nx">AppConstants</span><span class="p">.</span><span class="nx">KEY_WEBVIEW_URL</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nb">String</span> <span class="nx">string</span> <span class="o">=</span> <span class="nx">getIntent</span><span class="p">().</span><span class="nx">getExtras</span><span class="p">().</span><span class="nx">getString</span><span class="p">(</span><span class="nx">AppConstants</span><span class="p">.</span><span class="nx">KEY_WEBVIEW_URL</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">webViewUrl</span> <span class="o">=</span> <span class="nx">string</span><span class="p">;</span>
+        <span class="nx">startWebView</span><span class="p">(</span><span class="nx">string</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">startdefaultwebview</span><span class="p">(</span><span class="nx">AppConstants</span><span class="p">.</span><span class="nx">Terms_Conditions_URL</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>intent olarak bir web url alıyor. Almışsa startWebView() ile yükleniyor.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">adb</span><span class="w"> </span><span class="nx">shell</span><span class="w"> </span><span class="nx">am</span><span class="w"> </span><span class="nx">start</span><span class="w"> </span><span class="nt">-n</span><span class="w"> </span><span class="nx">com.BugBazaar/.ui.TermsAndConditionsActivity</span><span class="w"> </span><span class="nt">--es</span><span class="w"> </span><span class="nx">webViewUrl</span><span class="w"> </span><span class="s2">"https://google.com"</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (8).png" width="400" /></p>
+
+<ul>
+  <li><strong>XSS</strong></li>
+</ul>
+
+<p>Aynı şekilde intent üzerinden xss açığı da oluşturulabilir.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">adb</span><span class="w"> </span><span class="nx">shell</span><span class="w"> </span><span class="nx">am</span><span class="w"> </span><span class="nx">start</span><span class="w"> </span><span class="nt">-n</span><span class="w"> </span><span class="nx">com.BugBazaar/.ui.TermsAndConditionsActivity</span><span class="w"> </span><span class="nt">--es</span><span class="w"> </span><span class="nx">webViewUrl</span><span class="w"> </span><span class="s2">"javascript:alert%28%27Hello%27%29"</span><span class="w">
+</span></code></pre></div></div>
+<p><img src="/assets/posts/bugbazaar-apk/image (9).png" width="400" /></p>
+
+<ul>
+  <li><strong>SQL injection</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (10).png" width="700" /></p>
+
+<p>input kısmına ‘ or ‘1’=’1’ girince home page de ki product kısmı geliyor ekrana.</p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (11).png" width="400" /></p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (12).png" width="400" /></p>
+
+<ul>
+  <li><strong>Content Provider SQL Injection in Address</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (13).png" width="700" /></p>
+
+<p>exported= true olduğu için uygulamanın telefonun contacts’ine erişim izni veriyor.</p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (14).png" width="700" /></p>
+
+<p>Bugbazaar uygulamasından contacts’e erişim sağlanabiliyor.</p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (15).png" width="700" /></p>
+
+<p>Bu kodta ise, query çağırıldığında cihazın rehberine gidiyor.</p>
+
+<p>SQL Injection tetiklenebilir:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">Cursor</span> <span class="nf">query</span><span class="o">(</span><span class="nc">Uri</span> <span class="n">uri</span><span class="o">,</span> <span class="nc">String</span><span class="o">[]</span> <span class="n">projection</span><span class="o">,</span> <span class="nc">String</span> <span class="n">selection</span><span class="o">,</span> <span class="nc">String</span><span class="o">[]</span> <span class="n">selectionArgs</span><span class="o">,</span> <span class="nc">String</span> <span class="n">sortOrder</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">getContext</span><span class="o">().</span><span class="na">getContentResolver</span><span class="o">().</span><span class="na">query</span><span class="o">(</span>
+        <span class="nc">ContactsContract</span><span class="o">.</span><span class="na">CommonDataKinds</span><span class="o">.</span><span class="na">Phone</span><span class="o">.</span><span class="na">CONTENT_URI</span><span class="o">,</span>
+        <span class="n">projection</span><span class="o">,</span>
+        <span class="n">selection</span><span class="o">,</span>
+        <span class="n">selectionArgs</span><span class="o">,</span>
+        <span class="n">sortOrder</span>
+    <span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Burada <code class="language-plaintext highlighter-rouge">selection</code> ve <code class="language-plaintext highlighter-rouge">sortOrder</code> dışarıdan geliyor.</li>
+  <li>Ama hiç filtrelenmeden direkt olarak <strong>ContactsContract sorgusuna</strong> gidiyor.</li>
+  <li><code class="language-plaintext highlighter-rouge">ContactsContract</code> aslında altında SQLite kullanıyor.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Cursor</span> <span class="n">c</span> <span class="o">=</span> <span class="n">getContentResolver</span><span class="o">().</span><span class="na">query</span><span class="o">(</span>
+    <span class="nc">Uri</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"content://com.bugbazaar.mycontacts/contacts"</span><span class="o">),</span>
+    <span class="kc">null</span><span class="o">,</span>
+    <span class="s">"1=1 OR 1=1"</span><span class="o">,</span>   
+    <span class="kc">null</span><span class="o">,</span>
+    <span class="kc">null</span>
+<span class="o">);</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Data insertion via insecure Content Provider in Address</strong></li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">AUTHORITY</span> <span class="o">=</span> <span class="s">"com.BugBazaar.UserProfile"</span><span class="o">;</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">BASE_PATH</span> <span class="o">=</span> <span class="s">"user_profiles"</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Uri</span> <span class="no">CONTENT_URI</span> <span class="o">=</span> <span class="nc">Uri</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"content://com.BugBazaar.UserProfile/user_profiles"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Bu satırlar, ContentProvider’ın adresini belirliyor.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">DATABASE_NAME</span> <span class="o">=</span> <span class="s">"UserProfileDatabase"</span><span class="o">;</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">TABLE_NAME</span> <span class="o">=</span> <span class="s">"user_profiles"</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p>Provider, cihazda <code class="language-plaintext highlighter-rouge">UserProfileDatabase</code> adlı bir SQLite veritabanı açıyor:</p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (16).png" width="900" /></p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (17).png" width="900" /></p>
+
+<p>Bu method veri okumak için kullanılıyor. Yani başka bir uygulamanın içerisinde,</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">getContentResolver</span><span class="o">().</span><span class="na">query</span><span class="o">(</span>
+   <span class="nc">Uri</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"content://com.BugBazaar.UserProfile/user_profiles"</span><span class="o">),</span>
+   <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span>
+<span class="o">);</span>
+</code></pre></div></div>
+
+<p>bu kod çağırılırsa tüm kullanıcı bilgileri çekilebilir.</p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (18).png" width="700" /></p>
+
+<p>Bu methodta yeni kullanıcı eklemek için kullanılır. Herhangi bir izin/onay alınmadan database’e yeni kullanıcı eklenebilir.</p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (19).png" width="700" /></p>
+
+<p>Bu method ise mevcut kayıtları değiştirmek için kullanılabilir.</p>
+
+<ul>
+  <li><strong>Unrestricted file upload</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (20).png" width="400" /></p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (21).png" width="400" /></p>
+
+<p>Buradaki zafiyet, profil fotoğrafı olarak sadece jpeg,png olan uzantılar değilde tüm uzantılı dosyaların yüklenebilmesidir.</p>
+
+<ul>
+  <li><strong>Misconfigured firebase’s firestore</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (22).png" width="700" /></p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (23).png" width="700" /></p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (24).png" width="700" /></p>
+
+<p><a href="https://firebasestorage.googleapis.com/v0/b/bugbazaar-cb1a1.appspot.com/o/">https://firebasestorage.googleapis.com/v0/b/[PROJECT ID].appspot.com/o/</a></p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (25).png" width="700" /></p>
+
+<p>https://firebasestorage.googleapis.com/v0/b/bugbazaar-cb1a1.appspot.com/o/poc.txt?alt=media</p>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (26).png" width="700" /></p>
+
+<p>Buradaki zafiyet firebasede storage okunabilirliği.  Normalde Firebase Storage’daki dosyalar, auth (kimlik doğrulama) ile korunur.  Herhangi bir kullanıcı login olmadan link ile dosyayı görebiliyorsa, bu yanlış yapılandırılmış izinler demektir.</p>
+
+<h3 id="easy-level">Easy Level</h3>
+
+<ul>
+  <li><strong>Root Detection Bypass</strong></li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (27).png" width="400" /></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Java</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">rootd</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">com.scottyab.rootbeer.RootBeer</span><span class="dl">"</span><span class="p">);</span>
+
+    <span class="nx">rootd</span><span class="p">.</span><span class="nx">isRooted</span><span class="p">.</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="intermittent-level">Intermittent Level</h3>
+
+<p>chechdetect() methodunun çalışması engellendi.</p>
+
+<ul>
+  <li>Emulator Detection Bypass</li>
+  <li>ADB Detection Bypass</li>
+  <li>Frida Detection Bypass</li>
+</ul>
+
+<p><img src="/assets/posts/bugbazaar-apk/image (28).png" width="400" /></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Java</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">EmulatorCheck</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">com.bug.hook.emultorcheck</span><span class="dl">"</span><span class="p">);</span>
+
+    <span class="c1">// Parametresiz overload</span>
+    <span class="nx">EmulatorCheck</span><span class="p">.</span><span class="nx">isEmulator</span><span class="p">.</span><span class="nx">overload</span><span class="p">().</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="c1">// Context parametreli overload</span>
+    <span class="nx">EmulatorCheck</span><span class="p">.</span><span class="nx">isEmulator</span><span class="p">.</span><span class="nx">overload</span><span class="p">(</span><span class="dl">'</span><span class="s1">android.content.Context</span><span class="dl">'</span><span class="p">).</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="c1">// AdbEnabled1(context) override</span>
+    <span class="kd">var</span> <span class="nx">AdbEnabled</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">com.bug.hook.AdbEnabled</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">AdbEnabled</span><span class="p">.</span><span class="nx">AdbEnabled1</span><span class="p">.</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="c1">// checkfrida() override</span>
+    <span class="kd">var</span> <span class="nx">CheckDetect</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">com.bug.hook.checkdetect</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">CheckDetect</span><span class="p">.</span><span class="nx">checkfrida</span><span class="p">.</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="c1">// Alert dialog boşalt</span>
+    <span class="kd">var</span> <span class="nx">AlertDialogManager</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">com.BugBazaar.utils.AlertDialogManager</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">AlertDialogManager</span><span class="p">.</span><span class="nx">showRootedDeviceAlert</span><span class="p">.</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">});</span>
+
+</code></pre></div></div>
+
+<p>Kaynak: <a href="https://github.com/payatu/BugBazaar">BugBazaar GitHub Repository</a></p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owasp Uncrackable Level 4 R2pay  APK Walkthrough | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/apk/">
+        APK
+    </a>
+
+    <h1>Owasp Uncrackable Level 4 R2pay  APK Walkthrough</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>APK</span>
+        
+    </div>
+
+    <div class="post-content">
+        <p>Apkyı cihaza indirdiğimizde direkt crash olup kapandığını gözlemliyoruz.</p>
+
+<p><img src="/assets/posts/uncrackable4/image.png" width="700" /></p>
+
+<p>Frida ile çalıştırdığımda bir hata çıktısı ile karşılaşıyoruz. Bu hata çıktısı,</p>
+
+<ul>
+  <li>Hata Mesajı,</li>
+  <li>Sistem Bilgileri,</li>
+  <li>Signal Bilgisi,</li>
+  <li>CPU Registerları (Çökme Anındaki Değerler),</li>
+  <li>Backtrace Bilgisini içeriyor.</li>
+</ul>
+
+<p>Bu içerikleri tek tek incelediğimizde,</p>
+
+<h3 id="--hata-mesajı">- Hata Mesajı</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">Android</span><span class="w"> </span><span class="n">Emulator</span><span class="w"> </span><span class="mi">5554</span><span class="p">::</span><span class="n">re.pwnme</span><span class="w"> </span><span class="p">]</span><span class="o">-</span><span class="err">&gt;</span><span class="w"> </span><span class="kr">Process</span><span class="w"> </span><span class="n">crashed:</span><span class="w"> </span><span class="nx">Bad</span><span class="w"> </span><span class="nx">access</span><span class="w"> </span><span class="nx">due</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">invalid</span><span class="w"> </span><span class="nx">address</span><span class="w">
+</span></code></pre></div></div>
+
+<p>uygulamanın çalışırken segmentation fault yani geçersiz bir bellek adresine erişmeye çalışırken çöktüğünü gösteriyor.</p>
+
+<h3 id="--sistem-bilgileri">- Sistem Bilgileri</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w"> </span><span class="o">***</span><span class="w">
+</span><span class="n">Build</span><span class="w"> </span><span class="nx">fingerprint:</span><span class="w"> </span><span class="s1">'google/sdk_gphone_x86_64/generic_x86_64:9/PSR1.180720.122/6736742:userdebug/dev-keys'</span><span class="w">
+</span><span class="n">Revision:</span><span class="w"> </span><span class="s1">'0'</span><span class="w">
+</span><span class="n">ABI:</span><span class="w"> </span><span class="s1">'x86_64'</span><span class="w">
+</span><span class="n">pid:</span><span class="w"> </span><span class="nx">3949</span><span class="p">,</span><span class="w"> </span><span class="nx">tid:</span><span class="w"> </span><span class="nx">4060</span><span class="p">,</span><span class="w"> </span><span class="nx">name:</span><span class="w"> </span><span class="nx">re.pwnme</span><span class="w">  </span><span class="err">&gt;&gt;&gt;</span><span class="w"> </span><span class="nx">android.process.media</span><span class="w"> </span><span class="err">&lt;&lt;&lt;</span><span class="w">
+</span></code></pre></div></div>
+
+<ul>
+  <li><strong>Cihaz</strong>: Android Emulator 5554 (x86_64 mimarisi)</li>
+  <li><strong>Android Sürümü</strong>: Android 9 (API 28)</li>
+  <li><strong>Mimari</strong>: x86_64</li>
+  <li><strong>PID</strong>: 3949 (Process ID)</li>
+  <li><strong>TID</strong>: 4060 (Thread ID)</li>
+  <li><strong>Process name</strong>: re.pwnme  »&gt; android.process.media «&lt;</li>
+</ul>
+
+<h3 id="--signal-bilgisi">- Signal Bilgisi</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">signal</span><span class="w"> </span><span class="nx">11</span><span class="w"> </span><span class="p">(</span><span class="n">SIGSEGV</span><span class="p">),</span><span class="w"> </span><span class="o">-</span><span class="err">&gt;</span><span class="w"> </span><span class="n">Segmentation</span><span class="w"> </span><span class="nx">fault</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">ge</span><span class="err">ç</span><span class="nx">ersiz</span><span class="w"> </span><span class="nx">bellek</span><span class="w"> </span><span class="nx">eri</span><span class="err">ş</span><span class="nx">imi</span><span class="w">
+</span><span class="n">code</span><span class="w"> </span><span class="nx">1</span><span class="w"> </span><span class="p">(</span><span class="n">SEGV_MAPERR</span><span class="p">),</span><span class="w"> </span><span class="o">-</span><span class="err">&gt;</span><span class="w"> </span><span class="n">Haritalanmam</span><span class="err">ış</span><span class="w"> </span><span class="p">(</span><span class="n">mapped</span><span class="w"> </span><span class="nx">olmayan</span><span class="p">)</span><span class="w"> </span><span class="n">bir</span><span class="w"> </span><span class="nx">bellek</span><span class="w"> </span><span class="nx">adresine</span><span class="w"> </span><span class="nx">eri</span><span class="err">ş</span><span class="nx">im</span><span class="w"> </span><span class="nx">denemesi</span><span class="w">
+</span><span class="n">fault</span><span class="w"> </span><span class="nx">addr</span><span class="w"> </span><span class="nx">0xfa929095</span><span class="w"> </span><span class="o">-</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Eri</span><span class="err">ş</span><span class="nx">ilmeye</span><span class="w"> </span><span class="err">ç</span><span class="nx">al</span><span class="err">ışı</span><span class="nx">lan</span><span class="w"> </span><span class="nx">ge</span><span class="err">ç</span><span class="nx">ersiz</span><span class="w"> </span><span class="nx">adres</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Hatalı adres çok spesifik ve random görünüyor.
+Normal bir NULL + offset: <code class="language-plaintext highlighter-rouge">0x00000000 + 0xfa929095</code></p>
+
+<h3 id="--cpu-registerları">- CPU Registerları</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rax</span><span class="w"> </span><span class="nx">0000000000000000</span><span class="w">  </span><span class="nx">rbx</span><span class="w"> </span><span class="nx">00000000ffffffff</span><span class="w">  </span><span class="nx">rcx</span><span class="w"> </span><span class="nx">00000000000035b2</span><span class="w">  </span><span class="nx">rdx</span><span class="w"> </span><span class="nx">00000000fa929095</span><span class="w">
+</span><span class="n">r8</span><span class="w">  </span><span class="nx">ffffffffffffffb0</span><span class="w">  </span><span class="nx">r9</span><span class="w">  </span><span class="nx">000075b810d8a000</span><span class="w">  </span><span class="nx">r10</span><span class="w"> </span><span class="nx">0000000000000000</span><span class="w">  </span><span class="nx">r11</span><span class="w"> </span><span class="nx">0000000000000206</span><span class="w">
+</span><span class="n">r12</span><span class="w"> </span><span class="nx">55348a26b14153ff</span><span class="w">  </span><span class="nx">r13</span><span class="w"> </span><span class="nx">dd898eb03fc0e0fe</span><span class="w">  </span><span class="nx">r14</span><span class="w"> </span><span class="nx">00000000ffffffff</span><span class="w">  </span><span class="nx">r15</span><span class="w"> </span><span class="nx">f83d5132fb225700</span><span class="w">
+</span><span class="n">rdi</span><span class="w"> </span><span class="nx">000000000000002b</span><span class="w">  </span><span class="nx">rsi</span><span class="w"> </span><span class="nx">000000000000d6c8</span><span class="w">
+</span><span class="n">rbp</span><span class="w"> </span><span class="nx">000075b810d8a4b0</span><span class="w">  </span><span class="nx">rsp</span><span class="w"> </span><span class="nx">000075b810d83fa0</span><span class="w">  </span><span class="nx">rip</span><span class="w"> </span><span class="nx">000075b810e16529</span><span class="w">
+
+</span></code></pre></div></div>
+
+<p>Çökme anındaki değerleri incelediğimizde,</p>
+
+<ul>
+  <li>rax 0000000000000000  → NULL pointer</li>
+  <li>rdx 00000000fa929095  → Hatalı adres burada</li>
+  <li>rip 000075b810e16529  → Çöktüğü instruction pointer yani kodun çöktüğü yeri gösteriyor.</li>
+</ul>
+
+<h3 id="--backtrace">- Backtrace</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">backtrace:</span><span class="w">
+    </span><span class="c">#00 pc 000000000008b529  /data/app/re.pwnme-8PIKZDvmqRR84sJMKhxw2g==/lib/x86_64/libnative-lib.so</span><span class="w">
+</span><span class="o">***</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Backtrace de ise hata, native library(libnative-lib.so) içindeki 0x8b529 offsetinde oluşmuş.</p>
+
+<h2 id="anti-debugging-mekanizması-tespiti">Anti-Debugging Mekanizması Tespiti</h2>
+
+<p>Bu hata çıktısını inceledikten sonra, crash’in normal bir bug değil, kasıtlı bir anti-debugging mekanizması olduğuna karar verdim. İşte bu sonuca varmamı sağlayan kanıtlar:</p>
+
+<h3 id="1--process-name-manipülasyonu">1- Process Name Manipülasyonu</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name:</span><span class="w"> </span><span class="nx">re.pwnme</span><span class="w">  </span><span class="err">&gt;&gt;&gt;</span><span class="w"> </span><span class="nx">android.process.media</span><span class="w"> </span><span class="err">&lt;</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Normal bir Android uygulamasında process name ile package name aynı olur:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name:</span><span class="w"> </span><span class="nx">com.example.app</span><span class="w">  </span><span class="err">&gt;&gt;&gt;</span><span class="w"> </span><span class="nx">re.pwnme</span><span class="w"> </span><span class="err">&lt;</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Ancak burada process name kasıtlı olarak <code class="language-plaintext highlighter-rouge">android.process.media</code> ile değiştirilmiş. Bu, klasik bir anti-debugging tekniğidir:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">&lt;</span><span class="o">!--</span><span class="w"> </span><span class="n">AndroidManifest.xml</span><span class="w"> </span><span class="o">--</span><span class="err">&gt;</span><span class="w">
+</span><span class="err">&lt;</span><span class="n">application</span><span class="w"> </span><span class="nx">android:process</span><span class="o">=</span><span class="s2">"android.process.media"</span><span class="err">&gt;</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Buradaki amaç debuggerların ve analiz araçlarının uygulamayı bulmasını zorlaştırmaktır.</p>
+
+<h3 id="2--şüpheli-register-patterni">2- Şüpheli Register Pattern’i</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rax</span><span class="w"> </span><span class="nx">0000000000000000</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="nx">NULL</span><span class="w"> </span><span class="nx">pointer</span><span class="w">
+</span><span class="n">rdx</span><span class="w"> </span><span class="nx">00000000fa929095</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="err">Ç</span><span class="nx">ok</span><span class="w"> </span><span class="nx">spesifik</span><span class="w"> </span><span class="nx">bir</span><span class="w"> </span><span class="nx">offset</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Bu kombinasyon kasıtlı bir crash pattern’i gösteriyor:</p>
+
+<p>Normal bir bug’da göreceğimiz:</p>
+
+<ul>
+  <li>Rastgele register değerleri</li>
+  <li>Stack corruption (rbp, rsp’de garip değerler)</li>
+  <li>Return address’in bozulması</li>
+</ul>
+
+<p>Bizim durumumuzda:</p>
+
+<ul>
+  <li>RAX temiz bir şekilde NULL (0x00000000)</li>
+  <li>RDX tam olarak <code class="language-plaintext highlighter-rouge">0xfa929095</code> gibi hardcoded bir değer</li>
+  <li>Stack tamamen sağlam (<code class="language-plaintext highlighter-rouge">rbp</code> ve <code class="language-plaintext highlighter-rouge">rsp</code> normal görünüyor)</li>
+</ul>
+
+<p>Daha anlaşılır olması için tahmini kod şu şekilde olabilir:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">anti_tamper_check</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">trap</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>  <span class="c1">// rax = 0x00000000</span>
+    <span class="kt">uint64_t</span> <span class="n">offset</span> <span class="o">=</span> <span class="mh">0xfa929095</span><span class="p">;</span>  <span class="c1">// rdx = kasıtlı değer</span>
+    <span class="o">*</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)(</span><span class="n">trap</span> <span class="o">+</span> <span class="n">offset</span><span class="p">))</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// Kasıtlı SIGSEGV</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="3--garip-register-değerleri-r12-r15">3- Garip Register Değerleri (r12-r15)</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r12</span><span class="w"> </span><span class="nx">55348a26b14153ff</span><span class="w">
+</span><span class="n">r13</span><span class="w"> </span><span class="nx">dd898eb03fc0e0fe</span><span class="w">
+</span><span class="n">r15</span><span class="w"> </span><span class="nx">f83d5132fb225700</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Bu değerler integrity check değerleri olabilir.</p>
+
+<p>Integrity check değerleri→ Bir dosyanın bütünlüğünü doğrulamak için hesaplanan kontrol sayıları.</p>
+
+<h3 id="4--stack-framein-çok-temiz-olması">4- Stack Frame’in Çok Temiz Olması</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rbp</span><span class="w"> </span><span class="nx">000075b810d8a4b0</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="nx">Normal</span><span class="w"> </span><span class="nx">stack</span><span class="w"> </span><span class="nx">base</span><span class="w"> </span><span class="nx">pointer</span><span class="w">
+</span><span class="n">rsp</span><span class="w"> </span><span class="nx">000075b810d83fa0</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="nx">Normal</span><span class="w"> </span><span class="nx">stack</span><span class="w"> </span><span class="nx">pointer</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Normal bir memory corruption’da (buffer overflow gibi), stack’teki
+veriler bozulur ve RBP/RSP geçersiz değerler gösterir.</p>
+
+<p>Ancak bizim durumumuzda:</p>
+
+<ul>
+  <li>RBP: 0x75b810d8a4b0 (normal stack adresi)</li>
+  <li>RSP: 0x75b810d83fa0 (normal stack adresi)</li>
+</ul>
+
+<p>Stack’in bu kadar temiz olması, crash’in kontrollü ve kasıtlı olduğunu gösteriyor.</p>
+
+<h2 id="anti-debugging-bypass-exception-handler-i̇mplementasyonu"><strong>Anti-Debugging Bypass: Exception Handler İmplementasyonu</strong></h2>
+
+<p>Anti-debugging mekanizmasını tespit ettikten sonra, crash’i bypass etmek için bir Frida script’i yazdım. Bu script, crash anında devreye girip sanki fonksiyon normal şekilde return etmiş gibi davranarak uygulamanın çalışmaya devam etmesini sağlıyor.</p>
+
+<p>Frida scripti çalışma mantığı:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">base</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>              <span class="o">-&gt;</span> <span class="nx">Native</span> <span class="nx">library</span><span class="dl">'</span><span class="s1">nin base adresi
+var crashCount = 0;           -&gt; Kaç kez exception yakalandığı
+
+Process.setExceptionHandler(function(details) {
+     // Exception</span><span class="dl">'</span><span class="nx">ı</span> <span class="nx">yakala</span> <span class="p">(</span><span class="nx">SIGSEGV</span><span class="p">)</span>
+     <span class="c1">// Crash'in libnative-lib.so içinde olup olmadığını kontrol et</span>
+     <span class="c1">// Stack'i restore et (sanki fonksiyon normal bitti)</span>
+     <span class="c1">// 0 döndür ve çalışmaya devam et</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Genel kod yapısına baktığımızda:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">base</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">crashCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>base</strong>: Native library’nin bellekteki başlangıç adresi</p>
+
+<ul>
+  <li>Android’de <strong>ASLR</strong> (Address Space Layout Randomization) aktif</li>
+  <li>Her çalıştırmada farklı bir adrese yüklenir</li>
+</ul>
+
+<p><strong>crashCount</strong>: Debug amaçlı sayaç</p>
+
+<ul>
+  <li>Kaç kez exception yakalandığını takip eder</li>
+</ul>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Process</span><span class="p">.</span><span class="nx">setExceptionHandler</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">details</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">crashCount</span><span class="o">++</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>Process.setExceptionHandler</strong>: Frida’nın exception yakalama API’si</p>
+
+<p><strong>details objesi</strong> şunları içerir:</p>
+
+<ul>
+  <li>details.type: Exception türü (“access-violation”, “abort”, vb.)</li>
+  <li>details.address: Crash oluşan bellek adresi</li>
+  <li>details.context: CPU registerları (rax, rbx, rip, rsp, rbp, vb.)</li>
+</ul>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nx">base</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">base</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">findBaseAddress</span><span class="p">(</span><span class="dl">"</span><span class="s2">libnative-lib.so</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">base adress:</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">base</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">base</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>İlk exception anında modül henüz yüklenmemiş olabilir. Bu yüzden:</p>
+
+<ol>
+  <li>İlk crash’te Module.findBaseAddress() çağırılır</li>
+  <li>Bulunamazsa exception’ı işleme alınır (return false)</li>
+</ol>
+
+<p><strong>Module.findBaseAddress()</strong>: Verilen modülün base adresini döndürür</p>
+
+<p>ASLR Nedeniyle:</p>
+
+<ol>
+  <li>Çalıştırma: 0x75b810d8b000</li>
+  <li>Çalıştırma: 0x7a2340a1c000 (farklı)</li>
+</ol>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">offset</span> <span class="o">=</span> <span class="nx">details</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">base</span><span class="p">);</span>
+    <span class="p">..</span>
+    
+<span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span>   
+</code></pre></div></div>
+
+<p>Offset değerini bulmak için details.address.sub() kullanılır. Eğer offset aralığının dışında ise return false döner.</p>
+
+<blockquote>
+  <p>Base Address:     0x75b810d8b000
+Crash Address:    0x75b810e16529
+Offset:           0x75b810e16529 - 0x75b810d8b000 = 0x8b529</p>
+
+</blockquote>
+
+<p><strong>Offset neden önemli?</strong></p>
+
+<ul>
+  <li>Her çalıştırmada base değişir ama offset sabit kalır.</li>
+  <li>Offset ile crash’in hangi fonksiyonda olduğunu biliriz.</li>
+</ul>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">..</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">offset</span><span class="p">.</span><span class="nx">compare</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">offset</span><span class="p">.</span><span class="nx">compare</span><span class="p">(</span><span class="mh">0x500000</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</code></pre></div></div>
+
+<p>Crash , libnative-lib.so içinde 0x0 ile 0x500000 (5MB) arasında mı kontrol edilir.</p>
+
+<p>if koşulu sağlanıyorsa, stack frame restore işlemi yapılır.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span> <span class="p">{</span>
+       <span class="kd">var</span> <span class="nx">savedRbp</span> <span class="o">=</span> <span class="nx">details</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">rbp</span><span class="p">;</span>
+       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">savedRbp</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">savedRbp</span><span class="p">);</span>
+       <span class="kd">var</span> <span class="nx">returnAddr</span> <span class="o">=</span> <span class="nx">savedRbp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">8</span><span class="p">).</span><span class="nx">readPointer</span><span class="p">();</span>
+       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">returnAddr</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">returnAddr</span><span class="p">);</span>
+       <span class="p">..</span>
+       
+       
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/posts/uncrackable4/image (1).png" width="700" /></p>
+
+<p>Peki bu kodta ne yapıyor:</p>
+
+<ul>
+  <li><strong>savedRbp</strong>: Mevcut stack frame’in base pointer’ını al</li>
+  <li><strong>savedRbp.add(8)</strong>: 8 byte yukarı çık (64-bit sistemde pointer = 8 byte)</li>
+  <li><strong>readPointer()</strong>: O adresdeki <strong>return address’i</strong> oku</li>
+</ul>
+
+<p>ve daha sonra return adress güvenlik kontrolü yapılır:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">..</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">returnAddr</span><span class="p">.</span><span class="nx">compare</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</code></pre></div></div>
+
+<p><strong>Return address’in NULL olup olmadığını kontrol edilir:</strong></p>
+
+<ul>
+  <li><strong>0x0 (NULL)</strong> → Stack bozuk, restore etmeye çalışma</li>
+  <li>0x7ffabcd123 gibi bir değer → OK, devam et</li>
+</ul>
+
+<p>Devamında ise:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nx">returnAddr</span><span class="p">.</span><span class="nx">compare</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">details</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">rax</span> <span class="o">=</span> <span class="nx">ptr</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+                    <span class="nx">details</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">rsp</span> <span class="o">=</span> <span class="nx">savedRbp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
+                    <span class="nx">details</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">rbp</span> <span class="o">=</span> <span class="nx">savedRbp</span><span class="p">.</span><span class="nx">readPointer</span><span class="p">();</span>
+                    <span class="nx">details</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">pc</span> <span class="o">=</span> <span class="nx">returnAddr</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+                <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Stack store işlemi başlar:</p>
+
+<ul>
+  <li><strong>details.context.rax = ptr(0); →</strong> return değerini 0 yapar yani fonksiyom 0 döndürmüş gibi davranır.</li>
+</ul>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">RAX</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>details.context.rsp = savedRbp.add(16); →</strong> stack pointer’ı 16 byte yukarı taşır yani stack’i temizler, üst frame’e geçirir.</li>
+</ul>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">savedRbp</span> <span class="o">=</span> <span class="mh">0x75b810d8a4b0</span>
+<span class="nx">savedRbp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span> <span class="o">=</span> <span class="mh">0x75b810d8a4b0</span> <span class="o">+</span> <span class="mh">0x10</span> <span class="o">=</span> <span class="mh">0x75b810d8a4c0</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>details.context.rbp =</strong> savedRbp.readPointer(); → Önceki frame’in RBP’sini geri yükler.</li>
+  <li><strong>details.context.pc = returnAddr; →</strong> Çağırılan fonksiyona geri döner.</li>
+</ul>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">PC</span> <span class="p">(</span><span class="nx">Program</span> <span class="nx">Counter</span><span class="p">)</span> <span class="o">=</span> <span class="nx">returnAddr</span>
+<span class="nx">RIP</span> <span class="o">=</span> <span class="mh">0x75b810e14a20</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>return true; →</strong> Fridaya “Expection’ı hallettim” der.</li>
+</ul>
+
+<p>Return adresi okunmazsa veya stack bozuksa fallback mekanizması devreye girer.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">details</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">rax</span> <span class="o">=</span> <span class="nx">ptr</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>       <span class="c1">// rax = 0 -&gt; 0 döndür</span>
+<span class="nx">details</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">pc</span> <span class="o">=</span> <span class="nx">base</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>   <span class="c1">// pc = base -&gt; başlangıç adresine atla</span>
+<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Buradaki amaç en azından crash’i engellemesi, çökmemeye devam etmesi.</p>
+
+<p>Bu kodu çalıştırdığımda:</p>
+
+<p><img src="/assets/posts/uncrackable4/image (2).png" width="700" /></p>
+
+<h2 id="java-anti-tampering-bypass--java-exception-i̇mplementasyonu">Java Anti-Tampering Bypass : Java Exception <strong>İmplementasyonu</strong></h2>
+
+<p>Native crash’i başarıyla bypass ettikten sonra, uygulama yeni bir hatayla karşılaştım:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Process</span> <span class="nx">crashed</span><span class="p">:</span> <span class="nx">java</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nx">ArithmeticException</span><span class="p">:</span> <span class="nx">divide</span> <span class="nx">by</span> <span class="nx">zero</span>
+</code></pre></div></div>
+
+<p>Java kaynak kodunu incelediğimde, <code class="language-plaintext highlighter-rouge">MainActivity.onCreate()</code> içinde kasıtlı bir crash mekanizması buldum:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="nc">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+    <span class="n">setContentView</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">);</span>
+    
+    <span class="k">this</span><span class="o">.</span><span class="na">f508</span> <span class="o">=</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">-</span><span class="mi">16</span><span class="o">;</span>  
+    
+    <span class="no">C0282</span> <span class="n">rb</span> <span class="o">=</span> <span class="k">new</span> <span class="no">C0282</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">());</span>
+    
+    <span class="c1">// Anti-tampering kontrolü</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">rb</span><span class="o">.</span><span class="na">m1162</span><span class="o">()</span> <span class="o">||</span> <span class="o">(</span><span class="n">rb</span><span class="o">.</span><span class="na">m1155</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">rb</span><span class="o">.</span><span class="na">m1150</span><span class="o">()))</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">r1</span> <span class="o">=</span> <span class="mi">1337</span> <span class="o">/</span> <span class="mi">0</span><span class="o">;</span>  
+        <span class="k">this</span><span class="o">.</span><span class="na">f508</span> <span class="o">=</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">f508</span> <span class="o">|</span> <span class="mi">15</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="n">m316</span><span class="o">();</span>  
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>C0282 sınıfı, anti-debugging/anti-tampering kontrolleri yapıyor:</p>
+
+<ul>
+  <li>m1162(): Frida detection</li>
+  <li>m1155(): Root detection</li>
+  <li>m1150(): Xposed/Magisk detection</li>
+</ul>
+
+<p>Eğer bu kontrollerden herhangi biri başarılı olursa, kasıtlı olarak sıfıra bölme işlemi yapılıyor.</p>
+
+<p>Bu mekanizmayı bypass etmek için iki yaklaşım mevcut:</p>
+
+<h3 id="yaklaşım-1-detection-metodlarını-hooklamak"><strong>Yaklaşım 1: Detection Metodlarını Hook’lamak</strong></h3>
+
+<p>Her bir detection metodunu ayrı ayrı hook’layıp false döndürmek.</p>
+
+<p>İlk olarak dlopen patching yaparak, uygulamanın root detection mekanizmalarını native seviyede devre dışı bırakıyoruz.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">dlopen</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">findExportByName</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="dl">"</span><span class="s2">android_dlopen_ext</span><span class="dl">"</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">dlopen</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">dlopen</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">onEnter</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">lib</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">readCString</span><span class="p">();</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">lib: </span><span class="dl">"</span><span class="o">+</span><span class="nx">lib</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">lib</span> <span class="o">&amp;&amp;</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">libnative-lib.so</span><span class="dl">"</span><span class="p">)){</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">hook</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span> 
+        <span class="p">},</span>
+        <span class="na">onLeave</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">retval</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">hook</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">patchAll</span><span class="p">();</span>
+                <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">patchAll</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">patchAll</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">base</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">findBaseAddress</span><span class="p">(</span><span class="dl">"</span><span class="s2">libnative-lib.so</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">patchAll Base: </span><span class="dl">"</span><span class="o">+</span><span class="nx">base</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">base</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="p">[</span><span class="mh">0x8b529</span><span class="p">,</span> <span class="mh">0xcf150</span><span class="p">,</span> <span class="mh">0xcf1b7</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">offset</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">addr</span> <span class="o">=</span> <span class="nx">base</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">offset</span><span class="p">);</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">addr: </span><span class="dl">"</span><span class="o">+</span> <span class="nx">addr</span><span class="p">);</span>
+            <span class="nx">Memory</span><span class="p">.</span><span class="nx">patchCode</span><span class="p">(</span><span class="nx">addr</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">X86Writer</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="p">{</span> <span class="na">pc</span><span class="p">:</span> <span class="nx">addr</span> <span class="p">});</span>
+                <span class="nx">writer</span><span class="p">.</span><span class="nx">putXorRegReg</span><span class="p">(</span><span class="dl">'</span><span class="s1">eax</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">eax</span><span class="dl">'</span><span class="p">);</span>
+                <span class="nx">writer</span><span class="p">.</span><span class="nx">putRet</span><span class="p">();</span>
+                <span class="nx">writer</span><span class="p">.</span><span class="nx">flush</span><span class="p">();</span>
+            <span class="p">});</span>
+        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">android_dlopen_ext</code> kütüphanesini yakalar → Android’de dinamik kütüphane yükleme fonksiyonudur.</li>
+  <li><code class="language-plaintext highlighter-rouge">libnative-lib.so</code> yüklendiğini tespit eder → Bu, uygulamanın root kontrolü yapan native (C/C++) kodudur</li>
+  <li>Kütüphane yüklendiği anda <code class="language-plaintext highlighter-rouge">patchAll()</code> fonksiyonunu çalıştırır → Belirlenen offset’lerdeki root detection kodlarını patch eder.</li>
+</ul>
+
+<p>Root detection kütüphanesi yüklendiği anda hemen tespit edilip kontrol kodlarının çalıştırılmadan <code class="language-plaintext highlighter-rouge">false</code> (başarısız) döndürülmesi sağlanır. Bu şekilde uygulama “cihazda root yok” zanneder ve devam eder.</p>
+
+<p><img src="/assets/posts/uncrackable4/image (3).png" width="700" /></p>
+
+<p>dlopen patching ile native kodu değiştirdikten sonra, sistem seviyesinde root araçlarının varlığını gizlemek için dosya erişim fonksiyonlarını yakalarız.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="dl">"</span><span class="s2">open</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">access</span><span class="dl">"</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">funcName</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">ptr</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">findExportByName</span><span class="p">(</span><span class="dl">"</span><span class="s2">libc.so</span><span class="dl">"</span><span class="p">,</span> <span class="nx">funcName</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">ptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">ptr</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">onEnter</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">readCString</span><span class="p">();</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">path: </span><span class="dl">"</span><span class="o">+</span><span class="nx">path</span><span class="p">);</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">block</span> <span class="o">=</span> <span class="nx">path</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">/su</span><span class="dl">"</span><span class="p">)</span> <span class="o">||</span> <span class="nx">path</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">magisk</span><span class="dl">"</span><span class="p">));</span>
+            <span class="p">},</span>
+            <span class="na">onLeave</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">retval</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">block</span><span class="p">)</span> <span class="nx">retval</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<ul>
+  <li>İşletim sisteminin temel kütüphanesinde <code class="language-plaintext highlighter-rouge">open</code> ve <code class="language-plaintext highlighter-rouge">access</code> fonksiyonlarını bulur - bunlar dosya açmak ve dosya varlığını kontrol etmek için kullanılır.</li>
+  <li>Uygulama herhangi bir dosyaya erişmeye çalıştığında, dosya yolunu kontrol eder. Eğer <code class="language-plaintext highlighter-rouge">/su</code> (SuperUser binary’si) veya <code class="language-plaintext highlighter-rouge">magisk</code> (root aracı) içeriyorsa işaretler.</li>
+  <li>Eğer root aracı dosyasına erişim denenirse, sistem fonksiyonunun dönüş değerini -1 (hata) olarak değiştirir. Böylece uygulama “bu dosya bulunamadı” sonucuna varır.</li>
+</ul>
+
+<p><img src="/assets/posts/uncrackable4/image (4).png" width="700" /></p>
+
+<p>Son olarak Java seviyesinde root detection kütüphanelerini ve sistem API’lerini hook ederek, uygulamanın tüm root kontrol mekanizmalarını devre dışı bırakırız.</p>
+
+<p><strong>Ana Sınıf - C0282</strong></p>
+
+<p><strong>Java:</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">C0282</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1162</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">m1160</span><span class="o">()</span> <span class="o">||</span> <span class="n">m1163</span><span class="o">()</span> <span class="o">||</span> <span class="n">m1156</span><span class="o">(</span><span class="s">"su"</span><span class="o">)</span> <span class="o">||</span> <span class="n">m1152</span><span class="o">()</span> <span class="o">||</span> <span class="o">...;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1161</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">buildTags</span> <span class="o">=</span> <span class="nc">Build</span><span class="o">.</span><span class="na">TAGS</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">buildTags</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">buildTags</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"test-keys"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1160</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* PackageManager checks */</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1163</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* Dangerous apps */</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1156</span><span class="o">(</span><span class="nc">String</span> <span class="n">filename</span><span class="o">)</span> <span class="o">{</span> <span class="cm">/* File.exists */</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1152</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* System properties */</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1150</span><span class="o">()</span> <span class="o">{</span> <span class="cm">/* RootBeerNative */</span> <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><strong>Frida JS:</strong></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="nx">className</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="dl">"</span><span class="s2">p000.</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">clazz</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">className</span><span class="p">);</span>  <span class="c1">// C0282 sınıfını yakala</span>
+    <span class="kd">var</span> <span class="nx">methods</span> <span class="o">=</span> <span class="nx">clazz</span><span class="p">.</span><span class="kd">class</span><span class="p">.</span><span class="nx">getDeclaredMethods</span><span class="p">();</span>
+
+    <span class="nx">methods</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">method</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">methodName</span> <span class="o">=</span> <span class="nx">method</span><span class="p">.</span><span class="nx">getName</span><span class="p">();</span>      <span class="c1">// m1162, m1161, m1160 vb</span>
+        <span class="kd">var</span> <span class="nx">returnType</span> <span class="o">=</span> <span class="nx">method</span><span class="p">.</span><span class="nx">getReturnType</span><span class="p">().</span><span class="nx">toString</span><span class="p">();</span>
+
+        <span class="c1">// Boolean dönen m* metodları hook et</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">methodName</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^m</span><span class="se">\d</span><span class="sr">+$/</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">returnType</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">boolean</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">clazz</span><span class="p">[</span><span class="nx">methodName</span><span class="p">].</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>  <span class="c1">// Orijinal metod çalışmaz</span>
+            <span class="p">};</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<hr />
+
+<p><strong>m1161() - Build.TAGS Kontrolü</strong></p>
+
+<p><strong>Java:</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1161</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">buildTags</span> <span class="o">=</span> <span class="nc">Build</span><span class="o">.</span><span class="na">TAGS</span><span class="o">;</span>
+    <span class="k">return</span> <span class="n">buildTags</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">buildTags</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"test-keys"</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Eğer TAGS “test-keys” içerirse → root var</p>
+
+<p><strong>Frida JS:</strong></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">Build</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">android.os.Build</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">Build</span><span class="p">.</span><span class="nx">TAGS</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">release-keys</span><span class="dl">"</span><span class="p">;</span>  <span class="c1">// Değeri değiştir</span>
+
+</code></pre></div></div>
+
+<p>Direkt <code class="language-plaintext highlighter-rouge">Build.TAGS</code> değerini spoof ederek, m1161() kontrol yapamaz.</p>
+
+<hr />
+
+<p><strong>m1160() - PackageManager Kontrolü</strong></p>
+
+<p><strong>Java:</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1160</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">m1153</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>  <span class="c1">// Root management apps</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1153</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">additionalRootManagementApps</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">packages</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="no">C0272</span><span class="o">.</span><span class="na">f1009</span><span class="o">));</span>
+    <span class="k">return</span> <span class="nf">m1157</span><span class="o">(</span><span class="n">packages</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">final</span> <span class="kt">boolean</span> <span class="nf">m1157</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">packages</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">PackageManager</span> <span class="n">pm</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">f1026</span><span class="o">.</span><span class="na">getPackageManager</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">packageName</span> <span class="o">:</span> <span class="n">packages</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">pm</span><span class="o">.</span><span class="na">getPackageInfo</span><span class="o">(</span><span class="n">packageName</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>  <span class="c1">// Paket var mı?</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>  <span class="c1">// Bulundu!</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">PackageManager</span><span class="o">.</span><span class="na">NameNotFoundException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Magisk, SuperSU gibi paketleri arar.</p>
+
+<p><strong>Frida JS:</strong></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">PM</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">android.content.pm.PackageManager</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">PM</span><span class="p">.</span><span class="nx">getPackageInfo</span><span class="p">.</span><span class="nx">overload</span><span class="p">(</span><span class="dl">'</span><span class="s1">java.lang.String</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">int</span><span class="dl">'</span><span class="p">).</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">pkg</span><span class="p">,</span> <span class="nx">flags</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">blockedApps</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="dl">"</span><span class="s2">magisk</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">supersu</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">chainfire</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">koushik</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">topjohnwu</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">luckypatcher</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">substrat</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">xposed</span><span class="dl">"</span>
+    <span class="p">];</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">blockedApps</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">pkg</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="nx">blockedApps</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">NameNotFound</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">android.content.pm.PackageManager$NameNotFoundException</span><span class="dl">"</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="nx">NameNotFound</span><span class="p">.</span><span class="nx">$new</span><span class="p">();</span>  <span class="c1">// Paket bulunamadı hatası</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getPackageInfo</span><span class="p">.</span><span class="nx">overload</span><span class="p">(</span><span class="dl">'</span><span class="s1">java.lang.String</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">int</span><span class="dl">'</span><span class="p">).</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">,</span> <span class="nx">flags</span><span class="p">);</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<p>Exception fırlatarak m1157() kontrol başarısız olur.</p>
+
+<hr />
+
+<p><strong>m1156() - File.exists Kontrolü</strong></p>
+
+<p><strong>Java:</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1156</span><span class="o">(</span><span class="nc">String</span> <span class="n">filename</span><span class="o">)</span> <span class="o">{</span>  <span class="c1">// "su" veya "magisk"</span>
+    <span class="nc">String</span><span class="o">[]</span> <span class="n">pathsArray</span> <span class="o">=</span> <span class="no">C0272</span><span class="o">.</span><span class="na">m1135</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">path</span> <span class="o">:</span> <span class="n">pathsArray</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">File</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">path</span><span class="o">,</span> <span class="n">filename</span><span class="o">);</span>
+        <span class="kt">boolean</span> <span class="n">fileExists</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">exists</span><span class="o">();</span>  <span class="c1">// Dosya var mı?</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">fileExists</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Tüm olası path’lerde su binary’si arar.</p>
+
+<p><strong>Frida JS:</strong></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">File</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">java.io.File</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">File</span><span class="p">.</span><span class="nx">exists</span><span class="p">.</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getAbsolutePath</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">/su</span><span class="dl">"</span><span class="p">)</span> <span class="o">||</span> <span class="nx">path</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">magisk</span><span class="dl">"</span><span class="p">)</span> <span class="o">||</span> <span class="nx">path</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">supersu</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>  <span class="c1">// Dosya yok demesini sağla</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">exists</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>  <span class="c1">// Diğer dosyalar normal</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">File.exists()</code> hook edilerek su dosyaları “yok” kabul edilir.</p>
+
+<hr />
+
+<p><strong>m1152() - System Properties Kontrolü</strong></p>
+
+<p><strong>Java:</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1152</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">dangerousProps</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">dangerousProps</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"ro.debuggable"</span><span class="o">,</span> <span class="s">"1"</span><span class="o">);</span>
+    <span class="n">dangerousProps</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"ro.secure"</span><span class="o">,</span> <span class="s">"0"</span><span class="o">);</span>
+
+    <span class="nc">String</span><span class="o">[]</span> <span class="n">lines</span> <span class="o">=</span> <span class="n">m1154</span><span class="o">();</span>  <span class="c1">// getprop çalıştır</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">line</span> <span class="o">:</span> <span class="n">lines</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">key</span> <span class="o">:</span> <span class="n">dangerousProps</span><span class="o">.</span><span class="na">keySet</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">key</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">badValue</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>  <span class="c1">// Root property bulundu</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">final</span> <span class="nc">String</span><span class="o">[]</span> <span class="nf">m1154</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">InputStream</span> <span class="n">inputstream</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">exec</span><span class="o">(</span><span class="s">"getprop"</span><span class="o">).</span><span class="na">getInputStream</span><span class="o">();</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Tehlikeli prop’ları kontrol eder.</p>
+
+<p><strong>Frida JS:</strong></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">System</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">java.lang.System</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">System</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">.</span><span class="nx">overload</span><span class="p">(</span><span class="dl">'</span><span class="s1">java.lang.String</span><span class="dl">'</span><span class="p">).</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">ro.debuggable</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="dl">"</span><span class="s2">0</span><span class="dl">"</span><span class="p">;</span>  <span class="c1">// Güvenli değer</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">ro.secure</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">;</span>  <span class="c1">// Güvenli değer</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getProperty</span><span class="p">.</span><span class="nx">overload</span><span class="p">(</span><span class="dl">'</span><span class="s1">java.lang.String</span><span class="dl">'</span><span class="p">).</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<p>Prop’ları direkt spoof ederek m1152() başarısız olur.</p>
+
+<hr />
+
+<p><strong>m1148() - Runtime.exec(“which su”)</strong></p>
+
+<p><strong>Java:</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1148</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Process</span> <span class="n">process</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">exec</span><span class="o">(</span><span class="k">new</span> <span class="nc">String</span><span class="o">[]{</span><span class="s">"which"</span><span class="o">,</span> <span class="s">"su"</span><span class="o">});</span>
+    <span class="nc">BufferedReader</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="nc">InputStreamReader</span><span class="o">(</span><span class="n">process</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">()));</span>
+    <span class="kt">boolean</span> <span class="n">z</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">readLine</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>  <span class="c1">// Çıktı var mı?</span>
+    <span class="k">return</span> <span class="n">z</span><span class="o">;</span>  <span class="c1">// su bulunduysa true</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">which su</code> komutu çalıştırır.</p>
+
+<p><strong>Frida JS:</strong></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">Runtime</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">java.lang.Runtime</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">Runtime</span><span class="p">.</span><span class="nx">exec</span><span class="p">.</span><span class="nx">overload</span><span class="p">(</span><span class="dl">'</span><span class="s1">[Ljava.lang.String;</span><span class="dl">'</span><span class="p">).</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cmd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">command</span> <span class="o">=</span> <span class="nx">cmd</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">command</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">su</span><span class="dl">"</span><span class="p">)</span> <span class="o">||</span> <span class="nx">command</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">which</span><span class="dl">"</span><span class="p">)</span> <span class="o">||</span>
+       <span class="nx">command</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">getprop</span><span class="dl">"</span><span class="p">)</span> <span class="o">||</span> <span class="nx">command</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">mount</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">IOException</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">java.io.IOException</span><span class="dl">"</span><span class="p">);</span>
+        <span class="k">throw</span> <span class="nx">IOException</span><span class="p">.</span><span class="nx">$new</span><span class="p">(</span><span class="dl">"</span><span class="s2">Permission denied</span><span class="dl">"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">exec</span><span class="p">.</span><span class="nx">overload</span><span class="p">(</span><span class="dl">'</span><span class="s1">[Ljava.lang.String;</span><span class="dl">'</span><span class="p">).</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">cmd</span><span class="p">);</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<p>Komut çalıştırılmadan Exception fırlatılır.</p>
+
+<hr />
+
+<p><strong>m1150() - RootBeerNative Kontrolü</strong></p>
+
+<p><strong>Java:</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1150</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">m1155</span><span class="o">())</span> <span class="o">{</span>  <span class="c1">// Native kütüphane yüklendi mi?</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="nc">String</span><span class="o">[]</span> <span class="n">checkPaths</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">[</span><span class="n">paths</span><span class="o">.</span><span class="na">length</span><span class="o">];</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">checkPaths</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">checkPaths</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">paths</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="s">"su"</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="nc">RootBeerNative</span> <span class="n">rootBeerNative</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RootBeerNative</span><span class="o">();</span>
+    <span class="k">return</span> <span class="n">rootBeerNative</span><span class="o">.</span><span class="na">checkForRoot</span><span class="o">(</span><span class="n">checkPaths</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">m1155</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">RootBeerNative</span><span class="o">().</span><span class="na">m306</span><span class="o">();</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Native kütüphane üzerinden kontrol.</p>
+
+<p><strong>Frida JS:</strong></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="nx">className</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">RootBeerNative</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">RBN</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">className</span><span class="p">);</span>
+
+    <span class="nx">RBN</span><span class="p">.</span><span class="nx">checkForRoot</span><span class="p">.</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">paths</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">RootBeerNative.checkForRoot() -&gt; 0</span><span class="dl">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// Root yok</span>
+    <span class="p">};</span>
+
+    <span class="nx">RBN</span><span class="p">.</span><span class="nx">m306</span><span class="p">.</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">RootBeerNative.m306() -&gt; false</span><span class="dl">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>  <span class="c1">// Başarısız</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p><img src="/assets/posts/uncrackable4/image (5).png" width="700" /></p>
+
+<h3 id="yaklaşım-2-exception-handling"><strong>Yaklaşım 2: Exception Handling</strong></h3>
+
+<p>onCreate() metodunu hook’layıp exception’ları yakalamak.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Java</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">MainActivity</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">re.pwnme.MainActivity</span><span class="dl">"</span><span class="p">);</span>
+    
+    <span class="nx">MainActivity</span><span class="p">.</span><span class="nx">onCreate</span><span class="p">.</span><span class="nx">overload</span><span class="p">(</span><span class="dl">"</span><span class="s2">android.os.Bundle</span><span class="dl">"</span><span class="p">).</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">bundle</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">MainActivity.onCreate() called</span><span class="dl">"</span><span class="p">);</span>
+        
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">onCreate</span><span class="p">(</span><span class="nx">bundle</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Exception'ı yut, uygulama kapanmasın</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+    
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Java Exception Handler passed :)</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Koda baktığımızda:</p>
+
+<ol>
+  <li>Önce frida’nın java kodlarına erişebilmesi için Java.perform() kullanıyoruz.</li>
+  <li>Java.use() ile kullanacağımız main class’ı bir değişkene atıyoruz.</li>
+  <li>MainActivity’nın onCreate metodunun Bundle parametreli versiyonunu bulup, orijinal kodun yerine çalışacak try/catch kodunu yazıyoruz.</li>
+  <li>Burada try kodunda orijinal onCreate() metodunu çağırır.</li>
+  <li>Catch’te Exception yakalandığı için uygulama crash olmaz ve açılır.</li>
+</ol>
+
+<p><img src="/assets/posts/uncrackable4/image (6).png" width="700" /></p>
+
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

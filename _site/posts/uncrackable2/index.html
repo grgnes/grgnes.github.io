@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owasp Uncrackable Level 2 APK Walkthrough | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/apk/">
+        APK
+    </a>
+
+    <h1>Owasp Uncrackable Level 2 APK Walkthrough</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>APK</span>
+        
+    </div>
+
+    <div class="post-content">
+        <p>Cihaza Kurulum:</p>
+
+<p><img src="/assets/posts/uncrackable2/image.png" width="700" /></p>
+
+<p>Uygulamayı statik olarak analiz ettiğimde,</p>
+
+<p><img src="/assets/posts/uncrackable2/image (1).png" width="400" /></p>
+
+<p>Cihazım rootlu olduğu için, uygulamayı sonlandıracağına dair bir uyarı mesajı alıyorum.</p>
+
+<p>Uygulamayı statik olarak analiz etmek ve kaynak koda bakmak için önce apk’yı JADX’te inceliyorum.</p>
+
+<p><img src="/assets/posts/uncrackable2/image (2).png" width="700" /></p>
+
+<p>AndroidManifest.xml koduna baktığımda, 1 adet activity sınıfı (MainActivity) var.</p>
+
+<p>MainActivity class’ını incelemeye başladığımda,</p>
+
+<p><img src="/assets/posts/uncrackable2/image (3).png" width="700" /></p>
+
+<p>kodun başında Native C/C++ kütüphanesi yükleniyor.</p>
+
+<p><img src="/assets/posts/uncrackable2/image (4).png" width="700" /></p>
+
+<p>Devamında güvenlik ihlali tespit edildiğinde “This is unacceptable. The app is now going to exit.” mesajını gösterip uygulamayı kapatıyor.</p>
+
+<p><img src="/assets/posts/uncrackable2/image (5).png" width="700" /></p>
+
+<p>Daha sonra bir Native Init methodu ile libfoo.so kütüphanesinin içindeki C fonksiyonunu çağırır.</p>
+
+<p><img src="/assets/posts/uncrackable2/image (6).png" width="700" /></p>
+
+<p>onCreate() methodu ile uygulamayı başlatılır ve sırayla;</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="nc">Bundle</span> <span class="n">bundle</span><span class="o">)</span> <span class="o">{</span>
+</code></pre></div></div>
+
+<ul>
+  <li>init() fonksiyonu ile native kodunu çağrılır. Muhtemelen şifreleme anahtarları hazırlanır,</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">init</span><span class="o">();</span>
+</code></pre></div></div>
+
+<ul>
+  <li>if kontrolü ile 3 farklı root kontrolü yapılır,</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">a</span><span class="o">()</span> <span class="o">||</span> <span class="n">b</span><span class="o">.</span><span class="na">b</span><span class="o">()</span> <span class="o">||</span> <span class="n">b</span><span class="o">.</span><span class="na">c</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">a</span><span class="o">(</span><span class="s">"Root detected!"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>herhangi biri true dönerse, “Root detected!” uyarısı gösterilir ve uygulama kapanır.</p>
+
+<p>b class’ına bakıcak olursam 3 farklı tespit yönteminin detaylarını görüyorum,</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">b</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">a</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">str</span> <span class="o">:</span> <span class="nc">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"PATH"</span><span class="o">).</span><span class="na">split</span><span class="o">(</span><span class="s">":"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">str</span><span class="o">,</span> <span class="s">"su"</span><span class="o">).</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">b</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">str</span> <span class="o">=</span> <span class="nc">Build</span><span class="o">.</span><span class="na">TAGS</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">str</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">str</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"test-keys"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">c</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">str</span> <span class="o">:</span> <span class="k">new</span> <span class="nc">String</span><span class="o">[]{</span><span class="s">"/system/app/Superuser.apk"</span><span class="o">,</span> <span class="s">"/system/xbin/daemonsu"</span><span class="o">,</span> <span class="s">"/system/etc/init.d/99SuperSUDaemon"</span><span class="o">,</span> <span class="s">"/system/bin/.ext/.su"</span><span class="o">,</span> <span class="s">"/system/etc/.has_su_daemon"</span><span class="o">,</span> <span class="s">"/system/etc/.installed_su_daemon"</span><span class="o">,</span> <span class="s">"/dev/com.koushikdutta.superuser.daemon/"</span><span class="o">})</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">str</span><span class="o">).</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>a() methodunda Path kontrolü yapıyor,</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">a</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">str</span> <span class="o">:</span> <span class="nc">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"PATH"</span><span class="o">).</span><span class="na">split</span><span class="o">(</span><span class="s">":"</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">str</span><span class="o">,</span> <span class="s">"su"</span><span class="o">).</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Path environment variable’ı alınır, her dizininde su binary’si aranır. Eğer bulunuyorsa true döner(root var), bulunmuyorsa false döner.</p>
+
+<ol>
+  <li>b() methodunda ise Build Tags kontrolü yapıyor,</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">b</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">str</span> <span class="o">=</span> <span class="nc">Build</span><span class="o">.</span><span class="na">TAGS</span><span class="o">;</span>
+    <span class="k">return</span> <span class="n">str</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">str</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"test-keys"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>önce Build.TAGS sistem özelliklerini kontrol eder, eğer test-keys içeriyorsa true, içermiyorsa false döner.</p>
+
+<ol>
+  <li>c() methodunda ise root dosyası veya dizin kontrolü yapıyor,</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">c</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">str</span> <span class="o">:</span> <span class="k">new</span> <span class="nc">String</span><span class="o">[]{</span>
+        <span class="s">"/system/app/Superuser.apk"</span><span class="o">,</span>
+        <span class="s">"/system/xbin/daemonsu"</span><span class="o">,</span>
+        <span class="s">"/system/etc/init.d/99SuperSUDaemon"</span><span class="o">,</span>
+        <span class="s">"/system/bin/.ext/.su"</span><span class="o">,</span>
+        <span class="s">"/system/etc/.has_su_daemon"</span><span class="o">,</span>
+        <span class="s">"/system/etc/.installed_su_daemon"</span><span class="o">,</span>
+        <span class="s">"/dev/com.koushikdutta.superuser.daemon/"</span>
+    <span class="o">})</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">str</span><span class="o">).</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>SuperSu veya superuser gibi root yönetim uygulamalarının dosyalarını arar, herhangi biri bulunuyorsa true, bulunmuyorsa false döner.</p>
+
+<ul>
+  <li>Debug modu kontrolü yapılır,</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">()))</span> <span class="o">{</span>
+    <span class="n">a</span><span class="o">(</span><span class="s">"App is debuggable!"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>APK’nın debuggable modda build edilip edilmediğini kontrol eder. Debug modundaysa uygulama kapanır.</p>
+
+<ul>
+  <li>AsyncTask kodu ile debugger algılama işlemi başlatılır,</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">new</span> <span class="nc">AsyncTask</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">,</span> <span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">doInBackground</span><span class="o">(</span><span class="nc">Void</span><span class="o">...</span> <span class="n">voidArr</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">while</span> <span class="o">(!</span><span class="nc">Debug</span><span class="o">.</span><span class="na">isDebuggerConnected</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">SystemClock</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">100L</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onPostExecute</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">MainActivity</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="s">"Debugger detected!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}.</span><span class="na">execute</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><strong>Nasıl çalışır:</strong></p>
+
+<ul>
+  <li>Arka planda sürekli çalışan bir thread başlatılır</li>
+  <li>Her 100ms’de bir <code class="language-plaintext highlighter-rouge">Debug.isDebuggerConnected()</code> kontrol edilir</li>
+  <li>Debugger bağlanırsa döngü kırılır ve <code class="language-plaintext highlighter-rouge">onPostExecute()</code> çalışır</li>
+  <li>Uygulama “Debugger detected!” mesajı ile kapanır</li>
+</ul>
+
+<p>En sonda da şifre kontrol nesnesi oluşturulur ve kullanıcı arayüzü gösterilir.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">this</span><span class="o">.</span><span class="na">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CodeCheck</span><span class="o">();</span>
+<span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">bundle</span><span class="o">);</span>
+<span class="n">setContentView</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Bu kısımı görüntüleyebilmek için önce root kontrollerini frida ile bypass etmem gerekiyor.</p>
+
+<p>Öncellikle Java kodunda yapılan bir root kontrolü olduğu için Java.perform() kullanarak kodu başlatıyorum:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Java</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="n">function</span><span class="o">()</span> <span class="o">{</span>
+</code></pre></div></div>
+
+<p>Sonra sırasıyla önce b class’ının kontrollerini false yaparak kaldırıyorum:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kt">var</span> <span class="n">b</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"sg.vantagepoint.a.b"</span><span class="o">);</span>
+    <span class="n">b</span><span class="o">[</span><span class="sc">'a'</span><span class="o">].</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">b</span><span class="o">[</span><span class="sc">'b'</span><span class="o">].</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">b</span><span class="o">[</span><span class="sc">'c'</span><span class="o">].</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Sonra debug modu kontrolünü kaldırıyorum:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kt">var</span> <span class="n">a</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"sg.vantagepoint.a.a"</span><span class="o">);</span>
+    <span class="n">a</span><span class="o">[</span><span class="sc">'a'</span><span class="o">].</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">(</span><span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>En sonda da AsyncTask kodu ile debugger algılama işlemi kaldırıyorum:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kt">var</span> <span class="nc">Debug</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"android.os.Debug"</span><span class="o">);</span>
+    <span class="nc">Debug</span><span class="o">.</span><span class="na">isDebuggerConnected</span><span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Yazdığım kodu frida ile enjekte edebilmek için önce fridayı çalıştırıyorum:</p>
+
+<p><img src="/assets/posts/uncrackable2/image (7).png" width="700" /></p>
+
+<p>Fridayı başlattıktan sonra yazdığım scripti çalıştırıyorum:</p>
+
+<p><img src="/assets/posts/uncrackable2/image (8).png" width="700" /></p>
+
+<p>Ve tüm kontrolleri kaldırdıktan sonra uygulama açılıyor.</p>
+
+<p><img src="/assets/posts/uncrackable2/image (9).png" width="400" /></p>
+
+<p>Benden istenilen Secret String’i bulmak için MainActivity kodunun devamını incelemeye devam ediyorum.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">verify</span><span class="o">(</span><span class="nc">View</span> <span class="n">view</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">str</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">obj</span> <span class="o">=</span> <span class="o">((</span><span class="nc">EditText</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">edit_text</span><span class="o">)).</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="nc">AlertDialog</span> <span class="n">create</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AlertDialog</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="k">this</span><span class="o">).</span><span class="na">create</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">m</span><span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="n">obj</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">create</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">"Success!"</span><span class="o">);</span>
+            <span class="n">str</span> <span class="o">=</span> <span class="s">"This is the correct secret."</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">create</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">"Nope..."</span><span class="o">);</span>
+            <span class="n">str</span> <span class="o">=</span> <span class="s">"That's not it. Try again."</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">create</span><span class="o">.</span><span class="na">setMessage</span><span class="o">(</span><span class="n">str</span><span class="o">);</span>
+        <span class="n">create</span><span class="o">.</span><span class="na">setButton</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="s">"OK"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">DialogInterface</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span> <span class="c1">// from class: sg.vantagepoint.uncrackable2.MainActivity.3</span>
+            <span class="nd">@Override</span> <span class="c1">// android.content.DialogInterface.OnClickListener</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="nc">DialogInterface</span> <span class="n">dialogInterface</span><span class="o">,</span> <span class="kt">int</span> <span class="n">r2</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">dialogInterface</span><span class="o">.</span><span class="na">dismiss</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+        <span class="n">create</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Verify() methodunda bir şifre kontrolü yapıldığını ve bu şifre kontrolünün CodeCheck sınıfının a() methodunda yapıldığı anlaşılıyor.</p>
+
+<p>CodeCheck sınıfında baktığımda,</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CodeCheck</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">native</span> <span class="kt">boolean</span> <span class="nf">bar</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bArr</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">a</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">bar</span><span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>a() methodunda şifre kontrolü native kod (libfoo.so) içinde yapılıyor.</p>
+
+<p>Apktool ile apk’yı decompile edip .so dosyasını erişiyorum:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">.</span><span class="err">\</span><span class="n">apktool_2</span><span class="o">.</span><span class="mf">11.1</span><span class="o">.</span><span class="na">jar</span> <span class="n">d</span> <span class="o">.</span><span class="err">\</span><span class="nc">UnCrackable</span><span class="o">-</span><span class="nc">Level2</span><span class="o">.</span><span class="na">apk</span>
+<span class="nl">I:</span> <span class="nc">Using</span> <span class="nc">Apktool</span> <span class="mf">2.11</span><span class="o">.</span><span class="mi">1</span> <span class="n">on</span> <span class="nc">UnCrackable</span><span class="o">-</span><span class="nc">Level2</span><span class="o">.</span><span class="na">apk</span> <span class="n">with</span> <span class="mi">8</span> <span class="n">threads</span>
+<span class="nl">I:</span> <span class="nc">Baksmaling</span> <span class="n">classes</span><span class="o">.</span><span class="na">dex</span><span class="o">...</span>
+<span class="nl">I:</span> <span class="nc">Loading</span> <span class="n">resource</span> <span class="n">table</span><span class="o">...</span>
+<span class="nl">I:</span> <span class="nc">Decoding</span> <span class="n">file</span><span class="o">-</span><span class="n">resources</span><span class="o">...</span>
+<span class="nl">I:</span> <span class="nc">Loading</span> <span class="n">resource</span> <span class="n">table</span> <span class="n">from</span> <span class="nl">file:</span> <span class="nl">C:</span><span class="err">\</span><span class="nc">Users</span><span class="err">\</span><span class="nc">AppData</span><span class="err">\</span><span class="nc">Local</span><span class="err">\</span><span class="n">apktool</span><span class="err">\</span><span class="n">framework</span><span class="err">\</span><span class="mi">1</span><span class="o">.</span><span class="na">apk</span>
+<span class="nl">I:</span> <span class="nc">Decoding</span> <span class="n">values</span> <span class="o">*/*</span> <span class="nc">XMLs</span><span class="o">...</span>
+<span class="nl">I:</span> <span class="nc">Decoding</span> <span class="nc">AndroidManifest</span><span class="o">.</span><span class="na">xml</span> <span class="n">with</span> <span class="n">resources</span><span class="o">...</span>
+<span class="nl">I:</span> <span class="nc">Regular</span> <span class="n">manifest</span> <span class="kn">package</span><span class="nn">...</span>
+<span class="nl">I:</span> <span class="nc">Copying</span> <span class="n">original</span> <span class="n">files</span><span class="o">...</span>
+<span class="nl">I:</span> <span class="nc">Copying</span> <span class="n">lib</span><span class="o">...</span>
+<span class="nl">I:</span> <span class="nc">Copying</span> <span class="n">unknown</span> <span class="n">files</span><span class="o">...</span>
+</code></pre></div></div>
+
+<p>lib dosyasının içindeki .so dosyalarından kendi cihazımın mimarisine uygun olan .so dosyasını Ghidra ile açılıyorum.</p>
+
+<p><img src="/assets/posts/uncrackable2/image (10).png" width="700" /></p>
+
+<p><img src="/assets/posts/uncrackable2/image (11).png" width="600" /></p>
+
+<p>CodeCheck isimli fonksiyonu bulup içine bakıyorum.</p>
+
+<p><img src="/assets/posts/uncrackable2/image (12).png" width="600" /></p>
+
+<p>Ghidra çıktısından secret key’i buldum.</p>
+
+<p><img src="/assets/posts/uncrackable2/image (13).png" width="700" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">builtin_strncpy</span><span class="o">(</span><span class="n">local_38</span><span class="o">,</span><span class="s">"Thanks for all the fish"</span><span class="o">,</span><span class="mh">0x18</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Native kod, girilen stringi <strong>“Thanks for all the fish”</strong> ile karşılaştırıyor.</p>
+
+<p><img src="/assets/posts/uncrackable2/image (14).png" width="400" /></p>
+
+<p>Script: <a href="https://github.com/grgnes/Owasp-Uncrackable-Levels">Yazdığım Script</a></p>
+
+<p>Kaynak: <a href="https://github.com/OWASP/mastg/tree/master/Crackmes/Android/Level_02">Owasp Uncrackable 2 GitHub Repository</a></p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

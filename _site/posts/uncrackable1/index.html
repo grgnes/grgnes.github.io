@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owasp Uncrackable Level 1 APK Walkthrough | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Cybersecurity Enthusiast
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/apk/">
+        APK
+    </a>
+
+    <h1>Owasp Uncrackable Level 1 APK Walkthrough</h1>
+
+    <div class="date">
+        July 28, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Mobile Security</span>
+        
+        <span>APK</span>
+        
+    </div>
+
+    <div class="post-content">
+        <p>Cihaza kurulum:</p>
+
+<p><img src="/assets/posts/uncrackable1/image.png" width="700" /></p>
+
+<p>Cihaza kurduktan sonra uygulamayı açtığımda:</p>
+
+<p><img src="/assets/posts/uncrackable1/image (1).png" width="400" /></p>
+
+<p>Dinamik analiz sırasında uygulamayı çalıştırınca aşağıdaki uyarı ile karşılaştım:</p>
+
+<p><strong>“Root detected! This is unacceptable. The app is now going to exit.”</strong></p>
+
+<p>Bu, uygulamanın runtime ortamında root kontrolü yaptığını ve root bulunduğunda uygulamayı sonlandırdığını gösterir.</p>
+
+<p>Root tespiti, tersine mühendislik ve runtime hook’lama gibi analizleri engellemek için yaygın bir önlemdir. Bu uyarıyı gördükten sonra Java kaynak kodunu (JADX çıktısını) açıp root kontrolünü yapan fonksiyonu ve tetiklenme koşullarını aramaya başladım.</p>
+
+<p>Apk’yı JADX ile açıp kodlara baktım.</p>
+
+<p><img src="/assets/posts/uncrackable1/image (2).png" width="700" /></p>
+
+<p>Tek activity ”sg.vantagepoint.uncrackable1.MainActivity”.</p>
+
+<p>MainActivity kodunu incelemeye başladığımda,</p>
+
+<p><img src="/assets/posts/uncrackable1/image (3).png" width="700" /></p>
+
+<p>onCreate ve verify methodları var:</p>
+
+<p>onCreate methodu 3 farklı root kontrolü (<code class="language-plaintext highlighter-rouge">c.a()</code>, <code class="language-plaintext highlighter-rouge">c.b()</code>, <code class="language-plaintext highlighter-rouge">c.c()</code>)  ve 1 debug (<code class="language-plaintext highlighter-rouge">b.a()</code>)  kontrolü yapıyor.</p>
+
+<p><img src="/assets/posts/uncrackable1/image (4).png" width="700" /></p>
+
+<p>Herhangi biri “true” dönerse uygulama kapanıyor.</p>
+
+<p>c.java() sınıfına baktığımızda:</p>
+
+<p><img src="/assets/posts/uncrackable1/image (5).png" width="700" /></p>
+
+<p>c.a() - Su Binary’yi arıyor:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">str</span> <span class="o">:</span> <span class="nc">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"PATH"</span><span class="o">).</span><span class="na">split</span><span class="o">(</span><span class="s">":"</span><span class="o">))</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">str</span><span class="o">,</span> <span class="s">"su"</span><span class="o">).</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Path’teki tüm dizinlerde “su” dosyası var mı diye bakıyor. Root’lu cihazlarda genelde <code class="language-plaintext highlighter-rouge">/system/xbin/su</code> gibi yerlerde bu dosya bulunur.</p>
+
+<p>c.b() - Build tag kontrolü yapıyor:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="nc">Build</span><span class="o">.</span><span class="na">TAGS</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nc">Build</span><span class="o">.</span><span class="na">TAGS</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"test-keys"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Custom ROM’lar genelde “test-keys” ile imzalanır, bunu kontrol ediyor.</p>
+
+<p>c.c() - Bilinen root dosyalarını arıyor:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">c</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">str</span> <span class="o">:</span> <span class="k">new</span> <span class="nc">String</span><span class="o">[]{</span>
+        <span class="s">"/system/app/Superuser.apk"</span><span class="o">,</span> 
+        <span class="s">"/system/xbin/daemonsu"</span><span class="o">,</span> 
+        <span class="s">"/system/etc/init.d/99SuperSUDaemon"</span><span class="o">,</span> 
+        <span class="s">"/system/bin/.ext/.su"</span><span class="o">,</span> 
+        <span class="s">"/system/etc/.has_su_daemon"</span><span class="o">,</span> 
+        <span class="s">"/system/etc/.installed_su_daemon"</span><span class="o">,</span> 
+        <span class="s">"/dev/com.koushikdutta.superuser.daemon/"</span><span class="o">})</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">str</span><span class="o">).</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+</code></pre></div></div>
+
+<p>SuperSU, Magisk gibi popüler root araçlarının bıraktığı izleri arıyor. Eğer bulursa “true” döndürüp, uygulamayı kapatıyor.</p>
+
+<p>Frida ile root detection mekanizmasını kaldırmamız gerekiyor. Öncelikle fridayı başlatıyoruz:</p>
+
+<p><img src="/assets/posts/uncrackable1/image (5).png" width="700" /></p>
+
+<p>Fridayı başlattıktan sonra scirpti yazmaya başlıyoruz.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Java</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+
+    <span class="kt">var</span> <span class="n">c</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"sg.vantagepoint.a.c"</span><span class="o">);</span>
+    <span class="o">..</span>
+<span class="o">});</span>
+</code></pre></div></div>
+
+<p>Java kodunu ve kullandığımız class’ı çağırıyoruz. Sonra sıra sıra “return true;” dönen tüm fonskiyonları “false” olucak şekilde ayarlıyoruz. Çünkü eğer return değeri true olarak dönerse, cihazın rootlu olduğunu anlayıp uygulamayı sonlandırıyor. Biz javascript scripti kullanarak frida ile araya girdiğimizde bu return değerini false olarak ayarlıyoruz ki root detection mekanizmasını manipüle edebilelim.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Java</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="n">function</span> <span class="o">()</span> <span class="o">{</span>
+
+    <span class="kt">var</span> <span class="n">c</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"sg.vantagepoint.a.c"</span><span class="o">);</span>
+
+    <span class="n">c</span><span class="o">.</span><span class="na">a</span><span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">()</span> <span class="o">{</span> <span class="c1">// su binary kontrolü yok</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">};</span>
+
+    <span class="n">c</span><span class="o">.</span><span class="na">b</span><span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">()</span> <span class="o">{</span> <span class="c1">// build tag kontrolü yok</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">};</span>
+
+     <span class="n">c</span><span class="o">.</span><span class="na">c</span><span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span> <span class="o">()</span> <span class="o">{</span> <span class="c1">// root dosya kontrolü yok</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">};</span>
+<span class="o">});</span>
+</code></pre></div></div>
+
+<p>Scriptimizi yazdıktan sonra çalıştırıyoruz:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frida</span> <span class="o">-</span><span class="no">U</span> <span class="o">-</span><span class="n">f</span> <span class="n">owasp</span><span class="o">.</span><span class="na">mstg</span><span class="o">.</span><span class="na">uncrackable1</span> <span class="o">-</span><span class="n">l</span> <span class="o">.</span><span class="err">\</span><span class="n">bypass</span><span class="o">.</span><span class="na">js</span>
+</code></pre></div></div>
+<p><img src="/assets/posts/uncrackable1/image (6).png" width="700" /></p>
+
+<p>Çalıştırdıktan sonra root detection mekanizması kalkıyor:</p>
+
+<p><img src="/assets/posts/uncrackable1/image (7).png" width="700" /></p>
+
+<p>Root detection mekanizması kalktıktan sonra bir secret string girmemiz gerekiyor.</p>
+
+<p>MainActivitydeki diğer method olan verify methoduna baktığımızda, kullanıcının input alanına yazdığı stringi alıp <code class="language-plaintext highlighter-rouge">a.a()</code> metoduyla doğruluyor ve sonuca göre başarılı veya başarısız mesajı içeren bir dialog gösteriyor:</p>
+
+<p><img src="/assets/posts/uncrackable1/image (8).png" width="400" /></p>
+
+<p>a.java() sınıfına baktığımızda:</p>
+
+<p><img src="/assets/posts/uncrackable1/image (9).png" width="400" /></p>
+
+<p>a.a(String str) :</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">a</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">bArr</span><span class="o">;</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">bArr2</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">bArr</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="na">vantagepoint</span><span class="o">.</span><span class="na">a</span><span class="o">.</span><span class="na">a</span><span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="n">b</span><span class="o">(</span><span class="s">"8d127684cbc37c17616d806cf50473cc"</span><span class="o">),</span> <span class="nc">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc="</span><span class="o">,</span> <span class="mi">0</span><span class="o">));</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="s">"CodeCheck"</span><span class="o">,</span> <span class="s">"AES error:"</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+            <span class="n">bArr</span> <span class="o">=</span> <span class="n">bArr2</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">str</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="n">bArr</span><span class="o">));</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Kullanıcının girdiği stringi, AES ile decrypt edilmiş gizli string ile karşılaştırır ve eşitse <code class="language-plaintext highlighter-rouge">true</code> döner.</p>
+
+<p>b(String str) :</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">b</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">bArr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">length</span> <span class="o">/</span> <span class="mi">2</span><span class="o">];</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">r2</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">r2</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">;</span> <span class="n">r2</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">bArr</span><span class="o">[</span><span class="n">r2</span> <span class="o">/</span> <span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">((</span><span class="nc">Character</span><span class="o">.</span><span class="na">digit</span><span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">r2</span><span class="o">),</span> <span class="mi">16</span><span class="o">)</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="o">)</span> <span class="o">+</span> <span class="nc">Character</span><span class="o">.</span><span class="na">digit</span><span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">1</span><span class="o">),</span> <span class="mi">16</span><span class="o">));</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">bArr</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Hex string’i byte array’e çevirir (örneğin “8d12” → byte array).</p>
+
+<p>yani özetle secret, Base64 + AES ile şifrelenmiş olarak APK’da saklanıyor. Kullanıcı doğru secret’i girerse <code class="language-plaintext highlighter-rouge">true</code> döner ve “Success!” mesajı görünür.</p>
+
+<p>Frida ile decrypt edilmiş halini yakalayarak bulabiliriz:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kt">var</span> <span class="n">a</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"sg.vantagepoint.uncrackable1.a"</span><span class="o">);</span>
+    
+    <span class="n">a</span><span class="o">.</span><span class="na">a</span><span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span><span class="o">(</span><span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"Girilen input: "</span> <span class="o">+</span> <span class="n">str</span><span class="o">);</span>
+        <span class="kt">var</span> <span class="n">result</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="n">str</span><span class="o">);</span>
+    
+        <span class="kt">var</span> <span class="nc">AESDecrypt</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"sg.vantagepoint.a.a"</span><span class="o">);</span>
+        <span class="kt">var</span> <span class="n">b</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">b</span><span class="o">(</span><span class="s">"8d127684cbc37c17616d806cf50473cc"</span><span class="o">);</span>
+        <span class="kt">var</span> <span class="nc">Base64</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"android.util.Base64"</span><span class="o">);</span>
+        <span class="kt">var</span> <span class="n">encrypted</span> <span class="o">=</span> <span class="nc">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc="</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+        
+        <span class="kt">var</span> <span class="n">decrypted</span> <span class="o">=</span> <span class="nc">AESDecrypt</span><span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">encrypted</span><span class="o">);</span>
+        <span class="kt">var</span> <span class="n">secret</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">decrypted</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">secret</span> <span class="o">+=</span> <span class="nc">String</span><span class="o">.</span><span class="na">fromCharCode</span><span class="o">(</span><span class="n">decrypted</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+        <span class="o">}</span>
+        
+        <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"Secret: "</span> <span class="o">+</span> <span class="n">secret</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">};</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kt">var</span> <span class="n">a</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"sg.vantagepoint.uncrackable1.a"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sg.vantagepoint.uncrackable1.a</code> adlı Java sınıfını Frida üzerinden erişilebilir hale getiriyoruz bu sınıfın methodlarına müdahale edebilmek için.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="o">.</span><span class="na">a</span><span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span><span class="o">(</span><span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"Girilen input: "</span> <span class="o">+</span> <span class="n">str</span><span class="o">);</span>
+        <span class="kt">var</span> <span class="n">result</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="n">str</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>a sınıfındaki a() methodunu hooklayıp yeniden tanımlıyoruz. Buradaki str parametresi, uygulamanın kullanıcıdan aldığı input değerini temsil ediyor. Bu kullanıcının girdiği input değerini ekrana bastırıp, daha sonra orijinal fonkiyonu(a.(str)) yeniden çalıştırıyoruz ve sonusun değerini result değişkenine atıyoruz. Buradaki sonuç değeri: true/false</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="nc">AESDecrypt</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"sg.vantagepoint.a.a"</span><span class="o">);</span>
+<span class="kt">var</span> <span class="n">b</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">b</span><span class="o">(</span><span class="s">"8d127684cbc37c17616d806cf50473cc"</span><span class="o">);</span>
+<span class="kt">var</span> <span class="nc">Base64</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"android.util.Base64"</span><span class="o">);</span>
+<span class="kt">var</span> <span class="n">encrypted</span> <span class="o">=</span> <span class="nc">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc="</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">var AESDecrypt = Java.use("sg.vantagepoint.a.a");</code> — AES çözücü sınıfını Frida üzerinden erişilebilir hale getiriyor</li>
+  <li><code class="language-plaintext highlighter-rouge">var b = this.b("8d127684cbc37c17616d806cf50473cc");</code> — verdiğin hex stringi çağırılan b(String) metoduyla byte[] (AES anahtarı) haline çeviriyor.</li>
+  <li><code class="language-plaintext highlighter-rouge">var Base64 = Java.use("android.util.Base64");</code> — Android’in Base64 yardımcı sınıfını kullanıma açıyor.</li>
+  <li><code class="language-plaintext highlighter-rouge">var encrypted = Base64.decode("5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", 0);</code> — Base64 kodlu diziyi byte[] olarak çözüyor.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">decrypted</span> <span class="o">=</span> <span class="nc">AESDecrypt</span><span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">encrypted</span><span class="o">);</span>
+        <span class="kt">var</span> <span class="n">secret</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">decrypted</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">secret</span> <span class="o">+=</span> <span class="nc">String</span><span class="o">.</span><span class="na">fromCharCode</span><span class="o">(</span><span class="n">decrypted</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+        <span class="o">}</span>
+        <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"Secret: "</span> <span class="o">+</span> <span class="n">secret</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">AESDecrypt.a(b, encrypted)</code> → <code class="language-plaintext highlighter-rouge">b</code> anahtarıyla <code class="language-plaintext highlighter-rouge">encrypted</code> verisini çözüyor.</li>
+  <li><code class="language-plaintext highlighter-rouge">for</code> döngüsünde, çıkan baytları tek tek karaktere çeviriyor.</li>
+  <li>Log olarak ekrana bastırıyor.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>En sonda da result değerimiz false döndüğü için “That’s not it. Try again.” mesajını alıyoruz.</li>
+</ul>
+
+<p>Sonuç olarak, konsolda hem yanlış verdiğimiz input hem de secret ortaya çıkmış oluyor.</p>
+
+<p><img src="/assets/posts/uncrackable1/image (10).png" width="700" /></p>
+
+<p><img src="/assets/posts/uncrackable1/image (11).png" width="700" /></p>
+
+<p><img src="/assets/posts/uncrackable1/image (12).png" width="700" /></p>
+
+<p>Ya da bir başka yöntemde, verilen her input’u true olarak döndürebiliriz:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kt">var</span> <span class="n">a</span> <span class="o">=</span> <span class="nc">Java</span><span class="o">.</span><span class="na">use</span><span class="o">(</span><span class="s">"sg.vantagepoint.uncrackable1.a"</span><span class="o">);</span>
+    
+    <span class="n">a</span><span class="o">.</span><span class="na">a</span><span class="o">.</span><span class="na">implementation</span> <span class="o">=</span> <span class="n">function</span><span class="o">(</span><span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">console</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="s">"Input: "</span> <span class="o">+</span> <span class="n">str</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>  
+    <span class="o">};</span> 
+</code></pre></div></div>
+
+<p><img src="/assets/posts/uncrackable1/image (13).png" width="400" /></p>
+
+<p>Script: <a href="https://github.com/grgnes/Owasp-Uncrackable-Levels">Yazdığım Script</a></p>
+
+<p>Kaynak: <a href="https://github.com/OWASP/mastg/tree/master/Crackmes/Android/Level_01">Owasp Uncrackable 2 GitHub Repository</a></p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>
