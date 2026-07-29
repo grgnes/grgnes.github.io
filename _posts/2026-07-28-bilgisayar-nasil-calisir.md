@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Bilgisayar Nasıl Çalışır?"
-date: 2026-07-28
+date: 2026-04-15
 
 category: Research
 

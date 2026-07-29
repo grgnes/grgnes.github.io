@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Siber Güvenliğe Giriş Notlarım"
-date: 2026-07-28
+date: 2024-12-18
 
 category: Research
 

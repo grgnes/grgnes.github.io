@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Metasploit"
-date: 2026-07-28
+date: 2024-12-30
 
 category: Research
 

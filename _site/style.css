@@ -368,7 +368,7 @@ img{
     width:100%;
     height:100%;
 
-    object-fit:cover;
+    object-fit:contain;
 
     transition:.3s;
 }
@@ -753,4 +753,133 @@ footer{
 
         margin-top:40px;
     }
+}
+
+/* =========================
+   CHEATSHEET
+========================= */
+
+.accordion-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.accordion{
+
+    border:1px solid #282532;
+
+    border-radius:8px;
+
+    overflow:hidden;
+
+    background:#0d0c12;
+
+}
+
+.accordion-header{
+
+    width:100%;
+
+    background:none;
+
+    color:#ececf2;
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:18px 22px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    font-size:18px;
+
+}
+
+.accordion-header:hover{
+
+    background:#14131b;
+
+}
+
+.accordion-content{
+
+    display:none;
+
+    padding:0 22px 22px;
+
+}
+
+.accordion.active .accordion-content{
+
+    display:block;
+
+}
+
+.accordion-content h2{
+
+    margin-top:25px;
+
+    font-size:24px;
+
+}
+
+.accordion-content h3{
+
+    margin-top:20px;
+
+    font-size:20px;
+
+}
+
+.accordion-content pre{
+
+    margin:18px 0;
+
+}
+
+.accordion-content ul{
+
+    padding-left:20px;
+
+}
+
+.accordion-content pre,
+.post-content pre {
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: auto;
+
+    padding: 20px;
+
+    background: #161b22;
+
+    border: 1px solid #30363d;
+
+    border-radius: 10px;
+
+    box-sizing: border-box;
+}
+
+.accordion-content pre code,
+.post-content pre code {
+    display: block;
+
+    white-space: pre;
+
+    min-width: max-content;
+
+    font-size: 15px;
+
+    line-height: 1.7;
 }

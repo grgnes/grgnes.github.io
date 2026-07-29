@@ -5,9 +5,51 @@ title: Cheat Sheets
 
 <div class="section-title">
     <span>Cheat Sheets</span>
-    <h2>Cheat Sheets</h2>
+    <h2>Quick Reference</h2>
 </div>
 
-<p>
-Cheat sheets will be added soon.
-</p>
+{% assign sheets = site.cheatsheets | sort: "order" %}
+
+<div class="accordion-list">
+
+{% for sheet in sheets %}
+
+<div class="accordion">
+
+    <button class="accordion-header">
+
+        <span>{{ sheet.title }}</span>
+
+        <span class="accordion-icon">+</span>
+
+    </button>
+
+    <div class="accordion-content">
+
+        {{ sheet.output }}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+document.querySelectorAll(".accordion-header").forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        const accordion = this.parentElement;
+
+        accordion.classList.toggle("active");
+
+        const icon = this.querySelector(".accordion-icon");
+
+        icon.textContent = accordion.classList.contains("active") ? "−" : "+";
+
+    });
+
+});
+</script>

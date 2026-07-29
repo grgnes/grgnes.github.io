@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Mobil Uygulama Güvenlik Temelleri"
-date: 2026-07-28
+date: 2025-05-09
 
 category: Research
 

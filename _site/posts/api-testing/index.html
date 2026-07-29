@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Testing | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/portswigger/">
+        PortSwigger
+    </a>
+
+    <h1>API Testing</h1>
+
+    <div class="date">
+        July 29, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>PortSwigger</span>
+        
+        <span>Web Security</span>
+        
+        <span>API</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="introduction">Introduction</h2>
+
+<p>API Testing is the process of evaluating an application’s Application Programming Interface (API) to identify security vulnerabilities and verify its functionality. It helps ensure that API endpoints handle requests securely, enforce proper authentication and authorization, and protect sensitive data from unauthorized access.</p>
+
+<h2 id="labs">Labs</h2>
+
+<h3 id="01exploiting-an-api-endpoint-using-documentation">01Exploiting an API endpoint using documentation</h3>
+
+<p>I captured the email update request in Burp Suite. I checked the API endpoint and the response. This helped me understand how the API works.</p>
+
+<p><img src="/assets/posts/apitesting/image.png" width="700" /></p>
+
+<p>I opened the API documentation. I checked the available endpoints and HTTP methods. I found the DELETE endpoint for deleting a user.</p>
+
+<p><img src="/assets/posts/apitesting/image (1).png" width="700" /></p>
+
+<p>I sent the **<code class="language-plaintext highlighter-rouge">DELETE /api/user/carlos**</code> request. The server deleted the user successfully. The lab was solved.</p>
+
+<p><img src="/assets/posts/apitesting/image (2).png" width="700" /></p>
+
+<h3 id="02-exploiting-server-side-parameter-pollution-in-a-query-string">02. Exploiting server-side parameter pollution in a query string</h3>
+
+<p>I sent the <code class="language-plaintext highlighter-rouge">administrator%26test</code> payload. I checked the error message to understand how the server handled extra parameters.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>administrator%26test -&gt; "error": "Parameter is not supported."
+</code></pre></div></div>
+
+<p><img src="/assets/posts/apitesting/image (3).png" width="700" /></p>
+
+<p>I sent the <code class="language-plaintext highlighter-rouge">administrator%26username</code> payload. The server returned the user’s email. This confirmed that <code class="language-plaintext highlighter-rouge">username</code> is a valid parameter.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>administrator%26username -&gt; {"result":"*****@normal-user.net","type":"email"}
+</code></pre></div></div>
+
+<p><img src="/assets/posts/apitesting/image (4).png" width="700" /></p>
+
+<p>I tested the <code class="language-plaintext highlighter-rouge">administrator%23</code> payload. I checked the response to understand how the <code class="language-plaintext highlighter-rouge">#</code> character affected the request.</p>
+
+<ul>
+  <li>Injection → Parameter Pollution</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>administrator%23  -&gt; "error": "Field not specified."
+</code></pre></div></div>
+
+<p><img src="/assets/posts/apitesting/image (5).png" width="700" /></p>
+
+<p>I sent the <code class="language-plaintext highlighter-rouge">administrator%26field=test%23</code> payload. I analyzed the parameter validation from the error message.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>administrator%26field=test%23 -&gt; "error":"Invalid field."
+</code></pre></div></div>
+
+<p><img src="/assets/posts/apitesting/image (6).png" width="700" /></p>
+
+<p>I used Burp Intruder to test different parameter names. I compared the server responses.</p>
+
+<p><img src="/assets/posts/apitesting/image (7).png" width="700" /></p>
+
+<p>I analyzed the results and found two valid parameters: <strong>username</strong> and <strong>email</strong>.</p>
+
+<p><img src="/assets/posts/apitesting/image (8).png" width="700" /></p>
+
+<p>I checked the JavaScript file and found the <code class="language-plaintext highlighter-rouge">reset_token</code> parameter.</p>
+
+<p><img src="/assets/posts/apitesting/image (9).png" width="700" /></p>
+
+<p>I added the <code class="language-plaintext highlighter-rouge">reset_token</code> parameter using Server-Side Parameter Pollution. The server returned the password reset link.</p>
+
+<p><img src="/assets/posts/apitesting/image (10).png" width="700" /></p>
+
+<p>I opened the password reset link. I set a new password and solved the lab.</p>
+
+<p><img src="/assets/posts/apitesting/image (11).png" width="700" /></p>
+
+<h3 id="03-finding-and-exploiting-an-unused-api-endpoint">03. Finding and exploiting an unused API endpoint</h3>
+
+<p>I captured the product request in Burp Suite. I checked the response and found the API endpoint.</p>
+
+<p><img src="/assets/posts/apitesting/image (12).png" width="700" /></p>
+
+<p>I sent a <strong>POST</strong> request. The server returned <strong>Method Not Allowed</strong> and showed the allowed methods.</p>
+
+<p><img src="/assets/posts/apitesting/image (13).png" width="700" /></p>
+
+<p>I sent a <strong>PATCH</strong> request. The response showed that only <strong>application/json</strong> is supported.</p>
+
+<p><img src="/assets/posts/apitesting/image (14).png" width="700" /></p>
+
+<p>I changed the request to <strong>application/json</strong>. I checked the new response from the server.</p>
+
+<p><img src="/assets/posts/apitesting/image (15).png" width="700" /></p>
+
+<p>I sent an empty JSON body. The server said the <strong>price</strong> parameter was missing.</p>
+
+<p><img src="/assets/posts/apitesting/image (16).png" width="700" /></p>
+
+<p>I sent the <code class="language-plaintext highlighter-rouge">price</code> parameter as text. The server expected a valid non-negative number.</p>
+
+<p><img src="/assets/posts/apitesting/image (17).png" width="700" /></p>
+
+<p>I sent the <code class="language-plaintext highlighter-rouge">price</code> parameter as a number. The API updated the product price successfully.</p>
+
+<p><img src="/assets/posts/apitesting/image (18).png" width="700" /></p>
+
+<p>I refreshed the product page. The new price was shown on the website.</p>
+
+<p><img src="/assets/posts/apitesting/image (19).png" width="700" /></p>
+
+<p>I changed the product price to <strong>0</strong>. The server accepted the request and returned the new price.</p>
+
+<p><img src="/assets/posts/apitesting/image (20).png" width="700" /></p>
+
+<p>I bought the product with the new price. The order was completed and I solved the lab.</p>
+
+<p><img src="/assets/posts/apitesting/image (21).png" width="700" /></p>
+
+<h3 id="04-exploiting-a-mass-assignment-vulnerability">04. Exploiting a mass assignment vulnerability</h3>
+
+<p>I captured the checkout request in Burp Suite. The purchase failed because of insufficient funds. I checked the API response.</p>
+
+<p><img src="/assets/posts/apitesting/image (22).png" width="700" /></p>
+
+<p>I checked the cart response. I found the <code class="language-plaintext highlighter-rouge">chosen_discount</code> object. This field looked useful for a Mass Assignment attack.</p>
+
+<p><img src="/assets/posts/apitesting/image (23).png" width="700" /></p>
+
+<p>I added the <code class="language-plaintext highlighter-rouge">chosen_discount</code> parameter to the request. I tried to change the discount value. The server processed this field.</p>
+
+<p><img src="/assets/posts/apitesting/image (24).png" width="700" /></p>
+
+<p>I sent a discount value of <strong>200</strong>. The server returned an error because the value was invalid.</p>
+
+<p><img src="/assets/posts/apitesting/image (25).png" width="700" /></p>
+
+<p>I changed the discount value to <strong>100</strong>. The server accepted the request and created the order.</p>
+
+<p><img src="/assets/posts/apitesting/image (26).png" width="700" /></p>
+
+<p>The order was completed successfully. I bought the product for free by using the Mass Assignment vulnerability. The lab was solved.</p>
+
+<h3 id="05-xploiting-server-side-parameter-pollution-in-a-rest-url">05. xploiting server-side parameter pollution in a REST URL</h3>
+
+<p>I tested the REST URL with the <code class="language-plaintext highlighter-rouge">%23</code> character. I checked the error message to understand how the server handled the URL.</p>
+
+<p><img src="/assets/posts/apitesting/image (27).png" width="700" /></p>
+
+<p>I added <code class="language-plaintext highlighter-rouge">/</code> to the end of the URL. The server returned the user information. This confirmed that I could change the URL path.</p>
+
+<p><img src="/assets/posts/apitesting/image (28).png" width="700" /></p>
+
+<p>I tested the API with <code class="language-plaintext highlighter-rouge">/../</code> path traversal. I analyzed the server responses.</p>
+
+<p><img src="/assets/posts/apitesting/image (29).png" width="700" /></p>
+
+<p>I added more path traversal sequences. The server processed the request and returned different responses.</p>
+
+<p><img src="/assets/posts/apitesting/image (30).png" width="700" /></p>
+
+<p>I accessed the <code class="language-plaintext highlighter-rouge">openapi.json</code> file. I found the API documentation and identified useful endpoints.</p>
+
+<p><img src="/assets/posts/apitesting/image (31).png" width="700" /></p>
+
+<p>I checked the JavaScript file. I found that the application uses the <code class="language-plaintext highlighter-rouge">resetToken</code> parameter.</p>
+
+<p><img src="/assets/posts/apitesting/image (32).png" width="700" /></p>
+
+<p>I used the endpoint from the API documentation. I added the <code class="language-plaintext highlighter-rouge">field=passwordResetToken</code> parameter and obtained the administrator’s reset token.</p>
+
+<p><img src="/assets/posts/apitesting/image (33).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/api/internal/v1/users/administrator/../../../../../../../../api/internal/v1/users/administrator/field/passwordResetToken#/field/email
+</code></pre></div></div>
+
+<p>I combined the endpoint with path traversal. The request returned the password reset token.</p>
+
+<p><img src="/assets/posts/apitesting/image (34).png" width="700" /></p>
+
+<p>I opened the password reset page. I set a new password and solved the lab.</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java'da Native Kod Kullanımı ve JNI Temelleri"
-date: 2026-07-28
+date: 2025-06-20
 
 category: Research
 

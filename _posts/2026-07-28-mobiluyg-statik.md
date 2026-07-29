@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Mobil Uygulama Güvenliği Statik Analiz Araçları"
-date: 2026-07-28
+date: 2025-05-12
 
 category: Research
 

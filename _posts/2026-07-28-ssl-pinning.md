@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "SSL Pinning Nedir? Frida ile Bypass Örnekleri"
-date: 2026-07-28
+date: 2025-07-15
 
 category: Research
 

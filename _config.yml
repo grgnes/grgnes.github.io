@@ -7,3 +7,8 @@ markdown: kramdown
 highlighter: rouge
 
 permalink: /posts/:title/
+
+collections:
+  cheatsheets:
+    output: false
+
