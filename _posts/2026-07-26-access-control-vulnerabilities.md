@@ -20,9 +20,6 @@ tags:
 
 Access control vulnerabilities happen when users can access pages, data, or functions they should not be able to access.
 
-
-→ **[Access Control Cheat Sheet](/cheat-sheets/access-control/)**
-
 ---
 
 ## Labs

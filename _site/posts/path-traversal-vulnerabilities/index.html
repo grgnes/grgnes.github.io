@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Traversal Vulnerabilities | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+        <link rel="icon"
+          type="image/png"
+          href="/assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/portswigger/">
+        PortSwigger
+    </a>
+
+    <h1>Path Traversal Vulnerabilities</h1>
+
+    <div class="date">
+        August 01, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>PortSwigger</span>
+        
+        <span>Web Security</span>
+        
+        <span>Path Traversal</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="introduction">Introduction</h2>
+
+<p>Path Traversal (also known as Directory Traversal) is a vulnerability that allows an attacker to read files on the server that they should not be able to access.</p>
+
+<h2 id="cheat-sheet">Cheat Sheet</h2>
+<p>Check out the related Path Traversal Cheat Sheet:
+<strong><a href="/cheat-sheets/#path-traversal">Path Traversal Cheat Sheet</a></strong></p>
+
+<h2 id="labs">Labs</h2>
+
+<h3 id="01-file-path-traversal-simple-case">01. File path traversal, simple case</h3>
+
+<p>I turned on intercept, clicked one of product and i captured the request. After forwarding it, i noticed a parameter named filename.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image.png" width="700" /></p>
+
+<p>I send the request to repeater.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (1).png" width="700" /></p>
+
+<p>When i sent to the request, the response returned the contents of the requested image.</p>
+
+<p>I wondered what would happen if I added <code class="language-plaintext highlighter-rouge">../</code> to the <code class="language-plaintext highlighter-rouge">filename</code> parameter.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (2).png" width="700" /></p>
+
+<p>The response returned  “no such file”.  I kept adding more <code class="language-plaintext highlighter-rouge">../</code> sequences, but the server continued to return the same response.</p>
+
+<p>Then i tried accessing a well-known system file by requesting <code class="language-plaintext highlighter-rouge">/etc/passwd</code>.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (3).png" width="700" /></p>
+
+<p>This time, the server returned the contents of the <code class="language-plaintext highlighter-rouge">/etc/passwd</code> file, which contains the system’s user account information. This confirmed that the application was vulnerable to path traversal, allowing access to files outside the intended directory.</p>
+
+<h3 id="02-file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass">02. File path traversal, traversal sequences blocked with absolute path bypass</h3>
+
+<p>Again i turned on intercept, clicked one of product and i captured the request. After forwarding it, i noticed a parameter named filename.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (4).png" width="700" /></p>
+
+<p>I send the request to repeater and tried adding <code class="language-plaintext highlighter-rouge">../</code> to the <code class="language-plaintext highlighter-rouge">filename</code> parameter.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (5).png" width="700" /></p>
+
+<p>The server returned the same <strong>“No such file”</strong> error. I then tried accessing a well-known system file by requesting <code class="language-plaintext highlighter-rouge">../etc/passwd</code>, but the server continued to return the same error.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (6).png" width="700" /></p>
+
+<p>Since the traversal sequences appeared to be blocked, i tried using an absolute path instead.</p>
+
+<p>This time, I requested <code class="language-plaintext highlighter-rouge">/etc/passwd</code> directly without using any <code class="language-plaintext highlighter-rouge">../</code> sequences.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (7).png" width="700" /></p>
+
+<p>The application returned the contents of the <code class="language-plaintext highlighter-rouge">/etc/passwd</code> file.</p>
+
+<h3 id="03file-path-traversal-traversal-sequences-stripped-non-recursively">03.File path traversal, traversal sequences stripped non-recursively</h3>
+
+<p>Again i turned on intercept, clicked one of product and i captured the request. After forwarding it, i noticed a parameter named filename.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (8).png" width="700" /></p>
+
+<p>When i sent the request to repeater and first tried a standard path traversal payload using <code class="language-plaintext highlighter-rouge">../</code>. However, it did not work, indicating that the application was filtering traversal sequences.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (9).png" width="700" /></p>
+
+<p>Next, I tried using a nested traversal sequence such as ….//, but the server still returned the “No such file” error.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (10).png" width="700" /></p>
+
+<p>Finally, I increased the number of nested traversal sequences until the payload successfully reached the target file.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (11).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /image?filename<span class="o">=</span>....//....//....//etc/passwd 
+</code></pre></div></div>
+
+<h3 id="04-file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode">04. File path traversal, traversal sequences stripped with superfluous URL-decode</h3>
+
+<p>Again, I captured the request and sent it to repeater.</p>
+
+<p>First, i tried a standard path traversal payload using <code class="language-plaintext highlighter-rouge">../</code>, but the application returned the same <strong>“No such file”</strong> error.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (12).png" width="700" /></p>
+
+<p>Next, i URL-encoded the traversal payload. However, the application still returned the same error, indicating that the encoded payload was being filtered as well.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (13).png" width="700" /></p>
+
+<p>Finally, i double URL-encoded the traversal sequences. This time, the application returned the contents of the <code class="language-plaintext highlighter-rouge">/etc/passwd</code> file.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (14).png" width="700" /></p>
+
+<p>In this scenario, the web server filters path traversal sequences such as <code class="language-plaintext highlighter-rouge">../</code> after decoding the request. As a result, a normally URL-encoded payload is decoded first and then blocked by the filter. This is not always handled by the backend application alone. The request may be decoded or normalized by the web server or another intermediary before it reaches the application.</p>
+
+<h3 id="05-file-path-traversal-validation-of-start-of-path">05. File path traversal, validation of start of path</h3>
+
+<p>I turned on Intercept, clicked on one of the products, and captured the request. After forwarding it, I noticed that the filename parameter contained the path /var/www/images/53.jpg.</p>
+
+<p>I sent the request to Repeater and observed that the application expected the supplied filename to start with <code class="language-plaintext highlighter-rouge">/var/www/images/</code>. Simply requesting <code class="language-plaintext highlighter-rouge">/etc/passwd</code> would not satisfy this validation.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (15).png" width="700" /></p>
+
+<p>Instead, I kept the required base path and appended traversal sequences to escape the directory:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/www/images/../../../etc/passwd
+</code></pre></div></div>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (16).png" width="700" /></p>
+
+<p>The application accepted the request because the path still started with the expected directory. However, after resolving the traversal sequences, it accessed <code class="language-plaintext highlighter-rouge">/etc/passwd</code> and returned its contents.</p>
+
+<h3 id="06-ile-path-traversal-validation-of-file-extension-with-null-byte-bypass">*06. ile path traversal, validation of file extension with null byte bypass</h3>
+
+<p>Again, I turned on Intercept, clicked on one of the products, and captured the request. After forwarding it, I noticed a parameter named <code class="language-plaintext highlighter-rouge">filename</code>.</p>
+
+<p>I sent the request to Repeater and tried a standard path traversal payload to access <code class="language-plaintext highlighter-rouge">/etc/passwd</code>. However, the application returned “No such file” because it required the supplied filename to end with the <code class="language-plaintext highlighter-rouge">.png</code> extension.</p>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (17).png" width="700" /></p>
+
+<p>To bypass this validation, I appended a <strong>URL-encoded null byte</strong> (<code class="language-plaintext highlighter-rouge">%00</code>) before the required <code class="language-plaintext highlighter-rouge">.png</code> extension:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../../../etc/passwd%00.png
+</code></pre></div></div>
+
+<p><img src="/assets/posts/path-traversal-vulnerabilities/image (18).png" width="700" /></p>
+
+<h2 id="source-code-examples">Source Code Examples</h2>
+
+<p>The vulnerable and secure backend examples used in this write-up are available on GitHub:</p>
+
+<p><strong><a href="https://github.com/grgnes/Path-Traversal-Vulnerabilities">https://github.com/grgnes/Path-Traversal-Vulnerabilities</a></strong></p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>
