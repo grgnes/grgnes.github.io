@@ -13,7 +13,7 @@ html{
 }
 
 body{
-    background:#07070b;
+    background:#0d1117;
     color:#d8d8df;
 
     font-family:
@@ -389,7 +389,7 @@ img{
 
 .post-page h1{
 
-    font-size:42px;
+    font-size:35px;
 
     line-height:1.2;
 
@@ -406,31 +406,53 @@ img{
 
     line-height:1.9;
 
-    color:#d7d7df;
+    color:#c6c8d1;
 
     overflow-wrap:anywhere;
+    
+    max-width:720px;
 }
 
 .post-content h2{
+    position:relative;
+    padding-bottom:12px;
+    margin-bottom:28px;
+}
 
-    margin-top:42px;
+.post-content h2::after{
 
-    margin-bottom:18px;
+    content:"";
 
-    font-size:34px;
+    position:absolute;
 
-    color:#f2f2f7;
+    left:0;
+
+    bottom:0;
+
+    width:70px;
+
+    height:3px;
+
+    background:#a855f7;
+
+    border-radius:30px;
+
 }
 
 .post-content h3{
 
-    margin-top:32px;
+    font-size: 24px;
 
-    margin-bottom:15px;
+    font-weight: 700;
 
-    font-size:28px;
+    color: #ffffff;
 
-    color:#ededf5;
+    margin-top: 42px;
+
+    margin-bottom: 18px;
+
+    letter-spacing: -0.3px;
+
 }
 
 .post-content p{

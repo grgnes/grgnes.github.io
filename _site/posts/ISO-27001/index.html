@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISO 27001  | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+        <link rel="icon"
+          type="image/png"
+          href="/assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>ISO 27001 </h1>
+
+    <div class="date">
+        August 05, 2026
+    </div>
+
+    <div class="tags">
+        
+    </div>
+
+    <div class="post-content">
+        <h1 id="1-bilgi-güvenliğinin-temelleri">1. Bilgi Güvenliğinin Temelleri</h1>
+
+<h2 id="bilgi-güvenliği-nedir">Bilgi Güvenliği Nedir?</h2>
+
+<p>Bilgi güvenliği, bilgi varlıklarını korumak amacıyla politika, süreç ve kontrollerin sistematik olarak yönetilmesi.Temel amaç bilginin gizliliğini, bütünlüğünü ve erişilebilirliğini sağlamaktır. Bilgi güvenliği sadece teknik önlemlerden oluşmaz; insan, süreç ve teknolojiyi de kapsayan yönetim disiplinidir.</p>
+
+<h2 id="bilgi-güvenliği-neden-önemlidir">Bilgi Güvenliği Neden Önemlidir?</h2>
+
+<p>Eskiden siber güvenlik sadece BT departmanının işi olarak görülüyordu. Günümüzde ise veri ihlalleri, fidye yazılımları ve DDoS saldırıları milyonlarca dolarlık zararlara yol açabildiği için bilgi güvenliği artık tüm şirketi ilgilendiren bir yönetim konusudur. Bu yüzden ISO 27001, güvenliği teknik bir konu olmaktan çıkarıp kurumsal bir yönetim sistemi haline getirir.</p>
+
+<h2 id="cia-üçgeni">CIA Üçgeni</h2>
+
+<p>ISO 27001’in amacı aslında bunları korumaktır.</p>
+
+<h3 id="confidentiality-gizlilik">Confidentiality (Gizlilik)</h3>
+
+<p>Bilgiyi sadece yetkili kişiler görebilmeli.</p>
+
+<p>Örneğin;</p>
+
+<ul>
+  <li>Maaş bilgileri</li>
+  <li>Müşteri verileri</li>
+  <li>API Key</li>
+</ul>
+
+<h3 id="integrity-bütünlük">Integrity (Bütünlük)</h3>
+
+<p>Bilgi değiştirilmemiş olmalı.</p>
+
+<p>Örneğin; 100 TL’lik havale → 1000 TL olmuş. Integrity bozulmuş olur.</p>
+
+<h3 id="availability-erişilebilirlik">Availability (Erişilebilirlik)</h3>
+
+<p>İhtiyaç duyulduğunda sistem çalışmalı.</p>
+
+<p>Örneğin; DDoS saldırısı → Site kapandı. Availability bozulmuş olur.</p>
+
+<h2 id="katmanlı-savunma-defense-in-depth">Katmanlı Savunma (Defense in Depth)</h2>
+
+<p>Bilgi güvenliğinde tek bir kontrol yeterli değildir. Güvenlik, birbirini destekleyen birden fazla katmandan oluşmalıdır. Eğer bir güvenlik önlemi başarısız olursa diğerleri sistemi korumaya devam eder.</p>
+
+<p>Örneğin yalnızca firewall kullanmak yeterli değildir. Bunun yanında MFA, antivirüs, loglama, IDS/IPS ve güvenlik eğitimleri de birlikte kullanılmalıdır. ISO 27001’in kontrol mantığı da bu katmanlı yaklaşımı temel alır.</p>
+
+<h1 id="2-iso-27001-ve-bgys">2. ISO 27001 ve BGYS</h1>
+
+<h2 id="bilgi-güvenliği-yönetim-sistemi-bgys--isms">Bilgi Güvenliği Yönetim Sistemi (BGYS / ISMS)</h2>
+
+<p>BGYS, bilgi güvenliğini sistematik olarak yönetmek için oluşturulan politika, prosedür ve kontroller bütünüdür. Yani sadece teknik cihazlardan oluşmaz. Çalışan eğitimleri, erişim kuralları, tedarikçi yönetimi, olay müdahale planları ve fiziksel güvenlik de BGYS’nin parçasıdır. ISO 27001’in amacı da bu sistemi kurmaktır.</p>
+
+<h2 id="iso-27001-nedir">ISO 27001 nedir?</h2>
+
+<p>En basit tanımıyla:</p>
+
+<blockquote>
+  <p><strong>Bir şirketin bilgilerini nasıl koruyacağını anlatan yönetim standardıdır.</strong></p>
+
+</blockquote>
+
+<p><strong>Firewall nasıl kurulur? →</strong> ISO 27001’in konusu değil.</p>
+
+<p><strong>Şirket bilgilerini nasıl yönetmeli, riskleri nasıl azaltmalı? →</strong> ISO 27001’in konusu.</p>
+
+<p>Bu yüzden adına <strong>Information Security Management System (ISMS / BGYS)</strong> denir.</p>
+
+<h2 id="iso-270012022-neden-önemli">ISO 27001:2022 neden önemli?</h2>
+
+<p>Eskiden 114 kontrol vardı. Şimdi 93 kontrol var. Ama bu “Daha az güvenlik” demek değildir. Kontroller birleştirildi. Daha modern hale getirildi. Yeni konular eklendi.</p>
+
+<ul>
+  <li>Cloud</li>
+  <li>Threat Intelligence</li>
+  <li>Secure Coding</li>
+  <li>DLP</li>
+  <li>Zero Trust</li>
+</ul>
+
+<p>gibi.</p>
+
+<h3 id="dört-kontrol-kategorisi">Dört kontrol kategorisi</h3>
+
+<p>Yeni sürümde kontroller:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Organizasyonel</strong></th>
+      <th><strong>İnsan</strong></th>
+      <th><strong>Fiziksel</strong></th>
+      <th><strong>Teknolojik</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Politikalar</td>
+      <td>Farkındalık</td>
+      <td>Kartlı geçiş</td>
+      <td>Firewall</td>
+    </tr>
+    <tr>
+      <td>Roller</td>
+      <td>Eğitim</td>
+      <td>Sunucu odası</td>
+      <td>EDR</td>
+    </tr>
+    <tr>
+      <td>Süreçler</td>
+      <td>Sözleşmeler</td>
+      <td>Kamera</td>
+      <td>SIEM</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="kontrol-öznitelikleri">Kontrol Öznitelikleri</h3>
+
+<p>2022 sürümünün önemli yeniliklerinden biri de her kontrolün belirli özniteliklerle etiketlenmesidir.</p>
+
+<h4 id="i̇şlevsel-öznitelikler">İşlevsel Öznitelikler</h4>
+
+<p>Bir kontrolün ne yaptığını gösterir.</p>
+
+<ul>
+  <li><strong>Preventive</strong> → Saldırıyı önler.</li>
+  <li><strong>Detective</strong> → Olayı tespit eder.</li>
+  <li><strong>Corrective</strong> → Olay sonrası düzeltme sağlar.</li>
+</ul>
+
+<h4 id="yaşam-döngüsü-öznitelikleri">Yaşam Döngüsü Öznitelikleri</h4>
+
+<p>Kontrolün hangi aşamada devreye girdiğini gösterir.</p>
+
+<ul>
+  <li>Identify</li>
+  <li>Protect</li>
+  <li>Detect</li>
+  <li>Respond</li>
+  <li>Recover</li>
+</ul>
+
+<p>Bu yapı sayesinde kontroller NIST Cybersecurity Framework gibi diğer güvenlik çerçeveleriyle kolayca eşleştirilebilir.</p>
+
+<h2 id="iso-270012022-güncellemeleri">ISO 27001:2022 Güncellemeleri</h2>
+
+<h3 id="2022-revizyonunun-amacı">2022 Revizyonunun Amacı</h3>
+
+<p>2022 güncellemesiyle kontrol sayısı 114’ten 93’e düşürüldü. Bu güvenliğin azalması değil; benzer kontrollerin birleştirilmesi, yapı sadeleştirilmesi ve güvenli kodlama gibi güncel konular için yeni kontroller eklendi.</p>
+
+<h4 id="2022-ile-gelen-11-yeni-kontrol">2022 ile Gelen 11 Yeni Kontrol</h4>
+
+<p>2022 sürümünde modern tehditlere karşı 11 yeni kontrol eklendi.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kontrol</th>
+      <th>Amacı</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>A.5.7</strong></td>
+      <td>Tehdit İstihbaratı</td>
+    </tr>
+    <tr>
+      <td><strong>A.5.23</strong></td>
+      <td>Bulut Hizmetleri Güvenliği</td>
+    </tr>
+    <tr>
+      <td><strong>A.5.30</strong></td>
+      <td>ICT İş Sürekliliği Hazırlığı</td>
+    </tr>
+    <tr>
+      <td><strong>A.7.4</strong></td>
+      <td>Fiziksel Güvenlik İzleme</td>
+    </tr>
+    <tr>
+      <td><strong>A.8.9</strong></td>
+      <td>Konfigürasyon Yönetimi</td>
+    </tr>
+    <tr>
+      <td><strong>A.8.10</strong></td>
+      <td>Bilgi Silme</td>
+    </tr>
+    <tr>
+      <td><strong>A.8.11</strong></td>
+      <td>Veri Maskeleme</td>
+    </tr>
+    <tr>
+      <td><strong>A.8.12</strong></td>
+      <td>Veri Sızıntı Önleme (DLP)</td>
+    </tr>
+    <tr>
+      <td><strong>A.8.16</strong></td>
+      <td>İzleme Faaliyetleri</td>
+    </tr>
+    <tr>
+      <td><strong>A.8.23</strong></td>
+      <td>Web Filtreleme</td>
+    </tr>
+    <tr>
+      <td><strong>A.8.28</strong></td>
+      <td>Güvenli Kodlama</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>ISO 27001’de her kuruluş aynı kontroller uygulamaz, kontrol seçimi; sektör, kurum büyüklüğü, risk değerlendirmesi ve yasal gereklilikler dikkate alınarak yapılır. Örneğin sağlık sektöründe veri maskeleme, finans sektöründe tehdit istihbaratı, yazılım geliştiren şirketlerde ise güvenli kodlama öncelikli olabilir.</p>
+
+<p>Yeni kontroller uygulandıktan sonra bunların etkililiği KPI’larla ölçülür. Ölçüm sırasında metrikler kullanılır. Örneğin; MTTD (ortalama tespit süresi), MTTR (ortalama müdahale süresi), veri sızıntısı sayısı, denetim bulguları gibi.</p>
+
+<h4 id="2022-revizyonuyla-gelen-yeni-güvenlik-yaklaşımları">2022 Revizyonuyla Gelen Yeni Güvenlik Yaklaşımları</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kavram</th>
+      <th>Neden anlatılıyor?</th>
+      <th>İlişkili yeni kontrol</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>CTEM</strong></td>
+      <td>Tehditleri sürekli takip etmek gerekir.</td>
+      <td><strong>A.5.7 Threat Intelligence</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Cloud Sovereignty</strong></td>
+      <td>Bulut verilerinin nerede tutulduğu önemlidir.</td>
+      <td><strong>A.5.23 Cloud Security</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Zero Trust</strong></td>
+      <td>Kimseye varsayılan olarak güvenilmez.</td>
+      <td>Bulut ve modern erişim kontrollerini destekleyen yaklaşım</td>
+    </tr>
+    <tr>
+      <td><strong>Agentic AI</strong></td>
+      <td>Güvenlik süreçleri yapay zekâ ile otomatikleşiyor.</td>
+      <td><strong>A.5.7</strong> ve <strong>A.8.16 Monitoring Activities</strong></td>
+    </tr>
+    <tr>
+      <td><strong>ISMS-as-Code</strong></td>
+      <td>Güvenlik politika ve kontrollerinin kod gibi sürüm kontrollü yönetilmesini sağlar; DevSecOps yaklaşımını destekler.</td>
+      <td>Özellikle <strong>A.8.28 Secure Coding</strong> ve modern DevSecOps uygulamalarını destekleyen yaklaşım.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="annex-sl">Annex SL</h2>
+
+<p>Annex SL, ISO yönetim standartlarının ortak şablonudur. Bu sayede şirketler ISO 27001’i diğer ISO standartlarıyla birlikte daha kolay uygulayabilir.</p>
+
+<p>Hepsinde aynı ana başlıklar var:</p>
+
+<ol>
+  <li>Kapsam</li>
+  <li>Kuruluşun bağlamı</li>
+  <li>Liderlik</li>
+  <li>Planlama</li>
+  <li>Destek</li>
+  <li>Operasyon</li>
+  <li>Performans değerlendirmesi</li>
+  <li>İyileştirme</li>
+</ol>
+
+<p>Yani kalite standardını da açsan, bilgi güvenliği standardını da açsan bu ana yapı değişmiyor. Sadece içerik değişiyor.</p>
+
+<h2 id="iso-27000-ailesi">ISO 27000 Ailesi</h2>
+
+<p>ISO 27001 tek başına bir standart değildir. Bilgi güvenliğiyle ilgili birçok standarttan oluşan ISO 27000 ailesinin en önemli üyelerinden biridir. Bu ailede her standartın farklı bir görevi vardır:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Standart</th>
+      <th>Görevi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>ISO 27001</strong></td>
+      <td>Bilgi güvenliği yönetim sistemini kurar (ne yapılacağını söyler).</td>
+    </tr>
+    <tr>
+      <td><strong>ISO 27002</strong></td>
+      <td>93 gveünlik kontrollerin nasıl uygulanacağını açıklar.</td>
+    </tr>
+    <tr>
+      <td><strong>ISO 27003</strong></td>
+      <td>BGYS’nin nasıl kurulacağını gösterir.</td>
+    </tr>
+    <tr>
+      <td><strong>ISO 27004</strong></td>
+      <td>BGYS’nin performansını ölçer.</td>
+    </tr>
+    <tr>
+      <td><strong>ISO 27005</strong></td>
+      <td>Risk yönetimini açıklar.</td>
+    </tr>
+    <tr>
+      <td><strong>ISO 27006</strong></td>
+      <td>Sertifikasyon denetimlerini düzenler.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="3-iso-27001in-temel-mantığı">3. ISO 27001’in Temel Mantığı</h1>
+
+<h2 id="isonun-mantığı">ISO’nun Mantığı</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Asset                → MÜşteri verisi
+   ↓
+ Threat               → Hacker
+   ↓
+Vulnerability         → SQL Injection
+   ↓
+  Risk                → MÜşteri verisi çalınması
+   ↓
+ Control              → Güvenlik testleri
+</code></pre></div></div>
+
+<h4 id="asset-varlık"><strong>Asset (Varlık)</strong></h4>
+
+<p>ISO’da her şey bir varlıktır. Mesela laptop, sunucu, USB, müşteri bilgisi, kaynak kod, API, çalışan. Hepsi varlıktır. Çünkü şirkete değer katar.</p>
+
+<h4 id="threat-tehdit"><strong>Threat (Tehdit)</strong></h4>
+
+<p>Zarar verme potansiyeli olanlar.</p>
+
+<p>Örneğin;</p>
+
+<ul>
+  <li>Hacker</li>
+  <li>Yangın</li>
+  <li>Deprem</li>
+  <li>İçeride çalışan</li>
+  <li>Ransomware</li>
+</ul>
+
+<h4 id="vulnerability-zafiyet">Vulnerability (Zafiyet)</h4>
+
+<p>Tehdidin kullanabileceği açıklık.</p>
+
+<p>Örneğin,</p>
+
+<p>Sunucu güncel değil → Bu zafiyet oluşturur.</p>
+
+<p>Hacker → Bu tehdit oluşturur.</p>
+
+<p>Exploit → Risk gerçekleştirir.</p>
+
+<h4 id="risk">Risk</h4>
+
+<p>Her şeyi korumaya çalışılmamalı. En büyük risklerden başlanılır.</p>
+
+<p>Örneğin,</p>
+
+<p>Şirketin; Web sitesi, Personel fotoğrafları, Müşteri veritabanı var.</p>
+
+<p>Burada en riskli olan müşteri veritabanı olduğu için önce o korunmalıdır.</p>
+
+<blockquote>
+  <p>Risk = Threat + Vulnerability</p>
+
+</blockquote>
+
+<h4 id="kontrol-control">Kontrol (Control)</h4>
+
+<p>Riski azaltan her şey kontroldür.</p>
+
+<p>Mesela</p>
+
+<ul>
+  <li>MFA</li>
+  <li>Firewall</li>
+  <li>Antivirüs</li>
+  <li>Güvenlik eğitimi</li>
+  <li>Kamera</li>
+  <li>Backup</li>
+  <li>Loglama</li>
+</ul>
+
+<p>Hepsi kontroldür. Riski sıfırlamaz ama azaltır.</p>
+
+<h1 id="4-varlık-yönetimi">4. Varlık Yönetimi</h1>
+
+<h2 id="bilgi-varlıkları-ve-varlık-yönetimi">Bilgi Varlıkları ve Varlık Yönetimi</h2>
+
+<p>ISO 27001’de güvenlik, varlık envanteriyle başlar. Önce tüm bilgi varlıkları belirlenir, sonra önem derecelerine göre sınıflandırılır ve en son uygun güvenlik kontrolleri uygulanır.</p>
+
+<h4 id="bilgi-varlığı-türleri">Bilgi Varlığı Türleri:</h4>
+
+<p>ISO 27001 bilgi varlıklarını yalnızca dijital dosyalar olarak görmez.</p>
+
+<ul>
+  <li><strong>Veri:</strong> Müşteri verileri, finansal raporlar</li>
+  <li><strong>Donanım:</strong> Sunucular, laptoplar, ağ cihazları</li>
+  <li><strong>Yazılım:</strong> ERP sistemleri, mobil uygulamalar</li>
+  <li><strong>Süreç:</strong> Yedekleme prosedürü, olay müdahale planı</li>
+  <li><strong>İnsan:</strong> Sistem yöneticileri, geliştiriciler, veri sahipleri</li>
+</ul>
+
+<p>Hepsi ayrı bir bilgi varlığı olarak değerlendirilir ve envantere eklenir.</p>
+
+<h4 id="varlık-yönetimi-asset-management">Varlık Yönetimi (Asset Management)</h4>
+
+<ol>
+  <li>Önce varlıklar belirlenir. → Bilgi Varlığı</li>
+  <li>Sonra bu varlıklar listeye alınır. → Varlık Envanteri</li>
+  <li>Sonra önem dereceleri belirlenir. → Varlıkların Sınıflandırılması</li>
+  <li>Sonra hangi güvenlik özelliğinin kritik olduğu değerlendirilir. → CIA Analizi</li>
+  <li>Sonra riskler belirlenir. → Risk Değerlendirmesi</li>
+  <li>Sonra uygun kontroller uygulanır. → Güvenlik Kontrolleri</li>
+</ol>
+
+<h4 id="otomatik-envanter-yönetimi">Otomatik Envanter Yönetimi</h4>
+
+<p>Büyük kuruluşlarda envanteri Excel ile takip etmek mümkün değildir. Bu nedenle agent tabanlı keşif araçları, Active Directory entegrasyonu ve bulut taramaları kullanılarak varlıklar otomatik olarak keşfedilir ve güncel tutulur. Böylece yeni eklenen sistemler veya unutulan cihazlar da envantere dahil edilir.</p>
+
+<h4 id="varlık-sahibi-asset-owner">Varlık Sahibi (Asset Owner)</h4>
+
+<p>Her bilgi varlığının bir sahibi olmalıdır. Buradaki “sahip”, varlığı satın alan kişi değil; o varlığın korunmasından, güncelliğinden ve yönetiminden sorumlu kişi veya departmandır. Böylece her varlık için hesap verebilirlik sağlanır.</p>
+
+<h1 id="5-risk-yönetimi">5. Risk Yönetimi</h1>
+
+<h3 id="risk-tabanlı-düşünce-risk-based-thinking">Risk Tabanlı Düşünce (Risk-Based Thinking)</h3>
+
+<p>ISO 27001’de kararlar teknolojiye göre değil, riske göre verilir. Yani soru artık “hangi firewall’ı kullanılım?” değil, “hangi risk bizim için daha büyük?” olur. Bu yaklaşım sayesinde kaynakları en kritik risklere ayrılır.</p>
+
+<h3 id="risk-değerlendirme-süreci">Risk Değerlendirme Süreci</h3>
+
+<p>ISO 27001 risk değerlendirmesini sistematik olarak yapar.</p>
+
+<ol>
+  <li>Kapsam belirlenir.</li>
+  <li>Risk kriterleri ve risk iştahı belirlenir.</li>
+  <li>Riskler analiz edilir.</li>
+  <li>Risk skoru hesaplanır.</li>
+  <li>Risk işleme yöntemi seçilir.</li>
+</ol>
+
+<h3 id="risk-appetite-risk-iştahı">Risk Appetite (Risk iştahı)</h3>
+
+<p>Her riski sıfırlamak mümkün değildir. Bunun maliyeti yüksek olur. Şirket yönetimi de “biz şu seviyeye kadar olan riski kabul ediyoruz” der. Buna risk iştahı denir.</p>
+
+<h3 id="residual-risk-kalan-risk">Residual Risk (Kalan Risk)</h3>
+
+<p>Hiçbir kontrol riski tamamen ortadan kaldırmaz. Gerekli önlemler alınarak risk azaltılabilir ama sıfırlanmaz. Geriye kalan riske Residual Risk denir.</p>
+
+<h3 id="risk-i̇şleme-stratejileri">Risk İşleme Stratejileri</h3>
+
+<p>Risk belirlendikten sonra dört farklı yöntem uygulanabilir.</p>
+
+<ol>
+  <li><strong>Reduce →</strong> Kontroller uygulanarak risk azaltılır. Örneğin; MFA, firewall, şifreleme</li>
+  <li><strong>Accept →</strong> Risk düşükse ve risk iştahı içindeyse kabul edilir.</li>
+  <li><strong>Avoid →</strong> Risk oluşturan faaliyet tamamen bırakılır. Örneğin, riskli teknolojiyi hiç kullanmamak.</li>
+  <li><strong>Transfer →</strong> Risk başka tarafa aktarılır. Örneğin, outsource hizmet almak.</li>
+</ol>
+
+<h2 id="tehditler-ve-zafiyetler">Tehditler ve Zafiyetler</h2>
+
+<h3 id="tehdit-threat">Tehdit (Threat)</h3>
+
+<p>Tehdit, bilgi varlıklarına zarar verebilecek herhangi bir olay veya eylemlerdir. Tek başına risk oluşturmaz, riskin oluşması için bir zafiyetten yararlanabilmesi gerekir. Bu tehdit kaynakları insan kaynaklı örneğin içeride olan çalışan veya hacker, doğal sebeplerden örneğin sel ve deprem veya teknik arızalardan oluşabilir. Risk oluşabilmesi için hem tehdit hem zafiyet bulunması gerekir. İkisinden biri yoksa risk oluşmaz.</p>
+
+<h3 id="saldırı-vektörü-attack-vector">Saldırı Vektörü (Attack Vector)</h3>
+
+<p>Saldırı vektörü, saldırganın sisteme girmek için kullandığı yoldur. Yani tehdidin sisteme giriş kapısıdır. Bunlar zararlı yazılım, sosyal mühendislik, zero-day, ağ tabanlı saldırılar veya kimlik bilgisi sızıntısı gibi vektörler olabilir.</p>
+
+<h3 id="çok-vektörlü-saldırılar">Çok Vektörlü Saldırılar</h3>
+
+<p>Modern saldırılar genellikle tek bir yöntem kullanmaz. Birden fazla saldırı vektörü birlikte kullanılarak güvenlik katmanları aşılmaya çalışılır.</p>
+
+<p>Örneğin önce sosyal mühendislik ile ilk erişim sağlanır, ardından Living off the Land teknikleriyle ağ içinde yayılma gerçekleştirilir.</p>
+
+<h3 id="living-off-the-land-lotl">Living off the Land (LotL)</h3>
+
+<p>Saldırganın sisteme zararlı yazılım yüklemek yerine işletim sisteminin kendi araçlarını (PowerShell, WMI, PsExec vb.) kötü amaçla kullanmasıdır. Bu nedenle klasik antivirüsler tarafından tespit edilmesi daha zordur.</p>
+
+<h3 id="iso-27001-ile-tehdit-yönetimi">ISO 27001 ile Tehdit Yönetimi</h3>
+
+<p>ISO 27001, tehditleri yönetmek için sistematik bir yaklaşım sunar. Önce bilgi varlıkları belirlenir, ardından tehditler ve saldırı vektörleri analiz edilir. Risk değerlendirmesi yapıldıktan sonra uygun kontroller seçilir, SoA’da kayıt altına alınır ve süreç PDCA döngüsüyle sürekli iyileştirilir.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Bilgi Varlıkları
+        ↓
+Tehditlerin Belirlenmesi
+        ↓
+Saldırı Vektörlerinin Analizi
+        ↓
+ CIA <span class="o">(</span>GBE<span class="o">)</span> Analizi
+        ↓
+Risk Değerlendirmesi
+        ↓
+Kontrollerin Seçilmesi
+        ↓
+       SoA
+        ↓
+       PDCA
+</code></pre></div></div>
+
+<h1 id="6-süreç-yönetimi">6. Süreç Yönetimi</h1>
+
+<h2 id="süreç-yaklaşımı-process-approach">Süreç Yaklaşımı (Process Approach)</h2>
+
+<p>ISO 27001 güvenliği tek seferlik yapılan teknik işlemler olarak değil, birbirine bağlı ve sürekli çalışan süreçler olarak ele alır. Her süre. belirli girdiler alır, işler ve çıktı üretir. Böylece güvenlik faaliyetleri tekrar edilebilir, ölçülebilir ve sürekli geliştirilebilir hale gelir.</p>
+
+<p>Örnek süreçler:</p>
+
+<ul>
+  <li>Risk değerlendirmesi</li>
+  <li>Erişim yönetimi</li>
+  <li>Olay müdahalesi</li>
+  <li>Yama yönetimi</li>
+</ul>
+
+<h2 id="pdca-pukö">PDCA (PUKÖ)</h2>
+
+<p>Plan (Planla) → Do (Uygula) → Check (Kontrol et)→ Act (Düzelt)</p>
+
+<p>ve tekrar başa dönülür. ISO’da hiçbir şey “Bir kere yaptım bitti.” değildir. Sürekli iyileştirme vardır.</p>
+
+<h4 id="plan">Plan</h4>
+
+<p>Güvenlik hedeflerinin belirlendiği, risk analizinin yapıldığı ve hangi kontrollerin uygulanacağına karar verilen aşamadır.</p>
+
+<p>Örneğin, şirket müşteri veritabanını kritik varlık olarak belirler, SQL Injection riskini tespit eder ve bunu önlemek için parametreli sorgu ile WAF kullanmaya karar verir.</p>
+
+<p>├── ISO 27003 → Kurulum planı
+└── ISO 27005 → Risk değerlendirmesi</p>
+
+<h4 id="do">Do</h4>
+
+<p>Plan aşamasında belirlenen güvenlik kontrollerinin gerçek ortamda uygulandığı aşamadır.</p>
+
+<p>Örneğin, geliştiriciler parametreli sorgular kullanmaya başlar, WAF kurulumu yapılır, çalışanlara güvenlik eğitimi verilir ve MFA etkinleştirilir.</p>
+
+<p>└── ISO 27002 → Kontroller uygulanır</p>
+
+<h4 id="check">Check</h4>
+
+<p>Uygulanan kontrollerin etkili çalışıp çalışmadığının denetim, test ve ölçümlerle değerlendirildiği aşamadır.</p>
+
+<p>Örneğin, pentest yapılır ve SQL Injection açığının gerçekten kapanıp kapanmadığı test edilir. Ayrıca iç denetim ve log incelemeleriyle kontroller doğrulanır.</p>
+
+<p>└── ISO 27004 → Ölçüm ve KPI</p>
+
+<h4 id="act">Act</h4>
+
+<p>Kontrol aşamasında tespit edilen eksikliklerin giderildiği ve aynı sorunların tekrar yaşanmaması için sistemin geliştirildiği aşamadır.</p>
+
+<p>Örneğin, pentestte bir SQL Injection açığı bulunursa açık kapatılır, geliştiricilere güvenli kodlama eğitimi verilir ve kod inceleme süreci güncellenerek benzer açıkların tekrar oluşması engellenir.</p>
+
+<p>└── ISO 27003 → Düzeltici faaliyetler</p>
+
+<h1 id="7-iso-dokümanları">7. ISO Dokümanları</h1>
+
+<h3 id="soa-statement-of-applicability">SoA (Statement of Applicability)</h3>
+
+<p>Denetimde en önemli belgelerden biridir. ISO 27001:2022 içerisinde 93 kontrol bulunur. SOA, bu 93 kontrolün her biri için şirketin ne karar verdiğini gösteren belgedir. 93 kontrolün hangilerinin uygulanacağını, hangilerinin uygulanmayacağını ve bunun nedenini gösterir. Bir kontrol uygulanmıyorsa mutlaka risk değerlendirmesine dayanan geçerli bir gerekçesi olmalıdır.</p>
+
+<p>Şirketin “biz güvenliği şu şekilde sağlıyoruz” dediği resmi listesidir. Denetime gelen kişinin ilk bakacağı belgelerden biri burada bulunur.</p>
+
+<h4 id="soa-hazırlama-süreci">SoA Hazırlama Süreci</h4>
+
+<p>SoA hazırlanırken şu adımlar izlenir:</p>
+
+<ol>
+  <li>Kapsam belirlenir.</li>
+  <li>Risk değerlendirmesi yapılır.</li>
+  <li>ISO 27002 kontrolleri seçilir.</li>
+  <li>Her kontrol gerekçelendirilir.</li>
+  <li>Yönetim tarafından onaylanır ve düzenli olarak güncellenir.</li>
+</ol>
+
+<h3 id="kpi-ve-madde-91">KPI ve Madde 9.1</h3>
+
+<p>ISO 27001 sadece güvenlik önemlerin kurulmasını istemez, bunların gerçekten ise yarayıp yaramadığının da ölçülmesini ister. Bunun için KPI’lar kullanır. Ortalama olay tespit süresi, müdahale süresi, phishing başarı oranı ve yama süresi gibi metrikler düzenli olarak takip edilir. Bu ölçümler ISO 27001’in 9.1 maddesi kapsamında izlenir ve yönetim tarafından değerlendirilir.</p>
+
+<h1 id="8-sertifikasyon-süreci">8. Sertifikasyon Süreci</h1>
+
+<p>ISO 27001 sertifikası tek günde alınmaz.</p>
+
+<p>Genel süreç şöyledir:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Boşluk Analizi
+        ↓
+Dokümantasyon
+        ↓
+1. Aşama Denetim
+        ↓
+2. Aşama Denetim
+        ↓
+ISO 27001 Sertifikası
+        ↓
+Yıllık Gözetim Denetimleri
+        ↓
+3 Yıl Sonra Yeniden Sertifikasyon
+</code></pre></div></div>
+
+<p>Sertifika <strong>3 yıl</strong> geçerlidir.</p>
+
+<p>Bu süreç boyunca gözetim denetimleri yapılır.</p>
+
+<h1 id="9-iso-27001---madde-4">9. ISO 27001 - Madde 4</h1>
+
+<h2 id="madde-41--kuruluşu-ve-bağlamı-anlama">Madde 4.1 — Kuruluşu ve Bağlamı Anlama</h2>
+
+<h3 id="bağlam-context-nedir">Bağlam (Context) Nedir?</h3>
+
+<p>Bağlam, bir kuruluşu etkileyen iç ve dış faktörlerin tamamıdır. Şirket tek başına yaşamaz. Onu etkileyen; yasalar, ekonomi, çalışanlar, rakipler, teknolojilerve doğal afetler vardır. ISO da önce bunların tanımlanmasını ister, çünkü bütün risk değerlendirmesi bunun üzerine kurulur.</p>
+
+<h3 id="i̇ç-ve-dış-faktörler">İç ve Dış Faktörler</h3>
+
+<h4 id="i̇ç-faktörler">İç Faktörler</h4>
+
+<p>Kurumun kontrol edebildiği şeylerdir. Örneğin; organizasyonun yapısı, çalışanlar, finansal kaynaklar, şirket kültürü gibi.</p>
+
+<h4 id="dış-faktörler">Dış Faktörler</h4>
+
+<p>Kuruluşun değiştiremeyeceği fakat uyum sağlaması gereken şeylerdir. Örneğin; KVKK, GDPR, ekonomi, politik durum, teknoloji gibi.</p>
+
+<p>2024 güncellemesi ile ISO 27001’e yeni bir zorunluluk geldi. Kuruluşlar artık iklim değişikliğininde bilgi güvenliğine etkisini de değerlendirmek zorunda. Örneğin; sel, deprem, yangın gibi.</p>
+
+<p>Dış faktörleri analiz etmek için PESTLE analizi kullanılır.</p>
+
+<h4 id="pestle-analizi">PESTLE Analizi</h4>
+
+<p>ISO 27001, şirketin kuruluşunu tanımasını ister. DIş dünyayı tanımak içinde pestle analizi kullanılır.</p>
+
+<blockquote>
+  <p>PESTLE Analizi → Political + Economic + Social + Technological + Legal + Environmental</p>
+
+</blockquote>
+
+<p><strong>PESTLE nasıl uygulanır?</strong></p>
+
+<p>PESTLE → Riskleri Bul → Riski Hesapla → Kontrolü Seç → BGYS’de Uygula</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Adım</th>
+      <th>Ne Yapılır?</th>
+      <th>Sonuç</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. PESTLE Analizi</strong></td>
+      <td>Politik, Ekonomik, Sosyal, Teknolojik, Yasal ve Çevresel faktörleri analiz et.</td>
+      <td>Dış çevredeki fırsat ve tehditler belirlenir.</td>
+    </tr>
+    <tr>
+      <td><strong>2. Risk Analizi</strong></td>
+      <td>PESTLE’den çıkan faktörlerden risk senaryoları oluştur. Etki ve olasılığı değerlendir.</td>
+      <td>Risk puanları hesaplanır (<strong>Risk = Etki × Olasılık</strong>).</td>
+    </tr>
+    <tr>
+      <td><strong>3. Annex A Kontrolleri</strong></td>
+      <td>Hesaplanan risklere uygun ISO 27001 Annex A kontrollerini seç.</td>
+      <td>Riskleri azaltacak güvenlik kontrolleri belirlenir.</td>
+    </tr>
+    <tr>
+      <td><strong>4. BGYS (ISMS)</strong></td>
+      <td>Seçilen kontrolleri Bilgi Güvenliği Yönetim Sistemi içinde uygula, yönet ve sürekli iyileştir.</td>
+      <td>Kuruluşun bilgi güvenliği yönetim sistemi oluşturulur ve işletilir.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="yasal-gereksinimler-legal-requirements">Yasal Gereksinimler (Legal Requirements)</h4>
+
+<p>Yasal gereksinim; kanun, yönetmelik, standart gibi kuruluşun uymak zorunda olduğu kurallardır.</p>
+
+<p>ISO 27001 Madde 4.1’e göre kuruluş, faaliyet gösterdiği sektördeki tüm yasal ve düzenleyici gereksinimleri belirlemek ve takip etmek zorundadır. Yasal gereksinimler yalnızca mevcut yasaları bilmek değil, değişen mevzuatlar da sürekli takip edilmeli ve BGYS’ye entegre edilmelidir.</p>
+
+<p>Bu konu PESTLE analizindeki “Legal” bölümüdür.</p>
+
+<p><strong>Yasal düzenleme türleri:</strong></p>
+
+<ul>
+  <li>Genel Düzenlemeler → KVKK (Türkiye), GDPR (Avrupa birliği)</li>
+  <li>Sektörel Düzenlemeler</li>
+  <li>Ulusak Altyapı Standartları</li>
+</ul>
+
+<p><strong>Uyum Süreci Nasıl Yapılır?</strong></p>
+
+<ol>
+  <li>Kuruluşun tabi olduğu tüm düzenlemeleri listelenir, mevzuat belirlenir.</li>
+  <li>Her yasal gereksinim iş süreçleri ile eşleştirilir.</li>
+  <li>Her gereksinim için uyum takvimi oluşturulur.</li>
+</ol>
+
+<h4 id="swot-analizi">SWOT Analizi</h4>
+
+<p>Hem iç hem dış faktörleri değerlendirmek için SWOT analizi kullanılır. SWOT, kuruluşun mevcut durumunu analiz eder.</p>
+
+<ul>
+  <li><strong>Strengths (S)</strong> → Güçlü yönler (İç)</li>
+  <li><strong>Weaknesses (W)</strong> → Zayıf yönler (İç)</li>
+  <li><strong>Opportunities (O)</strong> → Fırsatlar (Dış)</li>
+  <li><strong>Threats (T)</strong> → Tehditler (Dış)</li>
+</ul>
+
+<p>SWOT’tan sonra TOWS gelir. TOWS, SWOT’un sonuçlarını stratejiye dönüştürür. SWOT sadece analizi yaparken, TOWS ne yapacağını belirler. SWOT tek başına karar vermez; çıktıları <strong>TOWS</strong> ile stratejiye dönüştürülür.</p>
+
+<p><strong>TOWS</strong> stratejileri:</p>
+
+<ul>
+  <li><strong>SO:</strong> Güçlü yön + Fırsat</li>
+  <li><strong>WO:</strong> Zayıf yön + Fırsat</li>
+  <li><strong>ST:</strong> Güçlü yön + Tehdit</li>
+  <li><strong>WT:</strong> Zayıf yön + Tehdit</li>
+</ul>
+
+<p><strong>SWOT Nasıl Yapılır?</strong></p>
+
+<ol>
+  <li>Varlıklar listelenilir, önce neler korunacak belirlenir.</li>
+  <li>İç faktörler belirlenir, güçlü ve zayıf yönlere bakılır.</li>
+  <li>Dış faktörler belirlenir, fırsat ve tehditlere bakılır.</li>
+  <li>Öncelendirme yapılır, her madde önem sırasına göre koyulur.</li>
+  <li>SWOT sonuçları <strong>Risk Analizi → Annex A Kontrolleri → SoA → BGYS → PDCA</strong> akışına girdi sağlar.</li>
+</ol>
+
+<h3 id="bağlam-analizi-nedir">Bağlam Analizi Nedir?</h3>
+
+<p>Bağlam analizi, kurumun bilgi güvenliğini etkileyen <strong>iç</strong> ve <strong>dış</strong> faktörleri belirleme işlemidir. Bağlam analizi yapmadan risk değerlendirmesi, varlık belirlenmesi, tehditlerin tespiti ve hangi kontrollerin gerekli olduğunu bilemeyiz. Bütün ISO 27001’in temelidir.</p>
+
+<p>Bağlam analizi sadece bir kez yapılmaz. Analiz yaşayan bir süreçtir. Yeni bir yasa, yeni teknoloji, siber saldırı gibi faktörler olursa tekrar yapılmalıdır.</p>
+
+<p>Bağlam analizinden sonra her risk CIA üçgeniyle değerlendiriliyor (Gizlilik, Bütünlük, Erişebilirlik). Riskleri herkes aynı şekilde değerlendirmelidir (1; çok düşük, 5; kritik).</p>
+
+<blockquote>
+  <p>Risk = Olasılık x Etki</p>
+
+</blockquote>
+
+<p>Örneğin; deprem olasılığı 2 ise, etkisi 5’tir. Risk bu durumda 10 olur.</p>
+
+<p>Bu yöntem her yıl aynı kullanılmalı ki eski risklerle yenileri karşılaştırılabilinsin.</p>
+
+<h4 id="bağlam-analizi-nasıl-yapılır">Bağlam Analizi Nasıl Yapılır?</h4>
+
+<p><strong>Adım 1</strong></p>
+
+<p>Şİrketin hedefleri belirlenir. Örneğin;</p>
+
+<ul>
+  <li>Şirket büyük istiyor?</li>
+  <li>Yeni pazara açılacak mı?</li>
+  <li>ISO 27701 alacak mı?</li>
+</ul>
+
+<p><strong>Adım 2</strong></p>
+
+<p>PESTEL analizi yapılır.</p>
+
+<p><strong>Adım 3</strong></p>
+
+<p>SWOT mantığıyla: güçlü yönler, zayıf yönler, fırsatlar ve tehditler yazılır.</p>
+
+<p><strong>Adım 4</strong></p>
+
+<p>Bunlardan hangileri gerçekten bilgi güvenliğini etkiliyor belirlenir. Eğer etkiliyorsa BGYS kapsamına alınır, eğer etkilemiyorsa alınmaz.</p>
+
+<h3 id="güvenlik-kültürü-security-culture">Güvenlik Kültürü (Security Culture)</h3>
+
+<p>Çalışanların bilgi güvenliği konusundaki davranışlarını, farkındalıklarını ve alışkanlıklarını ifade eder.</p>
+
+<p>Bilgi güvenliği sadece teknik kontrollerle sağlanmaz. Çalışanların güvenlik politikalarına uyması, güvenlik olaylarını raporlamasını ve güvenli davranışları benimsemesi gerekir.</p>
+
+<p>Güvenlik kültürü CLTRe Security Culture Modeli ile ölçülür:</p>
+
+<p>CLTRe modeli güvenlik kültürünü 7 boyutta değerlendirir:</p>
+
+<ul>
+  <li>Attitudes (Tutumlar)</li>
+  <li>Behaviors (Davranışlar)</li>
+  <li>Cognition (Bilgi)</li>
+  <li>Communication (İletişim)</li>
+  <li>Compliance (Uyum)</li>
+  <li>Norms (Normlar)</li>
+  <li>Responsibilities (Sorumluluklar)</li>
+</ul>
+
+<p>Başarı; KPI’lar ile takip edilir. (MFA oranı, olay raporlama, şifre yönetimi vb.)</p>
+
+<h3 id="kurumsal-hafıza-organizational-memory">Kurumsal Hafıza (Organizational Memory)</h3>
+
+<p>Kurumsal hafıza, kurumun geçmiş deneyimlerini, prosedürlerini, kararlarını ve öğrenilen dersleri saklayıp yeni çalışanlara aktarabilmesidir.</p>
+
+<p>Belgelerin bulunması tek başına yeterli değildir. Bilginin neden alındığı, nasıl uygulandığı ve geçmiş deneyimler de korunmalıdır. Aksi halde kritik bilgi, çalışan ayrıldığında kaybolabilir.</p>
+
+<p>Kurumsal hafıza üç katmandan oluşur:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Katman</th>
+      <th>İçerik</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Açık Bilgi</strong></td>
+      <td>Prosedürler, politikalar, dokümanlar</td>
+    </tr>
+    <tr>
+      <td><strong>Bağlamsal Bilgi</strong></td>
+      <td>Kararların neden alındığı, olay analizleri</td>
+    </tr>
+    <tr>
+      <td><strong>Örtük Bilgi</strong></td>
+      <td>Çalışan deneyimi, tecrübe ve sezgi</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="kurumsal-hafıza-nasıl-oluşturulur">Kurumsal Hafıza Nasıl Oluşturulur?</h4>
+
+<ol>
+  <li>Kritik bilgiler belirlenir.</li>
+  <li>Bilgi sahipleri belirlenir, bilgi kimde bulanacak.</li>
+  <li>Bilgi saklanır örneğin eğitim modülleri veya video kayıtları ile.</li>
+  <li>Bİlgi aktarılır örneğin mentorlük.</li>
+</ol>
+
+<h4 id="pdca-ile-i̇lişkisi">PDCA ile İlişkisi</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>PDCA</th>
+      <th>Yapılan İş</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Plan</strong></td>
+      <td>Güvenlik kültürü ölçülür, hedef KPI’lar belirlenir.</td>
+    </tr>
+    <tr>
+      <td><strong>Do</strong></td>
+      <td>Eğitimler ve kurumsal hafıza sistemi uygulanır.</td>
+    </tr>
+    <tr>
+      <td><strong>Check</strong></td>
+      <td>KPI’lar ve anket sonuçları takip edilir.</td>
+    </tr>
+    <tr>
+      <td><strong>Act</strong></td>
+      <td>Eksikler düzeltilir ve süreç iyileştirilir.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="madde-42--i̇lgili-tarafların-i̇htiyaç-ve-beklentiler">Madde 4.2 — İlgili Tarafların İhtiyaç ve Beklentiler</h2>
+
+<h3 id="i̇lgili-taraflar-interested-parties">İlgili Taraflar (Interested Parties)</h3>
+
+<p>ISO 27001 Madde 4.2, BGYS’yi etkileyen veya BGYS’den etkilenen tüm ilgili tarafların belirlenmesini ister.</p>
+
+<p>İlgili taraf; BGYS’yi etkileyebilen, BGYS’den etkilenebilen veya kendini etkilenmiş hisseden kişi ya da gruptur. Bu üç durumdan biri gerçekleşiyorsa o kişi veya grup ilgili taraf olarak değerlendirilir.</p>
+
+<p>Örneğin bu kişiler müşteriler, çalışanlar, tedarikçiler, hissedarlar veya rakipler olabilir. Bu ilgili tarafı analiz etmek içinse 3 soru sorulur: kim?, ne bekliyor? ve bu beklenti zorunlu mu isteğe mi bağlı?.</p>
+
+<p>İlgili taraf analizi doğrudan risk analizine girdi sağlar:</p>
+
+<p>İlgili Taraflar →  Beklentiler → Kapsam → Risk Analizi → Annex A Kontrolleri → BGYS</p>
+
+<h4 id="i̇lgili-taraf-analizi-nasıl-yapılır">İlgili Taraf Analizi Nasıl Yapılır?</h4>
+
+<ol>
+  <li>İlgili taraflar belirlenir ve listelenir.</li>
+  <li>İlgili sınıflar bazı kategorilere göre sınıflandırılır. Örneğin yasal sorumluluk, operasyon bağımlılığı veya itibar etkisi gibi bir ilgili taraf birden fazla kategoriye de girebilir.</li>
+  <li>Her ilgili taraf için ölçülebilir beklentiler yazılır.</li>
+</ol>
+
+<p>Örneğin;</p>
+
+<ul>
+  <li>Müşteri → Hizmet sürekliliği, veri şifreleme</li>
+  <li>Çalışan → Bilgi güvenliği eğitimi</li>
+</ul>
+
+<p>Her beklenti uygun Annex A kontrolleri ile ilişkilendirilmelidir.</p>
+
+<h2 id="madde-43--bgys-kapsamının-belirlenmesi">Madde 4.3 — BGYS Kapsamının Belirlenmesi</h2>
+
+<h3 id="bgys-kapsamı-scope">BGYS Kapsamı (Scope)</h3>
+
+<p>ISO 27001 Madde 4.3, BGYS’nin kapsamının belirlenmesini ister.</p>
+
+<p>Kapsam; hangi birimlerin, hangi lokasyonların, hangi süreçlerin, hangi varlıkların BGYS içerisinde olduğunu gösterir. Kapsam belirlenirken de 3 faktör dikkate alınır; iç faktörler, dış faktörler ve ilgili tarafların beklentileri.</p>
+
+<p>Kapsam;</p>
+
+<ul>
+  <li>Risk değerlendirmesinin temelini oluşturur.</li>
+  <li>Hangi Annex A kontrollerinin uygulanacağını belirler.</li>
+  <li>Denetimin sınırlarını çizer.</li>
+  <li>Kaynak planlamasına yön verir.</li>
+</ul>
+
+<p><strong>Kapsam belgesinde bulunması gerekenler:</strong></p>
+
+<ul>
+  <li>Kuruluş adı</li>
+  <li>Adresi</li>
+  <li>Kapsamdaki süreçler</li>
+  <li>Teknolojik varlıklar</li>
+  <li>Coğrafi sınırlar</li>
+  <li>Hariç tutulan alanların gerekçesi</li>
+</ul>
+
+<p><strong>Kapsam Nasıl Belirlenir?</strong></p>
+
+<p><strong>Adım 1</strong> → İç ve dış faktörler analiz edilir. PESTLE ve SWOT analizleri uygulanır.</p>
+
+<p><strong>Adım 2</strong> → İlgili tarafların beklentileri belirlenir.</p>
+
+<p><strong>Adım 3</strong> → Süreçler ve fiziksel sınırlar tanımlanır.</p>
+
+<p><strong>Adım 4</strong> → Dış kaynaklı hizmetler belirlenir.</p>
+
+<p>Büyük ölçekli kuruluşlarda BGYS kapsamını tek seferde yönetmek zor olabilir. Bu nedenle kapsam, <strong>Çok Fazlı Kapsam Belirleme Yaklaşımı (ÇFKY)</strong> ile daha küçük ve yönetilebilir parçalara ayrılır. ÇFKY’nin uygulanış şekli ise;</p>
+
+<p><strong>Adım 1</strong> → İç ve dış faktörler analiz edilir. PESTLE ve SWOT analizleri uygulanır.</p>
+
+<p><strong>Adım 2</strong> → İlgili tarafların belirlenir.</p>
+
+<p><strong>Adım 3 →</strong> Arayüzleri ve Bağımlılıkları Haritalanır. Örneğin API’ler, bulut sağlayıcılar belgenir.</p>
+
+<p><strong>Adım 4</strong> → Fiziksel (coğrafi konuma göre) veya mantıksal (veri akışı/fonksiyona göre) fazlar oluşturulur. Risk önceliğine göre sıralanır.</p>
+
+<p><strong>Adım 5</strong> → Denetim planı oluşturulur.</p>
+
+<p>Risk seviyesine göre;</p>
+
+<ul>
+  <li>Yüksek risk → %100 denetim</li>
+  <li>Orta risk → Kısmi denetim</li>
+  <li>Düşük risk → Örnekleme</li>
+</ul>
+
+<h4 id="dahil--hariç-tutma-kriterleri"><strong>Dahil / Hariç Tutma Kriterleri</strong></h4>
+
+<ol>
+  <li><strong>Organizasyonel Sınırlar:</strong> BGYS kapsamına dahil edilecek departmanlar, iş birimleri ve organizasyon yapısı belirlenir. (İK, Finans, Üretim vb.)</li>
+  <li><strong>Fiziksel Sınırlar:</strong> Kapsama dahil edilecek fiziksel lokasyonlar belirlenir. (Merkez ofis, şubeler, veri merkezleri, uzaktan çalışma ortamları vb.)</li>
+  <li><strong>Teknolojik Sınırlar:</strong> Korunacak bilgi sistemleri ve teknolojik altyapılar belirlenir. (Sunucular, ağlar, bulut sistemleri, uygulamalar, CRM, ERP vb.)</li>
+  <li><strong>Risk Kabul Kriterleri:</strong> Risklerin kabul edilip edilmeyeceği; <strong>finansal, operasyonel, yasal ve itibar etkisi</strong> dikkate alınarak değerlendirilir.</li>
+  <li><strong>Bilgi Sınıflandırması:</strong> Bilgiler önem derecelerine göre (Çok Gizli, Gizli, İç Kullanım, Halka Açık) sınıflandırılır ve bu sınıflandırma uygulanacak güvenlik kontrollerini belirler.</li>
+</ol>
+
+<h4 id="hariç-tutma-exclusion">Hariç Tutma (Exclusion)</h4>
+
+<p>Hariç tutma kararları <strong>risk iştahı</strong>na göre verilir. Eğer bir risk, kuruluşun risk iştahının üzerindeyse ilgili kontrol veya süreç kapsam dışı bırakılamaz; ek kontrol uygulanmalıdır. Bu kararın neden alındığı ise <strong>SoA</strong>‘da gerekçesiyle birlikte kayıt altına alınır.</p>
+
+<p><strong>Geçerli / Geçersiz Gerekçeler</strong> ise bir kontrolü veya süreci kapsam dışı bırakma nedeninin ISO 27001 tarafından kabul edilip edilmediğini gösterir.</p>
+
+<p><strong>Denetim</strong>de bakılanlarda denetçi, hariç tutma kararının doğru gerekçelendirilip belgelendirildiğini kontrol eder.</p>
+
+<h4 id="kapsam-dokümanı-scope-document">Kapsam Dokümanı (Scope Document)</h4>
+
+<p>Kapsam dokümanı, BGYS’nin hangi <strong>varlıkları, süreçleri, lokasyonları ve teknolojileri</strong> kapsadığını gösteren resmi belgedir. ISO 27001 Madde <strong>4.1 (Bağlam)</strong>, <strong>4.2 (İlgili Taraflar)</strong> ve <strong>4.3 (Kapsam)</strong> birlikte değerlendirilerek hazırlanır. Hazırlanırken <strong>SWOT, PESTLE, ilgili taraflar ve varlık envanteri</strong> dikkate alınır.</p>
+
+<p>Kapsam; <strong>Modüler, Seçici Dışlama veya Bütünsel</strong> stratejilerle belirlenebilir.</p>
+
+<ul>
+  <li><strong>Modüler:</strong> Her iş birimi için ayrı kapsam.</li>
+  <li><strong>Seçici Dışlama:</strong> Belirli alanlar gerekçesiyle kapsam dışında bırakılır.</li>
+  <li><strong>Bütünsel:</strong> Tüm organizasyon tek kapsam altında değerlendirilir.</li>
+</ul>
+
+<p>Önce <strong>varlık envanteri</strong>, ardından <strong>veri sınıflandırması</strong> yapılır. Korunacak bilgiler hassasiyetine göre sınıflandırılır: açık, iç, gizli ve çok gizli olmak üzere.</p>
+
+<p><strong>Hariç Tutma</strong> kapsam dışındaki alanları, <strong>SoA</strong> ise kapsam içindeki kontrollerin uygulanabilirliğini gösterir. Kapsam dokümanı statik değildir; önemli değişikliklerde ve en az yılda bir kez gözden geçirilip güncellenmelidir.</p>
+
+<h3 id="sözleşmesel-bilgi-güvenliği-gereksinimleri">Sözleşmesel Bilgi Güvenliği Gereksinimleri</h3>
+
+<p>Kuruluşun bilgi güvenliği sadece kendi sistemleriyle sınırlı değildir. Tedarikçiler de bilgi güvenliği risklerinin bir parçasıdır.</p>
+
+<p>Bir tedarikçide oluşan güvenlik zafiyeti kuruluşu da etkileyebilir. Örneğin veri sızıntısı gibi. Bu nedenle güvenlik gereksinimleri sözleşlemelerle güvence altına alınmalıdır.</p>
+
+<p>Bu nedenle ISO 27001, tedarikçilerle yapılan sözleşmelerde bilgi güvenliği maddelerinin bulunmasını ister. ISO 27001:2022’de tedarikçi ilişkileri <strong>5 kontrol</strong> ile yönetilir.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kontrol</th>
+      <th>Açıklama</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>A.5.19</strong></td>
+      <td>Tedarikçi ilişkilerinde bilgi güvenliği politikalarının belirlenmesi</td>
+    </tr>
+    <tr>
+      <td><strong>A.5.20</strong></td>
+      <td>Tedarikçi sözleşmelerinde bilgi güvenliği maddelerinin bulunması</td>
+    </tr>
+    <tr>
+      <td><strong>A.5.21</strong></td>
+      <td>BİT (ICT) tedarik zincirinin yönetilmesi</td>
+    </tr>
+    <tr>
+      <td><strong>A.5.22</strong></td>
+      <td>Tedarikçi hizmetlerinin izlenmesi ve düzenli gözden geçirilmesi</td>
+    </tr>
+    <tr>
+      <td><strong>A.5.23</strong></td>
+      <td>Tedarikçi hizmetlerindeki değişikliklerin yönetilmesi</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Tedarikçi kontrolleri <strong>Statement of Applicability (SoA)</strong> içerisinde yer alır.</p>
+
+<ul>
+  <li>SoA’da uygulanan kontroller belirtilir.</li>
+  <li>Bu kontroller sözleşmelere yansıtılır.</li>
+  <li>Sözleşmedeki maddeler de SoA’nın uygulama kanıtı olur.</li>
+</ul>
+
+<p><strong>Sözleşmeler Nasıl Hazırlanır?</strong></p>
+
+<p><strong>Adım 1 →</strong> Tedarikçinin erişeceği bilgi varlıklarını belirlenir.</p>
+
+<p><strong>Adım 2</strong> → Minimum güvenlik gereksinimlerini belirlenir. Örneğin A.5.20, A.8.1 gibi</p>
+
+<p><strong>Adım 3</strong> → Bu gereksinimler sözleşmeye yazılır.</p>
+
+<p><strong>Adım 4</strong> →SoA ile ilişkendirilir.</p>
+
+<p><strong>Adım 5</strong> → PDCA döngüsüyle düzenli olarak gözden geçirilir.</p>
+
+<h2 id="madde-44--bgys-süreç-yönetimi">Madde 4.4 — BGYS Süreç Yönetimi</h2>
+
+<p>BGYS’nin kapsamı belirlendikten sonra sıra bu kapsam içindeki süreçlerin yönetilmesine gelir. Bunun için önce süreçler haritalanır, ardından her sürece bir sorumlu atanır ve süreçlerin birbirleriyle nasıl etkileşim kurduğu belirlenir. Böylece BGYS sadece dokümanlardan oluşan bir yapı olmaktan çıkar, gerçekten çalışan bir sisteme dönüşür.</p>
+
+<p>Süreçleri görselleştirmek için iki yöntem kullanılır:</p>
+
+<ul>
+  <li><strong>BPMN:</strong> Sürecin nasıl ilerlediğini gösterir.</li>
+  <li><strong>SIPOC:</strong> Sürecin tedarikçisini, girdisini, çıktısını ve müşterisini gösterir.</li>
+</ul>
+
+<p>Her sürecin mutlaka bir <strong>Süreç Sahibi (Process Owner)</strong> olmalıdır.</p>
+
+<p>Süreç sahibi, sürecin performansından, risklerinden ve sürekli iyileştirilmesinden sorumludur; ancak süreci günlük olarak uygulayan kişi olmak zorunda değildir. Roller ve sorumluluklar ise <strong>RACI matrisi</strong> ile belirlenir. Burada özellikle <strong>Accountable (A)</strong> rolünün tek kişiye verilmesi gerekir.</p>
+
+<p>Her süreç bir <strong>girdi</strong> ile başlar, <strong>çıktı</strong> üretir ve diğer süreçlerle <strong>arayüzler</strong> üzerinden bilgi alışverişi yapar. Bir sürecin çıktısı çoğu zaman başka bir sürecin girdisini oluşturur. Ayrıca <strong>süreç</strong>, <em>ne ve neden yapılacağını</em>; <strong>prosedür</strong> ise <em>nasıl yapılacağını</em> açıklar.</p>
+
+<p>Son olarak süreçlerde uygulanacak ISO 27001 kontrolleri <strong>SoA</strong> ile ilişkilendirilir ve BGYS’nin etkinliği; <strong>iç denetimler</strong>, <strong>yönetim gözden geçirmeleri</strong> ve <strong>yeniden belgelendirme denetimleri</strong> ile sürekli izlenip iyileştirilir.</p>
+
+<p>BGYS’nin gerçekten çalışıp çalışmadığını anlamak için süreçler <strong>KPI’larla</strong> ölçülür. ISO 27001 Madde 9.1 kapsamında neyin, nasıl ve ne sıklıkla ölçüleceği belirlenir. Ölçüm sonuçları ise <strong>PUKÖ (PDCA)</strong> döngüsünde değerlendirilerek iyileştirme yapılır.</p>
+
+<p>Varlık envanteri yaşayan bir doküman olmalıdır. Yeni varlıklar eklendikçe veya değişiklik oldukça envanter güncellenmelidir. Bunun için <strong>otomatik keşif</strong>, <strong>manuel doğrulama</strong> ve <strong>sürekli senkronizasyon</strong> birlikte kullanılır. Güncelleme sıklığı ise varlığın <strong>CIA (Gizlilik, Bütünlük, Erişilebilirlik)</strong> önemine göre belirlenir.</p>
+
+<p>Sistemlerde yapılacak her değişiklik kontrollü şekilde yönetilmelidir. Önce değişiklik talebi oluşturulur, risk analizi yapılır, gerekli onaylar alınır, test edilir ve ardından uygulanır. Süreç sonunda sonuçlar izlenir ve dokümante edilir. Değişiklikler <strong>Standart, Normal ve Acil</strong> olarak sınıflandırılır ve tüm süreç <strong>PUKÖ</strong> mantığıyla sürekli geliştirilir. Bulut ortamlarında ise <strong>paylaşımlı sorumluluk modeli</strong> dikkate alınmalıdır.</p>
+
+<h4 id="genel-özet-akışı">Genel Özet Akışı</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BGYS Kurulur
+        │
+        ▼
+Süreçler Tanımlanır
+        │
+        ├─ Süreç Haritalama <span class="o">(</span>BPMN - SIPOC<span class="o">)</span>
+        ├─ Süreç Sahibi ve RACI
+        └─ Girdi - Çıktı - Arayüzler
+        │
+        ▼
+Süreç Performansı Ölçülür <span class="o">(</span>KPI<span class="o">)</span>
+        │
+        ▼
+Varlık Envanteri Sürekli Güncellenir
+        │
+        ▼
+Değişiklikler Kontrollü Yönetilir
+        │
+        ▼
+PUKÖ <span class="o">(</span>PDCA<span class="o">)</span> ile Sürekli İyileştirme
+</code></pre></div></div>
+
+<h1 id="10-iso-27001---madde-5">10. ISO 27001 - Madde 5</h1>
+
+<h2 id="liderlik-ve-üst-yönetimin-rolü">Liderlik ve Üst Yönetimin Rolü</h2>
+
+<p>BGYS’nin başarısı <strong>üst yönetimin liderliği ve taahhüdüne</strong> bağlıdır. Üst yönetim sadece sistemi onaylamakla kalmaz; bilgi güvenliği politikalarını belirler, gerekli kaynakları sağlar, riskleri düzenli olarak gözden geçirir ve BGYS’nin sürekli iyileştirilmesini destekler. Bilgi güvenliği kurumun genel stratejisiyle uyumlu olmalıdır</p>
+
+<h2 id="madde-52--bilgi-güvenliği-politikası">Madde 5.2 – Bilgi Güvenliği Politikası</h2>
+
+<p>Bilgi güvenliği politikası, BGYS’nin en üst seviye dokümanıdır ve kuruluşun bilgi güvenliği yaklaşımını ortaya koyar. Politika; amaç, kapsam, hedefler, risk yönetimi, yasal uyum ve üst yönetim taahhüdünü içerir. Üst yönetim tarafından onaylanır, çalışanlara duyurulur, uygulanır ve en az yılda bir veya önemli değişikliklerde gözden geçirilerek güncellenir.</p>
+
+<blockquote>
+  <p>Politika yazılır → Üst yönetim onaylar → Çalışanlara duyurulur → Uygulanır → Düzenli olarak gözden geçirilip güncellenir.</p>
+
+</blockquote>
+
+<h1 id="11-iso-27001---madde-7">11. ISO 27001 - Madde 7</h1>
+
+<h2 id="yönetimin-desteği-ve-kaynak-sağlama">Yönetimin Desteği ve Kaynak Sağlama</h2>
+
+<p>Üst yönetim, BGYS’nin etkin çalışabilmesi için gerekli <strong>insan, bütçe, teknoloji ve altyapı</strong> kaynaklarını sağlamalıdır. Bunun yanında çalışanların yetkinliği artırılmalı, farkındalık eğitimleri verilmeli, iletişim planı oluşturulmalı ve BGYS dokümanları kontrol altında tutulmalıdır. Politika tek başına yeterli değildir; uygulanabilmesi için gerekli kaynakların da ayrılması gerekir.</p>
+
+<h2 id="madde-75--doküman-hiyerarşisi">Madde 7.5 – Doküman Hiyerarşisi</h2>
+
+<p>BGYS’de dokümanlar belirli bir hiyerarşiyle hazırlanır. En üstte <strong>Politika</strong>, onun altında <strong>Alt Politikalar</strong>, sonra <strong>Prosedürler</strong>, en altta ise <strong>Talimatlar ve Kontrol Listeleri</strong> bulunur. Her seviye, bir üst seviyeyi daha detaylı hale getirir.</p>
+
+<p>Politika <strong>“Ne yapılacak ve neden?”</strong> sorusunu cevaplar. Alt politikalar belirli konulara (ör. bulut güvenliği, yapay zeka güvenliği) odaklanır. Prosedürler <strong>“Nasıl, kim ve ne zaman?”</strong> sorularını açıklarken, talimatlar günlük uygulama adımlarını gösterir.</p>
+
+<p>Bu yapı sayesinde stratejik kararlar operasyonel süreçlere dönüşür ve denetimlerde politikanın gerçekten uygulandığı kanıtlanabilir. Tek başına politika yeterli değildir; onu destekleyen prosedür ve talimatlar da bulunmalıdır.</p>
+
+<blockquote>
+  <p>Politika → Alt Politika → Prosedür → Talimat/Kontrol Listesi</p>
+
+</blockquote>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>
