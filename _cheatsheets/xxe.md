@@ -85,7 +85,7 @@ order: 3
 - XML keşfi
 
 ```bash
-productId=**<test>1</test>**&storeId=1
+productId=<test>1</test>&storeId=1
 ```
 
 - SVG görsel payload
