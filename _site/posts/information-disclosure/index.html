@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Disclosure Vulnerabilities | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+        <link rel="icon"
+          type="image/png"
+          href="/assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/portswigger/">
+        PortSwigger
+    </a>
+
+    <h1>Information Disclosure Vulnerabilities</h1>
+
+    <div class="date">
+        August 12, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>PortSwigger</span>
+        
+        <span>Web Security</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="cheat-sheet">Cheat Sheet</h2>
+<p>Check out the related Information Disclosure Vulnerabilities Cheat Sheet:
+<strong><a href="/cheat-sheets/#information-disclosure">Information Disclosure Vulnerabilities Cheat Sheet</a></strong></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Information Disclosure is when an application accidentally shows sensitive or important information that it should not normally show to users.</p>
+
+<p>For example:</p>
+
+<ul>
+  <li>Error messages</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SQL syntax error near'users' at /var/www/html/login.php:42
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">.git</code> folder exposure</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://site.com/.git/
+</code></pre></div></div>
+
+<ul>
+  <li>Backup files</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/config.php
+/config.php.bak
+/config.php.old
+</code></pre></div></div>
+
+<p>This vulnerability is usually not a direct attack like RCE by itself, but it can help find other vulnerabilities.</p>
+
+<p>For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Information Disclosure
+        ↓
+Server version
+        ↓
+Used framework
+        ↓
+Research known vulnerabilities
+        ↓
+Exploit another vulnerability
+</code></pre></div></div>
+
+<h2 id="labs">Labs</h2>
+
+<h3 id="01-information-disclosure-in-error-messages"><strong>01. Information disclosure in error messages</strong></h3>
+
+<p>A normal product request is sent with the <code class="language-plaintext highlighter-rouge">productId=1</code> parameter, and the application returns a successful response.</p>
+
+<p><img src="/assets/posts/information-disclosure/image.png" width="700" /></p>
+
+<p>The error is triggered by sending an invalid value (moren) to the productId parameter.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (1).png" width="700" /></p>
+
+<p>After the error, the application returns a detailed stack trace, and Apache Struts 2.3.31 information is revealed in the response.</p>
+
+<h3 id="02-information-disclosure-on-debug-page"><strong>02. Information disclosure on debug page</strong></h3>
+
+<p>The /cgi-bin/phpinfo.php debug endpoint is discovered in the Burp Suite Site Map.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (2).png" width="700" /></p>
+
+<p>The request sent to the debug endpoint uses the correct Host value for the lab, and access to the endpoint is obtained.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (3).png" width="700" /></p>
+
+<p>The phpinfo.php response is checked, and the SECRET_KEY environment variable is exposed.</p>
+
+<h3 id="03-source-code-disclosure-via-backup-files"><strong>03. Source code disclosure via backup files</strong></h3>
+
+<p>The /backup directory is discovered by checking the robots.txt file.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (4).png" width="700" /></p>
+
+<p>When the /backup directory is accessed, a backup file named ProductTemplate.java.bak is found.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (5).png" width="700" /></p>
+
+<p>The backup file contains source code with PostgreSQL connection information and a hard-coded database password.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (6).png" width="700" /></p>
+
+<p>This part creates a connection to the PostgreSQL database:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ConnectionBuilder.from(
+"org.postgresql.Driver",    → Driver
+"postgresql",               → Database
+"localhost",                → Host
+5432,                       → Port
+"postgres",                 → username
+"postgres",
+"iv8wbubvimymef4pym7v7i7tibugd9k6"  → Password
+)
+</code></pre></div></div>
+
+<h3 id="04-authentication-bypass-via-information-disclosure"><strong>04. Authentication bypass via information disclosure</strong></h3>
+
+<p>After logging in as Wiener, the login request is sent to Repeater to start manual testing of the /login request.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (7).png" width="700" /></p>
+
+<p>The request in Repeater is changed to the /admin endpoint to try to access the admin panel. The application says that only local users can access it.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (8).png" width="700" /></p>
+
+<p>A TRACE /admin request is sent to discover the X-Custom-IP-Authorization header added to the request by the application.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (9).png" width="700" /></p>
+
+<p>The X-Custom-IP-Authorization value is changed to 127.0.0.1, making the request look like it comes from a local user.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (10).png" width="700" /></p>
+
+<p>The GET /admin request is sent with the 127.0.0.1 header, and access to the admin panel is obtained.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (11).png" width="700" /></p>
+
+<p>A request is then sent to delete the carlos user from the admin panel:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /admin/delete?username<span class="o">=</span>carlos
+</code></pre></div></div>
+
+<p><img src="/assets/posts/information-disclosure/image (12).png" width="700" /></p>
+
+<h3 id="05-information-disclosure-in-version-control-history"><strong>05. Information disclosure in version control history</strong></h3>
+
+<p>The /.git directory is found to be accessible through the URL, and the files in the Git repository are listed.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (13).png" width="700" /></p>
+
+<p>The exposed .git directory is downloaded to the local machine using the wget -r command.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget <span class="nt">-r</span> https://0abd006803bb2ec388b7a0ed00b00012.web-security-academy.net/.git/
+</code></pre></div></div>
+
+<p>The commit history and changes in the repository are viewed using the git log command.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (14).png" width="700" /></p>
+
+<p>The changes in the commits are examined in detail using git log -p, revealing the admin password that was removed in an older commit.</p>
+
+<p><img src="/assets/posts/information-disclosure/image (15).png" width="700" /></p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

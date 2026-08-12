@@ -371,7 +371,7 @@
 
     <button class="accordion-header">
 
-        <span>Path Traversal</span>
+        <span>File Uplaod</span>
 
         <span class="accordion-icon">+</span>
 
@@ -443,6 +443,47 @@ ctp
   <li><strong>Null byte / semicolon</strong> → <code class="language-plaintext highlighter-rouge">shell.php%00.jpg</code> veya <code class="language-plaintext highlighter-rouge">shell.php;.jpg</code></li>
   <li><strong>Unicode encoding</strong> → Unicode karakterlerinin decode/normalize edilmesiyle <code class="language-plaintext highlighter-rouge">.</code> gibi karakterlere dönüşmesi</li>
   <li><strong>Extension stripping</strong> → Uygulama <code class="language-plaintext highlighter-rouge">.php</code> ifadesini dosya adından siliyorsa → <code class="language-plaintext highlighter-rouge">exploit.p.phphp</code> gibi bir isimde <code class="language-plaintext highlighter-rouge">.php</code> silindikten sonra <code class="language-plaintext highlighter-rouge">.php</code> kalabilir</li>
+</ul>
+
+
+    </div>
+
+</div>
+
+
+
+<div class="accordion">
+
+    <button class="accordion-header">
+
+        <span>Information Disclosure</span>
+
+        <span class="accordion-icon">+</span>
+
+    </button>
+
+    <div class="accordion-content">
+
+        <h2 id="tips">TIPS</h2>
+
+<ul>
+  <li>Parametreye geçersiz bir değer verilerek hata tetiklenebilir. Uygulamanın döndürdüğü stack trace incelenerek uygulamaya ait hassas teknik bilgiler elde edilebilir.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">productId</span><span class="o">=</span>1 → <span class="nv">productId</span><span class="o">=</span>example
+</code></pre></div></div>
+
+<ul>
+  <li>HTML yorumları veya Site Map üzerinden gizli debug endpoint’i keşfedilebilir. <code class="language-plaintext highlighter-rouge">/cgi-bin/phpinfo.php</code> gibi debug sayfaları incelendiğinde hassas bilgiler açığa çıkabilir.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Debug endpoint → phpinfo() → SECRET_KEY
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">/robots.txt</code> incelenerek gizli dizinler keşfedilebilir. Bu dizinler incelendiğinde kaynak kod ve içerisinde hard-coded veritabanı parolası gibi hassas bilgiler açığa çıkabilir.</li>
+  <li>Login request’i Repeater’a gönderilip <code class="language-plaintext highlighter-rouge">/admin</code> endpoint’i test edilir. <code class="language-plaintext highlighter-rouge">TRACE</code> isteği ile <code class="language-plaintext highlighter-rouge">X-Custom-IP-Authorization</code> header’ı keşfi ile değer <code class="language-plaintext highlighter-rouge">127.0.0.1</code> olarak değiştirilerek admin paneline erişim sağlanabilir.</li>
+  <li><code class="language-plaintext highlighter-rouge">/.git</code> dizini erişilebilir olduğunda Git commit geçmişi incelenebilir. Eski commitlerde kaldırılmış hassas bilgiler <code class="language-plaintext highlighter-rouge">git log -p</code> ile tekrar elde edilebilir.</li>
 </ul>
 
 
