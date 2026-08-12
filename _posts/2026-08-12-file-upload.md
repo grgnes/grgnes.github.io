@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "File Upload Vulnerabilities"
-date: 2026-08-01
+date: 2026-08-12
 
 category: PortSwigger
 
