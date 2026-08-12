@@ -111,7 +111,7 @@
 
 <p>Parser bu komutu çalıştırır ve &amp;xxe; gördüğü yere dosyanın içeriğini yerleştirir. Saldırgan aslında sunucuya bana bu dosyayı oku demiş olur ve parser de bunu gerçekleştirir.</p>
 
-<h4 id="blind-xxe">Blind XXE</h4>
+<h3 id="blind-xxe">Blind XXE</h3>
 
 <p>XXE açığını bulunduğu ancak uygulamanın bana doğrudan çıktı vermediği durumdur. Aynı payload gönderilir ama response olarak sadece mesaj düşer. Örneğin <em>Stock updated successfully.</em> <strong>**veya **</strong><em>200 OK</em> gibi. Yani /etc/passwd okunmuş olsa bile çıktıyı görünmez.</p>
 
@@ -132,7 +132,7 @@
 Host: attacker.com
 </code></pre></div></div>
 
-<h4 id="dtd-nedir">DTD nedir?</h4>
+<h3 id="dtd-nedir">DTD nedir?</h3>
 
 <p>DTD (Document Type Definition), XML’e kurallar ve tanımlar eklemek için kullanılan bir yapıdır.</p>
 
@@ -162,7 +162,7 @@ Host: attacker.com
   <li>/usr/share/xml/docbook/xml-dtd-4.5/docbookx.dtd   gibi. Parser bu dosyalara erişebilir.</li>
 </ul>
 
-<h4 id="error-based-xxe">Error-Based XXE</h4>
+<h3 id="error-based-xxe">Error-Based XXE</h3>
 
 <p>Error-based XXE, XML parser’ın oluşturduğu hata mesajlarını kullanarak hassas verileri elde etme yöntemidir.</p>
 
@@ -177,12 +177,12 @@ Host: attacker.com
 
 <p>Bu durumda hassas veri uygulamanın normal cevabından değil, parser’ın oluşturduğu hata mesajından elde edilir.</p>
 
-<h4 id="xinclude-nedir">XInclude nedir?</h4>
+<h3 id="xinclude-nedir">XInclude nedir?</h3>
 
 <p>XInclude, bir XML belgesinin içine başka bir dosya veya XML belgesi eklemeye yarayan XML özelliğidir. Yani parser’a git şu dosyayı al ve buraya ekle demenin yoludur.</p>
 
 <h2 id="cheat-sheet">Cheat Sheet</h2>
-<p>Check out the related XXE Cheat Sheet:
+<p>XXE için Cheat Sheet:
 <strong><a href="/cheat-sheets/#xxe">XXE Cheat Sheet</a></strong></p>
 
 <h2 id="labs">Labs</h2>

