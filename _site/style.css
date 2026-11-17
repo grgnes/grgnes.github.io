@@ -905,3 +905,41 @@ footer{
 
     line-height: 1.7;
 }
+/* =========================
+   PROJECTS PAGE
+========================= */
+
+.content .post h3 {
+    font-size: 21px;
+    line-height: 1.4;
+    margin: 8px 0;
+}
+
+.content .post-info p {
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.content .post-info h1,
+.content .post-info h2,
+.content .post-info h3 {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+/* Internal project links */
+
+.post-content a {
+    color: #b76cff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgba(183, 108, 255, 0.4);
+    text-underline-offset: 4px;
+    transition: .2s ease;
+}
+
+.post-content a:hover {
+    color: #d9b8ff;
+    text-decoration-color: #d9b8ff;
+}

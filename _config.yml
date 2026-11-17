@@ -12,3 +12,7 @@ collections:
   cheatsheets:
     output: false
 
+  projects:
+    output: true
+    permalink: /projects/:name/
+

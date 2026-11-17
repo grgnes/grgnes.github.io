@@ -5,9 +5,46 @@ title: Projects
 
 <div class="section-title">
     <span>Projects</span>
-    <h2>Projects</h2>
+    <h2>My Projects</h2>
 </div>
 
-<p>
-Projects will be added soon.
-</p>
+{% for project in site.projects %}
+
+<article class="post">
+
+    <div class="post-info">
+
+        <span class="category">
+            {{ project.category }}
+        </span>
+
+        <h3>
+            <a href="{{ project.url | relative_url }}">
+                {{ project.title }}
+            </a>
+        </h3>
+
+        <div class="date">
+            {{ project.date | date: "%B %d, %Y" }}
+        </div>
+
+        <p>
+            {{ project.excerpt }}
+        </p>
+
+        <div class="tags">
+            {% for tag in project.tags %}
+            <span>{{ tag }}</span>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div class="post-image">
+        <img src="{{ project.image | relative_url }}"
+             alt="{{ project.title }}">
+    </div>
+
+</article>
+
+{% endfor %}

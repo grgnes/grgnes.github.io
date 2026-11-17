@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITRE ATT&CK T1078 - Valid Accounts | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+        <link rel="icon"
+          type="image/png"
+          href="/assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>MITRE ATT&CK T1078 - Valid Accounts</h1>
+
+    <div class="date">
+        November 07, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>MITRE ATT&CK</span>
+        
+        <span>Active Directory</span>
+        
+        <span>Wazuh</span>
+        
+        <span>Blue Team</span>
+        
+    </div>
+
+    <div class="post-content">
+        <p><em>TA0001 - Initial Access</em></p>
+
+<p><strong>Valid Accounts,</strong> saldırganın ele geçirdiği veya kötüye kullandığı geçerli kullanıcı hesaplarıyla bir sisteme ya da ağa erişmesidir.</p>
+
+<p>Yani saldırgan her zaman bir açığı kullanmak zorunda değildir, bazen sadece doğru kullanıcı adı ve şifreye sahip olması yeterlidir.</p>
+
+<p>Örneğin, bir şirketin Active Directory ortamında saldırganın Ahmet isimli kullanıcının parolasını ele geçirdiğini düşünelim. Saldırgan bu bilgilerle VPN veya RDP üzerinden sisteme erişebilir. Kimlik bilgileri geçerli olduğu için sistem, bu erişimi normal bir kullanıcı oturumu gibi değerlendirebilir.</p>
+
+<p>Saldırgan, normal bir kullanıcı gibi görünür.</p>
+
+<h3 id="alt-teknikleri"><strong>Alt Teknikleri</strong></h3>
+
+<p>T1078’in dört alt tekniği bulunur:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Alt teknik</th>
+      <th>Açıklama</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T1078.001</td>
+      <td>Default Accounts</td>
+      <td>Varsayılan hesapların kötüye kullanılması</td>
+    </tr>
+    <tr>
+      <td>T1078.002</td>
+      <td>Domain Accounts</td>
+      <td>Domain hesaplarının kötüye kullanılması</td>
+    </tr>
+    <tr>
+      <td>T1078.003</td>
+      <td>Local Accounts</td>
+      <td>Yerel kullanıcı hesaplarının kötüye kullanılması</td>
+    </tr>
+    <tr>
+      <td>T1078.004</td>
+      <td>Cloud Accounts</td>
+      <td>Bulut hesaplarının kötüye kullanılması</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="tespit-yöntemleri"><strong>Tespit Yöntemleri</strong></h3>
+
+<p>Saldırgan geçerli bir hesap kullandığı için tespit etmek biraz zordur ama bazı belirtilerle fark edilebilir. Örneğin:</p>
+
+<ul>
+  <li>Normalden farklı bir IP adresinden giriş yapılmışsa,</li>
+  <li>Alışılmadık saatlerde oturum açılmışsa,</li>
+  <li>Kullanıcı normalde erişemediği sistemlere bağlanmışsa,</li>
+  <li>Bir hesabın farklı bilgisayarlarda kullanılması,</li>
+  <li>Yetkili hesaplarda beklenmeyen aktivitelerin gerçekleşmesi.</li>
+</ul>
+
+<h3 id="laboratuvar-ortamı">Laboratuvar Ortamı</h3>
+
+<p>Bu senaryoda kullandığım Active Directory ve Wazuh laboratuvar ortamının kurulumunu henüz gerçekleştirmediysen, öncelikle <a href="/projects/soc-lab/"><strong>SOC Lab: MITRE ATT&amp;CK Tabanlı Saldırı Tespit ve Müdahale Laboratuvarı</strong></a> başlıklı yazıma göz atabilirsin.</p>
+
+<p>Bu laboratuvar ortamında Windows Server 2019 üzerinde Active Directory Domain Services (AD DS) yapılandırılmış, Windows 10 istemcisi domain ortamına dahil edilmiş ve Wazuh SIEM kullanılarak sistemlerden alınan güvenlik kayıtlarının merkezi olarak izlenmesi sağlanmıştır.</p>
+
+<h3 id="windows-event-log-analizi"><strong>Windows Event Log analizi</strong></h3>
+
+<p>Bu çalışmada, kurmuş olduğum Active Directory lab ortamında <code class="language-plaintext highlighter-rouge">SOCLAB.LOCAL</code> domain’ine bağlı <code class="language-plaintext highlighter-rouge">WIN10-CLIENT</code> bilgisayarını kullandım.</p>
+
+<p>Active Directory üzerinde daha önceden oluşturduğum <code class="language-plaintext highlighter-rouge">lab.user</code> domain hesabıyla WIN10-CLIENT üzerinden oturum açtım. Ardından bu oturum açma işleminin Windows Event Log kayıtlarına nasıl yansıdığını ve Wazuh tarafından nasıl toplandığını inceledim.</p>
+
+<p><img src="/assets/posts/t1078/image.png" width="700" /></p>
+
+<p>İnceleme sırasında aşağıdaki Windows Event ID değerlerini kullandım:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Event ID</th>
+      <th>Açıklama</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>4624</td>
+      <td>Başarılı oturum açma</td>
+    </tr>
+    <tr>
+      <td>4625</td>
+      <td>Başarısız oturum açma</td>
+    </tr>
+    <tr>
+      <td>4648</td>
+      <td>Açıkça belirtilen kimlik bilgileri</td>
+    </tr>
+    <tr>
+      <td>4672</td>
+      <td>Özel ayrıcalıklarla oturum açma</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="1-başarılı-oturum-açma--event-id-4624">1. Başarılı Oturum Açma – Event ID 4624</h4>
+
+<p>İlk olarak başarılı oturum açma olaylarını görüntülemek için Wazuh Threat Hunting ekranında <code class="language-plaintext highlighter-rouge">data.win.system.eventID:4624</code> sorgusu kullandım.</p>
+
+<p><img src="/assets/posts/t1078/image (1).png" width="700" /></p>
+
+<p>Sorgu sonucunda toplam 67 başarılı oturum açma olayı görüntülendi. Ancak bu kayıtların tamamı test sırasında kullandığım <code class="language-plaintext highlighter-rouge">lab.user</code> hesabına ait değildi.</p>
+
+<p>Bu nedenle incelemeyi belirli bir kullanıcıyla sınırlandırmak için <code class="language-plaintext highlighter-rouge">data.win.system.eventID:4624 AND data.win.eventdata.targetUserName:"lab.user"</code> sorgusunu kullandım.</p>
+
+<p><img src="/assets/posts/t1078/image (2).png" width="700" /></p>
+
+<p>Filtreleme sonucunda iki kayıt elde ettim:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Agent</th>
+      <th>Rule ID</th>
+      <th>Açıklama</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DC01</td>
+      <td>60106</td>
+      <td>Windows Logon Success</td>
+    </tr>
+    <tr>
+      <td>WIN10-CLIENT</td>
+      <td>60118</td>
+      <td>Windows Workstation Logon Success</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Bu sonuçlar, <code class="language-plaintext highlighter-rouge">lab.user</code> hesabıyla gerçekleştirilen test sırasında Wazuh’un hem DC01 hem de WIN10-CLIENT üzerinden başarılı oturum açma kayıtları topladığını gösteriyor.</p>
+
+<p><strong>Oturum Açma Türünün İncelenmesi</strong></p>
+
+<p>Elde ettiğim kayıtların ayrıntılarını inceleyerek <code class="language-plaintext highlighter-rouge">LogonType</code> alanını kontrol ettim. Bu alan, oturumun hangi yöntemle gerçekleştirildiğini anlamamı sağlıyor.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">2</code>: Bilgisayar başında oturum açma</li>
+  <li><code class="language-plaintext highlighter-rouge">3</code>: Ağ üzerinden erişim</li>
+  <li><code class="language-plaintext highlighter-rouge">10</code>: Uzak Masaüstü (RDP) bağlantısı</li>
+</ul>
+
+<p>Bu sayede başarılı oturum açma kayıtlarının yalnızca hangi bilgisayarda oluştuğunu değil, bağlantının nasıl gerçekleştirildiğini de inceleyebiliyorum.</p>
+
+<ul>
+  <li>
+    <p><strong>DC01:</strong> <code class="language-plaintext highlighter-rouge">LogonType 3</code> değeri, ağ üzerinden oturum açıldığını gösteriyor.</p>
+
+    <p><img src="/assets/posts/t1078/image (3).png" width="700" /></p>
+  </li>
+  <li>
+    <p><strong>WIN10-CLIENT:</strong> <code class="language-plaintext highlighter-rouge">LogonType 2</code> değeri, yerel/etkileşimli oturum açıldığını gösteriyor.</p>
+
+    <p><img src="/assets/posts/t1078/image (4).png" width="700" /></p>
+
+    <p>WIN10-CLIENT kaydında IP adresi <code class="language-plaintext highlighter-rouge">127.0.0.1</code> olarak görünüyor. Bu adres, bilgisayarın kendisini işaret eden loopback (geri döngü) adresidir.</p>
+  </li>
+</ul>
+
+<h4 id="2-başarısız-oturum-açma--event-id-4625">2. Başarısız Oturum Açma – Event ID 4625</h4>
+
+<p>Başarısız oturum açma girişimlerini incelemek için <code class="language-plaintext highlighter-rouge">data.win.system.eventID:4625</code> sorgusunu kullandım.</p>
+
+<p><img src="/assets/posts/t1078/image (5).png" width="700" /></p>
+
+<p>Bu olaylar, yanlış parola kullanımı veya geçersiz kullanıcı bilgileriyle gerçekleştirilen oturum açma girişimlerini incelemek için kullanılabilir.</p>
+
+<h4 id="3-açıkça-belirtilen-kimlik-bilgileri--event-id-4648"><strong>3. Açıkça Belirtilen Kimlik Bilgileri – Event ID 4648</strong></h4>
+
+<p>Bir işlem veya kullanıcı tarafından açıkça belirtilen kimlik bilgilerinin kullanıldığı olayları görüntülemek için <code class="language-plaintext highlighter-rouge">data.win.system.eventID:4648</code> sorgusu kullanılır.</p>
+
+<p><img src="/assets/posts/t1078/image (6).png" width="700" /></p>
+
+<p>Bu kayıtlar, normal oturum açma sürecinden farklı olarak kimlik bilgilerinin açıkça sağlandığı durumları araştırmak için kullanılabilir.</p>
+
+<p><strong>4. Özel Ayrıcalıklarla Oturum Açma – Event ID 4672</strong></p>
+
+<p>Özel sistem ayrıcalıklarıyla ilişkilendirilen oturum açma olaylarını incelemek için <code class="language-plaintext highlighter-rouge">data.win.system.eventID:4672</code> sorgusunu kullandım.</p>
+
+<p><img src="/assets/posts/t1078/image (7).png" width="700" /></p>
+
+<p>Bu olay, oturum açan hesaba özel ayrıcalıklar atandığını gösterir. Özellikle yönetici yetkilerine sahip hesapların faaliyetlerini incelerken önemlidir.</p>
+
+<h3 id="senaryonun-mitre-attck-ile-i̇lişkilendirilmesi"><strong>Senaryonun MITRE ATT&amp;CK ile İlişkilendirilmesi</strong></h3>
+
+<p>Bu çalışmada kendi Active Directory lab ortamımda oluşturduğum <code class="language-plaintext highlighter-rouge">lab.user</code> domain hesabıyla <code class="language-plaintext highlighter-rouge">WIN10-CLIENT</code> bilgisayarında oturum açtım ve Wazuh üzerinden oluşan Windows Event Log kayıtlarını inceledim.</p>
+
+<p>Bu senaryoyu MITRE ATT&amp;CK <strong>T1078.002 – Domain Accounts</strong> alt tekniğiyle ilişkilendirdim. Böylece geçerli bir domain hesabının kötüye kullanılması durumunda oluşabilecek oturum açma davranışlarını ve bu davranışların Wazuh üzerinden nasıl izlenebileceğini uygulamalı olarak incelemiş oldum.</p>
+
+<p>Testi kendi lab ortamımda, kontrollü ve meşru bir oturum açma işlemiyle gerçekleştirdim.</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

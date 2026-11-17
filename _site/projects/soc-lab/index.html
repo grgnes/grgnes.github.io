@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC Lab: MITRE ATT&CK Tabanlı Saldırı Tespit ve Müdahale Laboratuvarı | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+        <link rel="icon"
+          type="image/png"
+          href="/assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/soc-blue-team/">
+        SOC / BLUE TEAM
+    </a>
+
+    <h1>SOC Lab: MITRE ATT&CK Tabanlı Saldırı Tespit ve Müdahale Laboratuvarı</h1>
+
+    <div class="date">
+        November 01, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>Active Directory</span>
+        
+        <span>Windows Server 2019</span>
+        
+        <span>Windows 10</span>
+        
+        <span>Wazuh</span>
+        
+        <span>MITRE ATT&CK</span>
+        
+        <span>SIEM</span>
+        
+    </div>
+
+    <div class="post-content">
+        <h1 id="active-directory-windows-server-windows-10-ve-wazuh-ile-uygulamalı-soc-laboratuvarı">Active Directory, Windows Server, Windows 10 ve Wazuh ile Uygulamalı SOC Laboratuvarı</h1>
+
+<p><em>Active Directory, Windows Server, Windows 10 ve Wazuh ile Uygulamalı SOC Laboratuvarı Kurulumu</em></p>
+
+<h2 id="1-projenin-amacı"><strong>1. Projenin Amacı</strong></h2>
+
+<p>Siber güvenlik alanında özellikle Blue Team, SOC (Security Operations Center), saldırı tespiti ve olay müdahalesi konularında uygulamalı deneyim kazanmak amacıyla izole bir sanal laboratuvar ortamı oluşturmaya başladım.</p>
+
+<p>Bu projenin temel amacı, gerçek bir kurumsal ağ ortamını küçük ölçekte simüle ederek saldırıların nasıl gerçekleştirildiğini, bu saldırıların sistemlerde hangi izleri bıraktığını ve güvenlik araçları aracılığıyla nasıl tespit edilebileceğini incelemek.</p>
+
+<p>Laboratuvar içerisinde aşağıdaki teknolojileri kullanmayı planlıyorum:</p>
+
+<ul>
+  <li><strong>Windows Server 2019:</strong> Active Directory ve Domain Controller.</li>
+  <li><strong>Windows 10:</strong> Domain’e bağlı istemci bilgisayar.</li>
+  <li><strong>Wazuh:</strong> Güvenlik olaylarının merkezi olarak izlenmesi ve analizi.</li>
+  <li><strong>Sysmon:</strong> Windows üzerinde ayrıntılı sistem olaylarının kaydedilmesi.</li>
+  <li><strong>Suricata:</strong> Ağ trafiğinin izlenmesi ve saldırı tespiti.</li>
+  <li><strong>Shuffle SOAR:</strong> Güvenlik olaylarına yönelik otomatik müdahale süreçleri.</li>
+  <li><strong>MITRE ATT&amp;CK:</strong> Saldırı tekniklerinin sınıflandırılması ve senaryoların oluşturulması.</li>
+</ul>
+
+<p>Projenin sonunda, bir saldırının başlangıcından tespit edilmesine ve müdahale edilmesine kadar uzanan uçtan uca bir güvenlik operasyonu gerçekleştirmeyi hedefliyorum.</p>
+
+<h2 id="2-laboratuvar-mimarisi"><strong>2. Laboratuvar Mimarisi</strong></h2>
+
+<p>Laboratuvarı Fedora 44 işletim sistemi üzerinde Oracle VirtualBox kullanarak oluşturdum.</p>
+
+<p>Sanal makinelerin birbirleriyle iletişim kurabilmesi ancak fiziksel ağdan izole kalabilmesi için VirtualBox’ın Host-only Adapter özelliğini tercih ettim.</p>
+
+<p>Host-only ağ, sanal makinelerin kendi aralarında ve ana bilgisayarla iletişim kurmasını sağlar. Ancak tek başına internet erişimi sağlamaz.</p>
+
+<p><img src="/assets/posts/soc-lab/image.png" width="700" /></p>
+
+<h3 id="kullanılan-sistemler"><strong>Kullanılan sistemler</strong></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sistem</th>
+      <th>İşletim sistemi</th>
+      <th>Görevi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Host</td>
+      <td>Fedora 44</td>
+      <td>Ana bilgisayar</td>
+    </tr>
+    <tr>
+      <td>DC01</td>
+      <td>Windows Server 2019</td>
+      <td>Domain Controller</td>
+    </tr>
+    <tr>
+      <td>WIN10-CLIENT</td>
+      <td>Windows 10 Pro</td>
+      <td>Domain istemcisi</td>
+    </tr>
+    <tr>
+      <td>Wazuh</td>
+      <td>Wazuh 4.14.9 OVA</td>
+      <td>Merkezi güvenlik izleme</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="ağ-yapılandırması"><strong>Ağ yapılandırması</strong></h3>
+
+<p>Laboratuvarda kullandığım Host-only ağın adı <code class="language-plaintext highlighter-rouge">vboxnet0</code>.</p>
+
+<p>Şu ana kadar belirlediğimiz IP adresleri:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Makine</th>
+      <th>IP adresi</th>
+      <th>Açıklama</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DC01</td>
+      <td><code class="language-plaintext highlighter-rouge">192.168.56.10</code></td>
+      <td>Domain Controller</td>
+    </tr>
+    <tr>
+      <td>WIN10-CLIENT</td>
+      <td><code class="language-plaintext highlighter-rouge">192.168.56.103</code></td>
+      <td>Windows istemcisi</td>
+    </tr>
+    <tr>
+      <td>Wazuh</td>
+      <td><code class="language-plaintext highlighter-rouge">192.168.56.104</code></td>
+      <td>Wazuh sunucusu</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="3-windows-server-2019-kurulumu"><strong>3. Windows Server 2019 Kurulumu</strong></h2>
+
+<p>İlk olarak Windows Server 2019 sanal makinesini oluşturdum.</p>
+
+<p>Kurulum sırasında karşılaştığım ilk sorun, yanlışlıkla Server Core sürümünü seçmem oldu.</p>
+
+<p>Server Core, grafiksel masaüstü arayüzü bulunmayan ve ağırlıklı olarak komut satırı üzerinden yönetilen bir Windows Server kurulum seçeneğidir.</p>
+
+<p>Laboratuvarın ilk aşamasında grafiksel yönetim araçlarını kullanmak istediğim için kurulumu yeniden gerçekleştirerek <strong>Windows Server 2019 Standard Evaluation (Desktop Experience)</strong> sürümünü seçtim.</p>
+
+<p><img src="/assets/posts/soc-lab/Ekran Görüntüsü 2026-11-01 18-56-43.png" width="700" /></p>
+
+<h3 id="31-sanal-makine-kaynakları"><strong>3.1. Sanal makine kaynakları</strong></h3>
+
+<p>DC01 için kullandığım temel kaynaklar:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kaynak</th>
+      <th>Değer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RAM</td>
+      <td>4 GB</td>
+    </tr>
+    <tr>
+      <td>CPU</td>
+      <td>2 çekirdek</td>
+    </tr>
+    <tr>
+      <td>Disk</td>
+      <td>60 GB</td>
+    </tr>
+    <tr>
+      <td>Disk türü</td>
+      <td>Dinamik VDI</td>
+    </tr>
+    <tr>
+      <td>Ağ</td>
+      <td>Host-only Adapter</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Diskin dinamik olarak ayrılması sayesinde sanal disk, belirlenen maksimum boyuta kadar ihtiyaç duydukça büyüyebilir.</p>
+
+<h3 id="32-bilgisayar-adının-değiştirilmesi"><strong>3.2. Bilgisayar adının değiştirilmesi</strong></h3>
+
+<p>Windows Server kurulumundan sonra varsayılan bilgisayar adını değiştirdim.</p>
+
+<p>Yeni bilgisayar adı: DC01</p>
+
+<p>Bilgisayar adının değiştirilmesi, birden fazla sunucunun bulunduğu laboratuvar ortamında sistemlerin kolayca ayırt edilmesini sağlar.</p>
+
+<p><strong>3.3. Statik IP yapılandırması</strong></p>
+
+<p>Domain Controller olarak görev yapacak sunucunun IP adresini sabit olarak yapılandırdım.</p>
+
+<p>IPv4 ayarları:</p>
+
+<ul>
+  <li><strong>IP Address:</strong> <code class="language-plaintext highlighter-rouge">192.168.56.10</code></li>
+  <li><strong>Subnet Mask:</strong> <code class="language-plaintext highlighter-rouge">255.255.255.0</code></li>
+  <li><strong>Default Gateway:</strong> Boş</li>
+  <li><strong>Preferred DNS:</strong> <code class="language-plaintext highlighter-rouge">192.168.56.10</code></li>
+</ul>
+
+<p>Burada DNS adresinin DC01’in kendi IP adresi olarak ayarlanması önemliydi. Çünkü Active Directory, istemcilerin domain controller’ı bulabilmesi için DNS kayıtlarından yararlanır.</p>
+
+<p><strong>4. Active Directory Domain Services Kurulumu</strong></p>
+
+<p>Windows Server kurulumunu tamamladıktan sonra sıradaki adım Active Directory ortamını oluşturmaktı.</p>
+
+<p>Active Directory, Windows tabanlı kurumsal ağlarda kullanıcıların, bilgisayarların ve diğer kaynakların merkezi olarak yönetilmesini sağlayan dizin hizmetidir.</p>
+
+<p>Bu aşamada Windows Server üzerinde <strong>Active Directory Domain Services (AD DS)</strong> rolünü kurdum.</p>
+
+<p><img src="/assets/posts/soc-lab/Ekran Görüntüsü 2026-11-02 18-49-11.png" width="700" /></p>
+
+<h3 id="41-ad-ds-rolünün-yüklenmesi"><strong>4.1. AD DS rolünün yüklenmesi</strong></h3>
+
+<p>Server Manager üzerinden:</p>
+
+<ol>
+  <li>Manage menüsüne girdim.</li>
+  <li>Add Roles and Features seçeneğini açtım.</li>
+  <li>Role-based or feature-based installation seçeneğini belirledim.</li>
+  <li>DC01 sunucusunu seçtim.</li>
+  <li>Active Directory Domain Services rolünü işaretledim.</li>
+  <li>Gerekli ek özellikleri yükledim.</li>
+</ol>
+
+<p>Kurulum tamamlandıktan sonra sunucuyu Domain Controller olarak yapılandırmak için gerekli terfi işlemini gerçekleştirdim.</p>
+
+<h3 id="42-yeni-domain-oluşturulması"><strong>4.2. Yeni domain oluşturulması</strong></h3>
+
+<p>Active Directory kurulumundan sonra sunucuyu yeni bir forest oluşturacak şekilde yapılandırdım.</p>
+
+<p>Kullandığım domain adı: soclab.local</p>
+
+<p>Domain Controller’ın tam adı:  DC01.soclab.local</p>
+
+<p>Bu işlemle birlikte DC01, oluşturduğum domain ortamının merkezi yönetim sunucusu haline geldi.</p>
+
+<p><strong>4.3. DNS yapılandırması</strong></p>
+
+<p>Active Directory kurulumu sırasında DNS Server rolü de yapılandırıldı.</p>
+
+<p>DNS, domain içerisindeki bilgisayarların ve servislerin birbirlerini isimleri üzerinden bulabilmesini sağlar.</p>
+
+<p>Örneğin istemci bilgisayar, Domain Controller’ın IP adresini doğrudan bilmek yerine DNS üzerinden ilgili kayıtları sorgulayabilir.</p>
+
+<p>Bu aşamadan sonra Active Directory Users and Computers aracını kullanarak domain yapısını inceleyebildim.</p>
+
+<p><img src="/assets/posts/soc-lab/image (1).png" width="700" /></p>
+
+<p><strong>5. Active Directory Organizasyon Yapısının Oluşturulması</strong></p>
+
+<p>Domain Controller kurulumundan sonra kullanıcıları ve bilgisayarları daha düzenli yönetebilmek için Active Directory organizasyon yapısını hazırladım.</p>
+
+<p>Active Directory içerisinde varsayılan olarak gelen Users ve Computers gibi kapsayıcılar bulunuyor.</p>
+
+<p>Laboratuvarın ilerleyen aşamalarında kullanıcıları ve bilgisayarları daha düzenli yönetebilmek amacıyla ayrı Organizational Unit (OU) yapıları oluşturdum.</p>
+
+<p>Kullandığım temel yapı:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>soclab.local
+├── Users
+│   └── lab.user
+└── Workstations
+    └── WIN10-CLIENT
+</code></pre></div></div>
+
+<p>Burada:</p>
+
+<ul>
+  <li><strong>Users:</strong> Domain kullanıcı hesaplarının yönetilmesi.</li>
+  <li><strong>Workstations:</strong> Domain’e katılan istemci bilgisayarların yönetilmesi.</li>
+</ul>
+
+<p>OU yapıları, kullanıcı ve bilgisayar nesnelerini mantıksal olarak gruplandırmak ve ilerleyen aşamalarda Group Policy uygulamak için kullanılabilir.</p>
+
+<h3 id="51-domain-kullanıcısının-oluşturulması"><strong>5.1. Domain kullanıcısının oluşturulması</strong></h3>
+
+<p>Active Directory Users and Computers üzerinden yeni bir kullanıcı oluşturdum.</p>
+
+<p>Kullanıcı bilgileri:</p>
+
+<p>Username: lab.user</p>
+
+<p>Domain: soclab.local</p>
+
+<p>İlk parola denememde Active Directory’nin varsayılan parola politikası nedeniyle hata aldım.</p>
+
+<p>Domain’in parola politikası şu şekildeydi:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Politika</th>
+      <th>Değer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Minimum password length</td>
+      <td>7 karakter</td>
+    </tr>
+    <tr>
+      <td>Password complexity</td>
+      <td>Enabled</td>
+    </tr>
+    <tr>
+      <td>Enforce password history</td>
+      <td>24 parola</td>
+    </tr>
+    <tr>
+      <td>Minimum password age</td>
+      <td>1 gün</td>
+    </tr>
+    <tr>
+      <td>Maximum password age</td>
+      <td>42 gün</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Karmaşıklık politikası nedeniyle parola içerisinde farklı karakter türlerinin kullanılması gerekiyor.</p>
+
+<p>Sonunda parola kurallarına uygun bir parola belirleyerek kullanıcı hesabını başarıyla oluşturdum.</p>
+
+<p>Burada önemli nokta: Domain kullanıcı hesabı oluşturmak, istemci bilgisayarda aynı kullanıcıyla oturum açabilmek için gerekli altyapıyı sağlar.</p>
+
+<p><strong>6. Windows 10 İstemcisinin Kurulumu</strong></p>
+
+<p>Active Directory ortamını oluşturduktan sonra domain’e katılacak ikinci bir sanal makine hazırladım.</p>
+
+<p>Bu makineyi Windows 10 Pro kullanarak oluşturdum.</p>
+
+<p>Windows 10 Pro sürümünü seçmemin nedeni, Windows’un istemci sürümlerinde domain’e katılma özelliğinin Pro ve üstü sürümlerde bulunmasıdır.</p>
+
+<h3 id="61-sanal-makine-yapılandırması"><strong>6.1. Sanal makine yapılandırması</strong></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kaynak</th>
+      <th>Değer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RAM</td>
+      <td>4 GB</td>
+    </tr>
+    <tr>
+      <td>CPU</td>
+      <td>2 çekirdek</td>
+    </tr>
+    <tr>
+      <td>Disk</td>
+      <td>60 GB</td>
+    </tr>
+    <tr>
+      <td>İşletim sistemi</td>
+      <td>Windows 10 Pro</td>
+    </tr>
+    <tr>
+      <td>Ağ</td>
+      <td>Host-only Adapter</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Kurulum sırasında Microsoft hesabı yerine yerel kullanıcı hesabı oluşturdum.</p>
+
+<p>Yerel kullanıcı: clientuser</p>
+
+<p>Windows 10 kurulumu tamamlandıktan sonra sanal makinenin ağ ayarlarını kontrol ettim.</p>
+
+<h2 id="7-windows-10un-active-directory-domainine-katılması"><strong>7. Windows 10’un Active Directory Domain’ine Katılması</strong></h2>
+
+<p>Bu aşama, laboratuvarın önemli adımlarından biriydi.</p>
+
+<p>Amacım Windows 10 istemcisini oluşturduğum <code class="language-plaintext highlighter-rouge">soclab.local</code> domain’ine dahil etmekti.</p>
+
+<p>Bunun için önce istemcinin DNS ayarını değiştirdim.</p>
+
+<h3 id="71-dns-sunucusunun-değiştirilmesi"><strong>7.1. DNS sunucusunun değiştirilmesi</strong></h3>
+
+<p>Windows 10 üzerinde:</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">Win + R</code> tuşlarına bastım.</li>
+  <li><code class="language-plaintext highlighter-rouge">ncpa.cpl</code> komutunu çalıştırdım.</li>
+  <li>Ethernet bağlantısının özelliklerini açtım.</li>
+  <li>Internet Protocol Version 4 (TCP/IPv4) seçeneğine girdim.</li>
+  <li>DNS adresini manuel olarak yapılandırdım.</li>
+</ol>
+
+<p>DNS ayarı:  <code class="language-plaintext highlighter-rouge">Preferred DNS Server: 192.168.56.10</code></p>
+
+<p>Burada kullanılan adres, DC01’in IP adresidir.</p>
+
+<p>İstemcinin DNS sunucusu olarak Domain Controller’ı kullanması, Active Directory servis kayıtlarının bulunabilmesi açısından gereklidir.</p>
+
+<h3 id="72-dns-bağlantısının-test-edilmesi"><strong>7.2. DNS bağlantısının test edilmesi</strong></h3>
+
+<p>DNS yapılandırmasından sonra CMD üzerinden aşağıdaki komutu çalıştırdım:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nslookup soclab.local
+</code></pre></div></div>
+
+<p>İlk sorguda DNS request timed out mesajı görünmesine rağmen domain adı çözümlenerek aşağıdaki adres döndürüldü:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Name:    soclab.local
+Address: 192.168.56.10
+</code></pre></div></div>
+
+<p>Daha sonra Active Directory’nin LDAP servis kaydını kontrol ettim:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nslookup -type=SRV _ldap._tcp.dc._msdcs.soclab.local
+</code></pre></div></div>
+
+<p>Sorgu sonucunda aşağıdaki bilgiler elde edildi:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Service: LDAP
+Port: 389
+Target: dc01.soclab.local
+Address: 192.168.56.10
+</code></pre></div></div>
+
+<p>Bu sonuç, istemcinin Domain Controller’ın LDAP servis kaydını DNS üzerinden bulabildiğini gösterdi.</p>
+
+<h3 id="73-windows-10un-domaine-katılması"><strong>7.3. Windows 10’un domain’e katılması</strong></h3>
+
+<p>DNS yapılandırmasını tamamladıktan sonra:</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">Win + R</code> ile <code class="language-plaintext highlighter-rouge">sysdm.cpl</code> komutunu çalıştırdım.</li>
+  <li>Computer Name sekmesine girdim.</li>
+  <li>Change seçeneğine tıkladım.</li>
+  <li>Member of bölümünde Domain seçeneğini işaretledim.</li>
+  <li>Domain adı olarak <code class="language-plaintext highlighter-rouge">soclab.local</code> yazdım.</li>
+  <li>Domain’e katılma yetkisi olan Administrator hesabıyla kimlik doğrulaması yaptım.</li>
+</ol>
+
+<p>İşlem başarılı olduğunda Windows, domain’e katılımın tamamlandığını belirten mesajı gösterdi.</p>
+
+<p>Bilgisayarı yeniden başlattıktan sonra domain hesabıyla oturum açtım.</p>
+
+<h3 id="74-domain-oturumunun-doğrulanması"><strong>7.4. Domain oturumunun doğrulanması</strong></h3>
+
+<p>Domain’e katılımın gerçekten gerçekleştiğinden emin olmak için CMD üzerinden iki komut çalıştırdım.</p>
+
+<p>İlk komut:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>whoami
+</code></pre></div></div>
+
+<p>Çıktı:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>soclab\administrator
+</code></pre></div></div>
+
+<p>Daha sonra:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo %logonserver%
+</code></pre></div></div>
+
+<p>Çıktı:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\\DC01
+</code></pre></div></div>
+
+<p>Son olarak oluşturduğum standart domain kullanıcısıyla da oturum açmayı test ettim.</p>
+
+<p>Bu aşamada Windows 10 istemcisinin Active Directory ortamına başarıyla katıldığını doğrulamış oldum.</p>
+
+<h2 id="8-wazuh-kurulumu"><strong>8. Wazuh Kurulumu</strong></h2>
+
+<p>Active Directory ortamı hazırlandıktan sonra merkezi güvenlik izleme sistemini kurmaya geçtim.</p>
+
+<p>Bu amaçla Wazuh tercih ettim.</p>
+
+<p>Wazuh; endpoint güvenliği, log analizi, güvenlik olaylarının izlenmesi ve tehdit tespiti gibi alanlarda kullanılan açık kaynaklı bir güvenlik platformudur.</p>
+
+<p>Wazuh mimarisinde temel olarak:</p>
+
+<ul>
+  <li><strong>Wazuh Manager:</strong> Agent’lardan gelen olayları analiz eder.</li>
+  <li><strong>Wazuh Agent:</strong> İzlenen sistemlerden güvenlik verilerini toplar.</li>
+  <li><strong>Wazuh Indexer:</strong> Toplanan verilerin indekslenmesini sağlar.</li>
+  <li><strong>Wazuh Dashboard:</strong> Verilerin görselleştirilmesini ve analiz edilmesini sağlar.</li>
+</ul>
+
+<p><img src="/assets/posts/soc-lab/Ekran Görüntüsü 2026-11-03 15-10-59.png" width="700" /></p>
+
+<h3 id="81-wazuh-ova-imajının-kullanılması"><strong>8.1. Wazuh OVA imajının kullanılması</strong></h3>
+
+<p>Wazuh’u Fedora ana işletim sistemine doğrudan kurmak yerine hazır sanal makine imajını kullanmaya karar verdim.</p>
+
+<p>Kullandığım dosya:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wazuh-4.14.9.ova
+</code></pre></div></div>
+
+<p>OVA, önceden yapılandırılmış sanal makineyi içeren bir dosya formatıdır.</p>
+
+<p>VirtualBox üzerinden:</p>
+
+<ol>
+  <li>File menüsüne girdim.</li>
+  <li>Import Appliance seçeneğini kullandım.</li>
+  <li><code class="language-plaintext highlighter-rouge">wazuh-4.14.9.ova</code> dosyasını seçtim.</li>
+  <li>Sanal makineyi içe aktardım.</li>
+</ol>
+
+<p>İçe aktarma işlemi tamamlandıktan sonra sanal makinenin kaynaklarını kontrol ettim.</p>
+
+<h3 id="82-wazuh-sanal-makinesinin-kaynakları"><strong>8.2. Wazuh sanal makinesinin kaynakları</strong></h3>
+
+<p>Wazuh için belirlediğim kaynaklar:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kaynak</th>
+      <th>Değer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RAM</td>
+      <td>4 GB</td>
+    </tr>
+    <tr>
+      <td>CPU</td>
+      <td>2 çekirdek</td>
+    </tr>
+    <tr>
+      <td>Ağ</td>
+      <td>Host-only Adapter</td>
+    </tr>
+    <tr>
+      <td>Ağ arayüzü</td>
+      <td>vboxnet0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Burada RAM miktarını belirlerken ana bilgisayarın kaynaklarını da dikkate aldım.</p>
+
+<p>Fedora üzerinde ilk yaptığım bellek kontrolünde:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>free -h
+</code></pre></div></div>
+
+<p>çıktısı yaklaşık olarak:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Total RAM: 15 GiB
+Used RAM: 12 GiB
+Available RAM: 2.6 GiB
+</code></pre></div></div>
+
+<p>Sanal makineleri kapattıktan sonra tekrar kontrol ettiğimde:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Total RAM: 15 GiB
+Used RAM: 3.8 GiB
+Available RAM: 11 GiB
+</code></pre></div></div>
+
+<p>sonucunu elde ettim.</p>
+
+<p>Bu nedenle Wazuh için 4 GB RAM ve 2 CPU kullanmaya karar verdim.</p>
+
+<h3 id="83-wazuh-ağ-yapılandırması"><strong>8.3. Wazuh ağ yapılandırması</strong></h3>
+
+<p>Wazuh sanal makinesinin ağ adaptörünü de diğer laboratuvar makineleriyle aynı ağa bağladım.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Adapter 1: Host-only Adapter
+Network: vboxnet0
+</code></pre></div></div>
+
+<p>Wazuh VM açıldıktan sonra terminal üzerinden aşağıdaki komutu çalıştırdım:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip -br addr
+</code></pre></div></div>
+
+<p>Komut sonucunda ağ arayüzü ve IP adresi görüntülendi.</p>
+
+<p>Wazuh IP adresi:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>192.168.56.104
+</code></pre></div></div>
+
+<p>Böylece laboratuvar ağında üç temel makinenin IP adresleri belirlenmiş oldu.</p>
+
+<h2 id="9-wazuh-ve-windows-i̇stemcisi-arasındaki-bağlantının-test-edilmesi"><strong>9. Wazuh ve Windows İstemcisi Arasındaki Bağlantının Test Edilmesi</strong></h2>
+
+<p>Wazuh sanal makinesinin ağda erişilebilir olduğunu kontrol etmek için Windows 10 istemcisinden ping testi gerçekleştirdim.</p>
+
+<p>Client01 üzerinde CMD açarak:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ping 192.168.56.104
+</code></pre></div></div>
+
+<p>komutunu çalıştırdım.</p>
+
+<p>Elde ettiğim sonuç:</p>
+
+<p><img src="/assets/posts/soc-lab/image (2).png" width="700" /></p>
+
+<p>Bu sonuç, Windows 10 istemcisinin Wazuh sanal makinesine ağ üzerinden erişebildiğini gösterdi.</p>
+
+<h2 id="10-wazuh-dashboard-servisinin-kontrol-edilmesi"><strong>10. Wazuh Dashboard Servisinin Kontrol Edilmesi</strong></h2>
+
+<p>Wazuh sanal makinesinde Dashboard servisinin çalışıp çalışmadığını kontrol etmek için terminal üzerinden aşağıdaki komutu çalıştırdım:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl status wazuh-dashboard
+</code></pre></div></div>
+
+<p><img src="/assets/posts/soc-lab/Ekran Görüntüsü 2026-11-13 20-09-09.png" width="700" /></p>
+
+<p>Komut sonucunda servisin <code class="language-plaintext highlighter-rouge">active (running)</code> durumunda olduğu görüldü. Bu sonuç, Wazuh Dashboard servisinin çalıştığını gösterdi.</p>
+
+<h2 id="11-wazuh-dashboard-portunun-kontrol-edilmesi"><strong>11. Wazuh Dashboard Portunun Kontrol Edilmesi</strong></h2>
+
+<p>Dashboard servisinin hangi port üzerinden dinlediğini kontrol etmek için aşağıdaki komutu kullandım:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo ss -tlnp
+</code></pre></div></div>
+
+<p><img src="/assets/posts/soc-lab/image (3).png" width="700" /></p>
+
+<p>Çıktıda <code class="language-plaintext highlighter-rouge">0.0.0.0:443</code> adresinin dinlemede olduğunu gördüm.</p>
+
+<p>Bu sonuç, Dashboard servisinin 443 numaralı HTTPS portu üzerinden bağlantı kabul ettiğini gösterdi.</p>
+
+<h2 id="12-wazuh-dashboard-bağlantısının-test-edilmesi"><strong>12. Wazuh Dashboard Bağlantısının Test Edilmesi</strong></h2>
+
+<p>Fedora ana makinem üzerinden Wazuh sanal makinesine HTTPS bağlantısını test etmek için aşağıdaki komutu çalıştırdım:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -vkI https://192.168.56.104
+</code></pre></div></div>
+
+<p>Komut sonucunda TLS bağlantısının başarıyla kurulduğunu ve sunucunun <code class="language-plaintext highlighter-rouge">HTTP/1.1 302 Found</code> yanıtını döndürdüğünü gördüm.</p>
+
+<p><img src="/assets/posts/soc-lab/image (4).png" width="700" /></p>
+
+<h2 id="13-wazuh-dashboard-arayüzüne-erişim"><strong>13. Wazuh Dashboard Arayüzüne Erişim</strong></h2>
+
+<p>Son olarak tarayıcı üzerinden aşağıdaki adresi ziyaret ettim:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://192.168.56.104/app/login
+</code></pre></div></div>
+
+<p>Sertifika uyarısını geçtikten sonra Wazuh Dashboard giriş ekranına başarıyla eriştim.</p>
+
+<p><img src="/assets/posts/soc-lab/image (5).png" width="700" /></p>
+
+<p>Dashboard erişimi başarılı</p>
+
+<p>Böylece Fedora ana makinem ile Wazuh sanal makinesi arasındaki HTTPS bağlantısını doğrulamış ve Dashboard arayüzünü erişilebilir hale getirmiş oldum.</p>
+
+<h2 id="14-windows-server-2019-üzerine-wazuh-agent-kurulumu"><strong>14. Windows Server 2019 Üzerine Wazuh Agent Kurulumu</strong></h2>
+
+<p>Wazuh Dashboard’a erişimi doğruladıktan sonra ilk olarak Windows Server 2019 sanal makinesine Wazuh Agent kurulumunu gerçekleştirdim.</p>
+
+<p>Agent kurulum dosyasını indirmek için yönetici olarak açılmış PowerShell üzerinde aşağıdaki komutu çalıştırdım:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.14.9-1.msi -OutFile wazuh-agent.msi
+</code></pre></div></div>
+
+<p>İndirme işlemi tamamlandıktan sonra Wazuh Agent’ı, Manager IP adresini belirterek kurdum:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msiexec.exe /i wazuh-agent.msi /q WAZUH_MANAGER="192.168.56.104"
+</code></pre></div></div>
+
+<p>Ardından Wazuh Agent servisini başlattım:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Start-Service WazuhSvc
+</code></pre></div></div>
+
+<p>Servisin çalıştığını kontrol etmek için:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-Service WazuhSvc
+</code></pre></div></div>
+
+<p>Komut çıktısında servisin durumunun <code class="language-plaintext highlighter-rouge">Running</code> olduğunu doğruladım.</p>
+
+<h2 id="15-windows-10-i̇stemciye-wazuh-agent-kurulumu"><strong>15. Windows 10 İstemciye Wazuh Agent Kurulumu</strong></h2>
+
+<p>Aynı işlemleri Windows 10 istemci sanal makinesinde de gerçekleştirdim.</p>
+
+<p>Yönetici PowerShell üzerinden Wazuh Agent kurulum dosyasını indirdim:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.14.9-1.msi -OutFile wazuh-agent.msi
+</code></pre></div></div>
+
+<p>Kurulumu gerçekleştirdim:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msiexec.exe /i wazuh-agent.msi /q WAZUH_MANAGER="192.168.56.104"
+</code></pre></div></div>
+
+<p>Ardından servisi başlatıp durumunu kontrol ettim:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Start-Service WazuhSvc
+Get-Service WazuhSvc
+</code></pre></div></div>
+
+<p>Servisin <code class="language-plaintext highlighter-rouge">Running</code> durumunda olduğunu doğruladım.</p>
+
+<h2 id="16-wazuh-manager-ile-bağlantının-doğrulanması"><strong>16. Wazuh Manager ile Bağlantının Doğrulanması</strong></h2>
+
+<p>Windows istemcinin Wazuh Manager ile iletişim kurabildiğini kontrol etmek için PowerShell üzerinde aşağıdaki komutu kullandım:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Test-NetConnection 192.168.56.104 -Port 1514
+</code></pre></div></div>
+
+<p>Çıktıda <code class="language-plaintext highlighter-rouge">TcpTestSucceeded : True</code> sonucunu elde ederek istemci ile Wazuh Manager arasındaki bağlantıyı doğruladım.</p>
+
+<h2 id="17-wazuh-agent-durumlarının-kontrol-edilmesi"><strong>17. Wazuh Agent Durumlarının Kontrol Edilmesi</strong></h2>
+
+<p>Son olarak Wazuh sanal makinesine dönerek kayıtlı agent’ların durumlarını kontrol ettim:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo /var/ossec/bin/agent_control -l
+</code></pre></div></div>
+
+<p>Komut çıktısında aşağıdaki agent’ların listelendiğini gördüm:</p>
+
+<p><img src="/assets/posts/soc-lab/image (6).png" width="700" /></p>
+
+<ul>
+  <li><strong>DC01:</strong> Active</li>
+  <li><strong>WIN10-CLIENT:</strong> Active</li>
+</ul>
+
+<p>Her iki Windows makinesinin de <code class="language-plaintext highlighter-rouge">Active</code> durumunda olması, Wazuh Manager ile agent’lar arasındaki bağlantının başarıyla kurulduğunu gösterdi.</p>
+
+<p>Böylece Windows Server 2019 ve Windows 10 istemcilerini Wazuh ortamına dahil ederek merkezi izleme altyapısının kurulumunu tamamladım.</p>
+
+<h2 id="18-wazuh-dashboard-üzerinden-agent-durumlarının-doğrulanması"><strong>18. Wazuh Dashboard Üzerinden Agent Durumlarının Doğrulanması</strong></h2>
+
+<p>Kurulumun son aşamasında Wazuh Dashboard arayüzüne giriş yaptım ve Overview ekranını kontrol ettim.</p>
+
+<p>Agents Summary bölümünde iki agent’ın da Active durumda olduğunu, Disconnected sayısının ise 0 olduğunu gördüm.</p>
+
+<p>Dashboard üzerinde ayrıca son 24 saate ait güvenlik uyarıları ve önem seviyeleri görüntülendi.</p>
+
+<p>Bu sonuçlarla Windows Server 2019 ve Windows 10 istemcilerinin Wazuh Manager’a başarıyla bağlandığını ve merkezi izleme sisteminin çalıştığını doğruladım.</p>
+
+<p><img src="/assets/posts/soc-lab/image (7).png" width="700" /></p>
+
+<p>Böylece Wazuh kurulumunu ve temel bağlantı kontrollerini tamamladım.</p>
+
+<h2 id="sonraki-aşamalar-ve-hedefler"><strong>Sonraki Aşamalar ve Hedefler</strong></h2>
+
+<p>Laboratuvar ortamının kurulumunu tamamladıktan sonra, MITRE ATT&amp;CK çerçevesinde yer alan saldırı taktik ve tekniklerini uygulamalı olarak incelemeyi hedefliyorum.</p>
+
+<p>Bu kapsamda farklı saldırı senaryolarını laboratuvar ortamında simüle ederek Windows sistemlerinde oluşan olay kayıtlarını analiz edeceğim. Wazuh üzerinden bu aktivitelerin nasıl tespit edilebildiğini, hangi güvenlik uyarılarının oluştuğunu ve saldırı davranışlarının nasıl ilişkilendirilebileceğini araştıracağım.</p>
+
+<p>İlerleyen aşamalarda Sysmon ile daha ayrıntılı sistem kayıtları toplamayı, Suricata ile ağ trafiğini izlemeyi ve Shuffle SOAR kullanarak tespit edilen güvenlik olaylarına yönelik otomatik müdahale süreçleri geliştirmeyi planlıyorum.</p>
+
+<p><strong>Nihai hedefim</strong>, MITRE ATT&amp;CK tekniklerini temel alan saldırı senaryolarını uçtan uca uygulayabildiğim, tespit edebildiğim ve müdahale süreçlerini yönetebildiğim kapsamlı bir SOC laboratuvarı oluşturmak.</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>

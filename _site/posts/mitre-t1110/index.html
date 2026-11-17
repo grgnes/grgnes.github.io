@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITRE ATT&CK T1110 - Brute Force | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+        <link rel="icon"
+          type="image/png"
+          href="/assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>MITRE ATT&CK T1110 - Brute Force</h1>
+
+    <div class="date">
+        November 10, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>MITRE ATT&CK</span>
+        
+        <span>Active Directory</span>
+        
+        <span>Wazuh</span>
+        
+        <span>Blue Team</span>
+        
+    </div>
+
+    <div class="post-content">
+        <p><em>TA0006 - Credential Access</em></p>
+
+<p><strong>Brute Force</strong>, saldırganın bir hesaba erişmek ve kimlik bilgilerine erişmek amacıyla farklı parola tahminlerini sistematik ve tekrarlı şekilde denemesidir.</p>
+
+<h3 id="alt-teknikleri">Alt Teknikleri</h3>
+
+<p>MITRE ATT&amp;CK sayfasında T1110’un dört alt tekniği bulunuyor:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Alt teknik</th>
+      <th>Açıklama</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T1110.001</td>
+      <td>Password Guessing</td>
+      <td>Parola tahmin etme</td>
+    </tr>
+    <tr>
+      <td>T1110.002</td>
+      <td>Password Cracking</td>
+      <td>Parola hash’lerini kırma</td>
+    </tr>
+    <tr>
+      <td>T1110.003</td>
+      <td>Password Spraying</td>
+      <td>Birkaç yaygın parolayı çok sayıda hesapta deneme</td>
+    </tr>
+    <tr>
+      <td>T1110.004</td>
+      <td>Credential Stuffing</td>
+      <td>Daha önce ele geçirilmiş kullanıcı adı ve parolaları tekrar kullanma</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="tespit-yöntemleri"><strong>Tespit Yöntemleri</strong></h3>
+
+<p>MITRE’nin belirttiği önemli tespit davranışları vardır:</p>
+
+<ul>
+  <li>Kısa sürede çok fazla ve ardı ardına başarısız oturum açılmaya çalışıması ve parola denemesi yapılması,</li>
+  <li>Çok fazla başarısız girişlerin ardından başarılı oturum açılması,</li>
+  <li>Aynı IP adresinden birden fazla kullanıcı hesabına giriş denemesi yapılması</li>
+</ul>
+
+<h3 id="laboratuvar-ortamı">Laboratuvar Ortamı</h3>
+
+<p>Bu senaryoda kullandığım Active Directory ve Wazuh laboratuvar ortamının kurulumunu henüz gerçekleştirmediysen, öncelikle <a href="/projects/soc-lab/"><strong>SOC Lab: MITRE ATT&amp;CK Tabanlı Saldırı Tespit ve Müdahale Laboratuvarı</strong></a> başlıklı yazıma göz atabilirsin.</p>
+
+<p>Bu laboratuvar ortamında Windows Server 2019 üzerinde Active Directory Domain Services (AD DS) yapılandırılmış, Windows 10 istemcisi domain ortamına dahil edilmiş ve Wazuh SIEM kullanılarak sistemlerden alınan güvenlik kayıtlarının merkezi olarak izlenmesi sağlanmıştır.</p>
+
+<h3 id="windows-event-log-analizi"><strong>Windows Event Log analizi</strong></h3>
+
+<p>Brute Force simülasyonuna başlamadan önce, Active Directory ortamında bir hesabın kaç başarısız giriş denemesinden sonra kilitleneceğini öğrenmek istedim.</p>
+
+<p>Bunun için Domain Controller üzerinde PowerShell’i açarak aşağıdaki komutu çalıştırdım:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-ADDefaultDomainPasswordPolicy</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Select-Object</span><span class="w"> </span><span class="nx">LockoutThreshold</span><span class="p">,</span><span class="w"> </span><span class="nx">LockoutDuration</span><span class="p">,</span><span class="w"> </span><span class="nx">LockoutObservationWindow</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Komut ile üç önemli politika değerini inceledim:</p>
+
+<ul>
+  <li>
+    <p><strong>LockoutThreshold:</strong> Hesabın kilitlenmesine neden olacak başarısız giriş denemesi sayısı.</p>
+
+    <p><code class="language-plaintext highlighter-rouge">0</code> hesap kilitlemenin devre dışı olduğunu, <code class="language-plaintext highlighter-rouge">1</code> ise tek başarısız denemeden sonra kilitlemenin gerçekleşeceğini belirtir.</p>
+  </li>
+  <li><strong>LockoutDuration:</strong> Hesap kilitlendikten sonra kilidin ne kadar süreyle devam edeceği.</li>
+  <li><strong>LockoutObservationWindow:</strong> Başarısız giriş denemelerinin hangi zaman aralığında değerlendirileceği.</li>
+</ul>
+
+<p><img src="/assets/posts/t1110/image.png" width="700" /></p>
+
+<p>Bu değerleri kontrol etmemin amacı, gerçekleştireceğim Brute Force simülasyonunun Active Directory hesap kilitleme politikası üzerindeki etkisini önceden anlamaktı.</p>
+
+<p>Simülasyonda hazır ve büyük bir wordlist kullanmak yerine, denemeleri kontrollü tutmak amacıyla kendime ait küçük bir parola listesi oluşturdum.</p>
+
+<p>Fedora üzerinde aşağıdaki komutla <code class="language-plaintext highlighter-rouge">rdp-test.txt</code> isimli dosyayı oluşturdum:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">printf</span> <span class="s1">'%s\n'</span> <span class="s1">'TestWrong01!'</span> <span class="s1">'TestWrong02!'</span> <span class="s1">'TestWrong03!'</span> <span class="o">&gt;</span> rdp-test.txt
+</code></pre></div></div>
+
+<p>Oluşturduğum dosyada üç farklı parola bulunuyordu. Bu parolalar, laboratuvar ortamındaki <code class="language-plaintext highlighter-rouge">lab.user</code> hesabına ait gerçek parola değildi. Amacım, başarısız kimlik doğrulama denemeleri oluşturarak Windows Event Log kayıtlarını incelemekti.</p>
+
+<p>Parola listesini hazırladıktan sonra Fedora üzerinden Windows 10 istemcisine RDP protokolü aracılığıyla bağlantı denemeleri gerçekleştirdim.</p>
+
+<p>Öncelikle hedef sistemin 3389 portunun erişilebilir olduğunu kontrol ettim.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nc</span> <span class="o">-</span><span class="n">vz</span> <span class="o">-</span><span class="n">w</span> <span class="mi">3</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">56.103</span> <span class="mi">3389</span>
+</code></pre></div></div>
+
+<p><img src="/assets/posts/t1110/image (1).png" width="700" /></p>
+
+<p>Ardından Hydra ile otomatik parola denemelerini başlattım:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> lab.user <span class="nt">-P</span> rdp-test.txt rdp://192.168.56.103
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-l lab.user</code>: Denemelerin yapılacağı kullanıcı hesabı.</li>
+  <li><code class="language-plaintext highlighter-rouge">-P rdp-test.txt</code>: Kullanılacak parola listesinin bulunduğu dosya.</li>
+  <li><code class="language-plaintext highlighter-rouge">rdp://192.168.56.103</code>: Hedef sistem ve kullanılacak protokol.</li>
+</ul>
+
+<p><img src="/assets/posts/t1110/image (2).png" width="700" /></p>
+
+<p>Hydra üç parola denemesi gerçekleştirdi. Denemelerin tamamı başarısız oldu ve geçerli bir parola bulunamadı.</p>
+
+<p>Bu aşamada amaç sisteme erişim sağlamak değil, başarısız kimlik doğrulama girişimlerinin Windows üzerinde nasıl loglandığını ve Wazuh tarafından nasıl toplandığını gözlemlemekti.</p>
+
+<p>Hydra ile gerçekleştirdiğim denemelerin ardından Wazuh Dashboard’a geçerek Windows istemcisinden toplanan güvenlik kayıtlarını inceledim.</p>
+
+<p>İlk olarak başarısız oturum açma girişimlerini görüntülemek için Threat Hunting bölümünde 
+<code class="language-plaintext highlighter-rouge">data.win.system.eventID:4625</code> sorgusunu kullandım:</p>
+
+<p><img src="/assets/posts/t1110/image (3).png" width="700" /></p>
+
+<p>Windows’ta 4625 olayı, başarısız oturum açma girişimlerini ifade eder. Hydra ile gerçekleştirdiğim üç başarısız parola denemesinin ardından Wazuh üzerinde üç yeni 4625 kaydı görüntülendi.</p>
+
+<p>Kayıtları daha ayrıntılı incelemek ve denemelerin Fedora üzerinden geldiğini doğrulamak için sorguyu kaynak IP adresine göre daralttım:
+<code class="language-plaintext highlighter-rouge">data.win.system.eventID:4625 AND data.win.eventdata.ipAddress:"192.168.56.1"</code></p>
+
+<p><img src="/assets/posts/t1110/image (4).png" width="700" /></p>
+
+<p>Bu sorgu sonucunda Fedora sisteminin IP adresinden gelen üç başarısız oturum açma kaydına ulaştım.</p>
+
+<p>İncelediğim olay kayıtlarında öne çıkan alanlar şunlardı:</p>
+
+<p><img src="/assets/posts/t1110/image (5).png" width="700" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Alan</th>
+      <th>Gözlemlenen değer</th>
+      <th>Açıklama</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Event ID</td>
+      <td><code class="language-plaintext highlighter-rouge">4625</code></td>
+      <td>Başarısız oturum açma</td>
+    </tr>
+    <tr>
+      <td>Target User Name</td>
+      <td><code class="language-plaintext highlighter-rouge">lab.user</code></td>
+      <td>Hedef kullanıcı hesabı</td>
+    </tr>
+    <tr>
+      <td>IP Address</td>
+      <td><code class="language-plaintext highlighter-rouge">192.168.56.1</code></td>
+      <td>Denemelerin geldiği Fedora IP adresi</td>
+    </tr>
+    <tr>
+      <td>Workstation Name</td>
+      <td><code class="language-plaintext highlighter-rouge">fedora</code></td>
+      <td>Kaynak bilgisayarın adı</td>
+    </tr>
+    <tr>
+      <td>Logon Type</td>
+      <td><code class="language-plaintext highlighter-rouge">3</code></td>
+      <td>Network logon</td>
+    </tr>
+    <tr>
+      <td>Authentication Package</td>
+      <td><code class="language-plaintext highlighter-rouge">NTLM</code></td>
+      <td>Kullanılan kimlik doğrulama paketi</td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td><code class="language-plaintext highlighter-rouge">0xc000006d</code></td>
+      <td>Oturum açma başarısız</td>
+    </tr>
+    <tr>
+      <td>SubStatus</td>
+      <td><code class="language-plaintext highlighter-rouge">0xc000006a</code></td>
+      <td>Yanlış parola</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>Özellikle <code class="language-plaintext highlighter-rouge">SubStatus</code> alanındaki <code class="language-plaintext highlighter-rouge">0xc000006a</code> değeri, kullanıcı adı doğru olsa da parolanın hatalı olduğunu gösteriyordu.</p>
+
+<h3 id="brute-force-saldırılarına-karşı-alınabilecek-önlemler"><strong>Brute Force Saldırılarına Karşı Alınabilecek Önlemler</strong></h3>
+
+<p>Gerçekleştirdiğim simülasyon, art arda yapılan başarısız parola denemelerinin Windows Event Log üzerinden izlenebildiğini gösterdi. Bu tür saldırıların etkisini azaltmak için aşağıdaki güvenlik önlemleri uygulanabilir.</p>
+
+<p><strong>1. Hesap Kilitleme Politikası (Account Lockout Policy)</strong></p>
+
+<p>Active Directory üzerinde belirli sayıda başarısız giriş denemesinden sonra hesabın geçici olarak kilitlenmesi sağlanabilir.</p>
+
+<p>Örneğin:</p>
+
+<ul>
+  <li>Başarısız deneme sınırı: 5</li>
+  <li>Hesap kilitleme süresi: 15 dakika</li>
+  <li>Deneme sayacının sıfırlanması: 15 dakika</li>
+</ul>
+
+<p>Bu değerler örnek bir yapılandırmadır. Kurumun güvenlik ihtiyaçlarına göre belirlenmelidir.</p>
+
+<p><strong>2. Çok Faktörlü Kimlik Doğrulama (MFA)</strong></p>
+
+<p>Parolanın ele geçirilmesi durumunda bile ikinci bir doğrulama faktörü olmadan hesaba erişilmesini zorlaştırır.</p>
+
+<p><strong>3. Güçlü Parola Politikası</strong></p>
+
+<p>Tahmin edilmesi kolay ve tekrar kullanılan parolaların önüne geçmek için uzun, benzersiz parolalar kullanılmalıdır.</p>
+
+<p><strong>4. Başarısız Giriş Denemelerinin İzlenmesi</strong></p>
+
+<p>Windows Event ID <code class="language-plaintext highlighter-rouge">4625</code> kayıtları takip edilerek belirli bir zaman aralığında aynı kullanıcıya veya aynı IP adresine ait tekrarlanan başarısız girişimler tespit edilmelidir.</p>
+
+<p><strong>5. Wazuh Üzerinde Alarm ve Korelasyon Kuralları</strong></p>
+
+<p>Wazuh üzerinde belirli bir zaman aralığında art arda gerçekleşen başarısız girişimleri ilişkilendiren kurallar oluşturulabilir. Böylece yalnızca tekil başarısız girişimler değil, olası Brute Force davranışları da tespit edilerek güvenlik ekibine alarm üretilebilir.</p>
+
+<p><strong>6. RDP Erişiminin Kısıtlanması</strong></p>
+
+<p>RDP erişimi yalnızca gerekli kullanıcı ve sistemlere açılmalı; mümkünse VPN veya belirli IP adresleri üzerinden sınırlandırılmalıdır.</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>
