@@ -2,6 +2,7 @@
 title: "SOC Lab: MITRE ATT&CK Tabanlı Saldırı Tespit ve Müdahale Laboratuvarı"
 layout: post
 image: /assets/posts/soc-lab/soclab.jpg
+excerpt: "VirtualBox üzerinde Windows Server 2019, Active Directory, Windows 10 ve Wazuh kullanarak oluşturduğum uygulamalı SOC laboratuvarı."
 category: "SOC / BLUE TEAM"
 date: 2026-11-01
 tags:
