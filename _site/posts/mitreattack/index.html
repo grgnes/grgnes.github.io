@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITRE ATT&CK Nedir | Neslihan Gürgen</title>
+    <link rel="stylesheet" href="/style.css">
+        <link rel="icon"
+          type="image/png"
+          href="/assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/posts/">Posts</a>
+
+        <a href="/research/">Research</a>
+
+        <a href="/projects/">Projects</a>
+
+        <a href="/categories/">Categories</a>
+
+        <a href="/cheat-sheets/">Cheat Sheets</a>
+
+    </nav>
+
+</header>
+
+    <div class="page">
+
+        <aside class="sidebar">
+
+        <div class="profile-image">
+            <img src="/assets/pinguu.jpg" alt="Neslihan Gürgen">        </div>
+
+        <h1>Neslihan Gürgen</h1>
+
+        <p class="role">
+            Junior Penetration Tester
+        </p>
+
+        <p class="bio">
+            Application Security |
+            Penetration Testing
+        </p>
+
+        <div class="social-links">
+            <a href="https://medium.com/@grgnes" target="_blank">Medium</a>
+            <a href="mailto:ngurgen08@gmail.com">Email</a>
+            <a href="https://github.com/grgnes" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/neslihan-gurgen/" target="_blank">LinkedIn</a>
+        </div>
+
+    </aside>
+
+        <main class="content">
+            <article class="post-page">
+
+    <a class="category"
+       href="/categories/research/">
+        Research
+    </a>
+
+    <h1>MITRE ATT&CK Nedir</h1>
+
+    <div class="date">
+        November 05, 2026
+    </div>
+
+    <div class="tags">
+        
+        <span>MITRE ATT&CK</span>
+        
+    </div>
+
+    <div class="post-content">
+        <p>MITRE ATT&amp;CK, siber saldırganların kullandığı yöntemleri, teknikleri ve davranışları sınıflandıran bir bilgi tabanıdır. Yani bir saldırgan sisteme nasıl sızar, içeride ne yapar ve hedefine nasıl ulaşır gibi soruları cevaplar.</p>
+
+<p>MITRE ATT&amp;CK yapısını incelemeye başladığımda ilk önce beni <code class="language-plaintext highlighter-rouge">matrix</code> kısmı karşılıyor.</p>
+
+<p><strong>Matrix</strong>, MITRE ATT&amp;CK’ın genel haritasıdır. Taktik ve teknikleri bir arada gösterir.</p>
+
+<p><img src="/assets/posts/mitre/image.png" width="700" /></p>
+
+<p>MITRE ATT&amp;CK’te <strong>Enterprise, Mobile ve ICS</strong>, saldırgan davranışlarının incelendiği üç farklı teknoloji alanıdır. Yani bunlar saldırı aşaması değil, saldırının hangi teknoloji ortamında gerçekleştiğini belirten kategorilerdir.</p>
+
+<ol>
+  <li>
+    <p><strong>Enterprise</strong> → Kurumsal bilişim sistemlerine yönelik siber saldırıları kapsayan kategoridir.</p>
+
+    <p>Kapsadığı platformlar:</p>
+
+    <ul>
+      <li>Windows</li>
+      <li>Linux</li>
+      <li>macOS</li>
+      <li>Azure ve AWS</li>
+      <li>Network Devices</li>
+      <li>Containers</li>
+    </ul>
+  </li>
+  <li><strong>Mobile</strong> → Mobil cihazlara yönelik siber saldırıları kapsayan kategoridir. Android ve iOS işletim sistemlerini hedef alan saldırgan taktiklerini ve tekniklerini sınıflandırır.</li>
+  <li><strong>ICS</strong> → Endüstriyel kontrol sistemlerine yönelik siber saldırıları kapsayan kategoridir. SCADA, PLC ve endüstriyel otomasyon sistemleri gibi kritik altyapıları hedef alan saldırgan taktiklerini ve tekniklerini sınıflandırır.</li>
+</ol>
+
+<p><strong>Taktik,</strong> saldırganın ulaşmak istediği amaçlardır. Taktikler saldırı sürecinin aşamalarını anlamamızı sağlar. Ancak her saldırı bunları mutlaka aynı sırayla izlemez. Bir saldırgan bazı aşamaları atlayabilir veya tekrar edebilir.</p>
+
+<p><img src="/assets/posts/mitre/Ekran Görüntüsü 2026-11-18 18-30-20.png" width="700" /></p>
+
+<p><strong>Teknik</strong> ise, saldırganın belirli bir taktik kapsamında amacına ulaşmak için kullandığı saldırı yöntemidir. Bir taktik altında birden fazla teknik bulunabilir.</p>
+
+<p><img src="/assets/posts/mitre/Ekran Görüntüsü 2026-11-18 18-30-46.png" width="700" /></p>
+
+<h3 id="taktik-aşamaları">Taktik Aşamaları:</h3>
+
+<ol>
+  <li>
+    <p><strong>Reconnaissance (</strong><em>TA0043</em><strong>)</strong></p>
+
+    <p>İlk taktik saldırganın gelecekteki saldırılarını planlamak için hedef hakkında bilgi toplamasıdır. Yani saldırganın hemen sisteme erişmeye çalışmayıp hedefi tanımaya çalışmasıdır.</p>
+
+    <p><strong>Saldırgan hangi bilgileri toplayabilir?</strong></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Toplanabilecek bilgi</th>
+          <th>İlişkili MITRE tekniği</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Kurumun adı ve organizasyon yapısı</td>
+          <td>Gather Victim Org Information</td>
+        </tr>
+        <tr>
+          <td>Çalışanların isimleri ve e-posta adresleri</td>
+          <td>Gather Victim Identity Information</td>
+        </tr>
+        <tr>
+          <td>Alan adları ve IP adresleri</td>
+          <td>Search Open Websites/Domains</td>
+        </tr>
+        <tr>
+          <td>Kullanılan teknolojiler ve sunucular</td>
+          <td>Gather Victim Host Information</td>
+        </tr>
+        <tr>
+          <td>Ağ altyapısı ve açık servisler</td>
+          <td>Gather Victim Network Information / Active Scanning</td>
+        </tr>
+        <tr>
+          <td>Çalışanlardan bilgi elde etme</td>
+          <td>Phishing for Information</td>
+        </tr>
+        <tr>
+          <td>İnternete açık sistemler ve web siteleri</td>
+          <td>Search Victim-Owned Websites</td>
+        </tr>
+        <tr>
+          <td>Teknik bilgiler ve açık veri tabanları</td>
+          <td>Search Open Technical Databases</td>
+        </tr>
+        <tr>
+          <td>Kapalı kaynaklardan bilgi toplama</td>
+          <td>Search Closed Sources</td>
+        </tr>
+        <tr>
+          <td>Tehdit istihbaratı sağlayıcılarından bilgi toplama</td>
+          <td>Search Threat Vendor Data</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p><strong>Resource Development (</strong><em>TA0042</em><strong>)</strong></p>
+
+    <p>Bu taktik ise kaynak araştırması aşamasıdır. Saldırgan gelecekte gerçekleştireceği saldırıları desteklemek için gerekli kaynakları oluşturması veya satın almasıdır.</p>
+
+    <p>Yine bu aşamada saldırı yoktur, saldırgan saldırıda kullanacağı araçları ve altyapıyı hazırlar.</p>
+
+    <p><strong>Saldırgan bu aşamada ne hazırlayabilir?</strong></p>
+
+    <p>Mitre Attackta bu taktik altında 9 ana teknik bulunuyor:</p>
+
+    <ul>
+      <li>Acquire Infrastructure: Altyapı edinme</li>
+      <li>Compromise Accounts: Hesapları ele geçirme</li>
+      <li>Develop Capabilities: Saldırı araçları geliştirme</li>
+      <li>Establish Accounts: Hesap oluşturma</li>
+      <li>Obtain Capabilities: Araç veya zararlı yazılım edinme</li>
+      <li>Stage Capabilities: Saldırı araçlarını kullanıma hazır hâle getirme</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Initial Access (</strong><em>TA0001</em><strong>)</strong></p>
+
+    <p>Bu taktik ilk erişim aşamasıdır. Saldırganın hedef sistem veya ağa ilk kez erişim sağlamak için kullandığı yöntemleri kapsayan taktiktir.</p>
+
+    <p><strong>Saldırganın ilk erişim için yapabilecekleri:</strong></p>
+
+    <ul>
+      <li>Kimlik avı (Phishing) saldırısı gerçekleştirebilir</li>
+      <li>Güvenlik açıklarından yararlanabilir</li>
+      <li>Çalınmış hesap bilgilerini kullanabilir</li>
+      <li>Zararlı dosyalar aracılığıyla sisteme erişebilir</li>
+      <li>Harici erişim noktalarını hedef alabilir</li>
+    </ul>
+
+    <p><strong>Saldırganın kullanabileceği teknik ve giriş yolları ne olabilir?</strong></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Teknik</th>
+          <th>Saldırganın kullandığı giriş yolu</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Phishing</td>
+          <td>Kullanıcıyı kandırma</td>
+        </tr>
+        <tr>
+          <td>Drive-by Compromise</td>
+          <td>Web sitesi ziyareti</td>
+        </tr>
+        <tr>
+          <td>Exploit Public-Facing Application</td>
+          <td>Uygulama açığı</td>
+        </tr>
+        <tr>
+          <td>External Remote Services</td>
+          <td>VPN / RDP gibi servisler</td>
+        </tr>
+        <tr>
+          <td>Valid Accounts</td>
+          <td>Gerçek kullanıcı hesapları</td>
+        </tr>
+        <tr>
+          <td>Wi-Fi Networks</td>
+          <td>Kablosuz ağ</td>
+        </tr>
+        <tr>
+          <td>Supply Chain Compromise</td>
+          <td>Tedarik zinciri</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p><strong>Execution (<em>TA0002</em>)</strong></p>
+
+    <p>Bu taktik execution yani çalıştırma, saldırganın hedef üzerinde zararlı kod veya komut çalıştırmasıdır.</p>
+
+    <p><strong>Saldırgan neler yapabilir?</strong></p>
+
+    <ul>
+      <li>PowerShell veya CMD üzerinden komut çalıştırabilir</li>
+      <li>Zararlı dosyaları çalıştırabilir</li>
+      <li>Script dosyalarını kullanabilir</li>
+      <li>Windows servislerini kötüye kullanabilir</li>
+      <li>Linux Shell üzerinden komut çalıştırabilir</li>
+      <li>WMI aracılığıyla komut çalıştırabilir</li>
+    </ul>
+
+    <p>MITRE’nin güncel sayfasında 22 ana teknik bulunuyor. Öne çıkan bazı teknikler:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Teknik</th>
+          <th>Açıklama</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Command and Scripting Interpreter (T1059)</td>
+          <td>Komut ve script yorumlayıcılarını kullanma</td>
+        </tr>
+        <tr>
+          <td>User Execution (T1204)</td>
+          <td>Kullanıcının işlem yapmasını sağlayarak kod çalıştırma</td>
+        </tr>
+        <tr>
+          <td>Windows Management Instrumentation (T1047)</td>
+          <td>WMI üzerinden komut çalıştırma</td>
+        </tr>
+        <tr>
+          <td>Scheduled Task/Job (T1053)</td>
+          <td>Zamanlanmış görevleri kullanma</td>
+        </tr>
+        <tr>
+          <td>System Services (T1569)</td>
+          <td>Sistem servisleri üzerinden kod çalıştırma</td>
+        </tr>
+        <tr>
+          <td>Shared Modules (T1129)</td>
+          <td>Paylaşılan modüller aracılığıyla kod çalıştırma</td>
+        </tr>
+        <tr>
+          <td>Native API (T1106)</td>
+          <td>İşletim sisteminin yerel API’lerini kullanma</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p><strong>Persistence (</strong><em>TA0003</em><strong>)</strong></p>
+
+    <p>Bu taktik olan kalıcılık ise, saldırganın hedef sistemde kalıcılık sağlayacak hamle yapmasıdır. Yani saldırganın ele geçirdiği sistem veya ağ üzerindeki erişimini, sistem yeniden başlatılsa veya kullanıcı parolaları değiştirilse bile devam ettirmeye çalıştığı taktiktir.</p>
+
+    <p><strong>Saldırgan hedef sistemde kalıcılık sağlamak için neler yapabilir?</strong></p>
+
+    <ul>
+      <li>Sisteme yeni kullanıcı hesabı ekleyebilir</li>
+      <li>Windows Registry üzerinden başlangıç ayarlarını değiştirebilir</li>
+      <li>Açılışta otomatik çalışan zararlı dosyalar yerleştirebilir</li>
+      <li>Zamanlanmış görevler oluşturabilir</li>
+      <li>Windows servislerini değiştirebilir</li>
+      <li>SSH anahtarları ekleyebilir</li>
+      <li>Web sunucusuna Web Shell yerleştirebilir</li>
+    </ul>
+
+    <p>MITRE Enterprise Matrix’te bu taktik altında 22 ana teknik bulunuyor. Bazı öne çıkan teknikler:</p>
+
+    <ul>
+      <li>Account Manipulation (T1098)</li>
+      <li>Boot or Logon Autostart Execution (T1547)</li>
+      <li>Create Account (T1136)</li>
+      <li>Scheduled Task/Job (T1053)</li>
+      <li>Create or Modify System Process (T1543)</li>
+      <li>Valid Accounts (T1078)</li>
+      <li>Web Shell (T1505.003)</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Privilege Escalation (</strong><em>TA0004</em><strong>)</strong></p>
+
+    <p>Buradaki taktikte, hedef sistemde erişimi elde ettikten saldırganın sistemde sahip olduğu yetkilerden daha yüksek yetkiler elde etmesidir.</p>
+
+    <p>Örneğin:</p>
+
+    <ul>
+      <li>Standart kullanıcıdan Administrator yetkisine geçmek</li>
+      <li>Linux’ta normal kullanıcıdan root yetkisine yükselmek</li>
+      <li>Active Directory ortamında Domain Admin yetkisi elde etmek</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Defense Evasion - Stealth (</strong><em>TA0005</em><strong>)</strong></p>
+
+    <p>Buradaki taktik ise saldırganın hedef sistemde gerçekleştirdiği faaliyetlerin güvenlik mekanizmaları tarafından tespit edilmesini zorlaştırmaya veya engellemeye çalıştığı taktiktir.</p>
+
+    <p><strong>Saldırgan tespit edilmekten kaçınmak için neler yapabilir?</strong></p>
+
+    <ul>
+      <li>Güvenlik yazılımlarından kaçınmaya çalışabilir</li>
+      <li>Zararlı dosyaları gizleyebilir</li>
+      <li>Dosya ve komutları şifreleyebilir veya gizleyebilir</li>
+      <li>Sistem günlüklerini (logs) silebilir</li>
+      <li>Zararlı yazılımları meşru programlar gibi gösterebilir</li>
+      <li>İşletim sisteminin güvenilir araçlarını kötüye kullanabilir</li>
+      <li>Rootkit kullanarak faaliyetlerini gizleyebilir</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Defense Impairment (</strong><em>TA0112</em><strong>)</strong></p>
+
+    <p>Bu taktiğin amacı, hedef sistemin güvenlik mekanizmalarını bozmak, devre dışı bırakmak veya çalışmalarını engellemektir. Saldırgan yalnızca sistemde gizlenmeye çalışmaz; savunma sistemlerinin saldırıyı tespit etmesini veya kaydetmesini de zorlaştırır.</p>
+
+    <p>Saldırgan:</p>
+
+    <ol>
+      <li>Güvenlik aracının/duvarının çalışmasını engellemeye çalışabilir</li>
+      <li>Güvenlik günlüklerinin toplanmasını aksatabilir</li>
+      <li>Güvenlik izleme mekanizmalarını etkisiz hâle getirmeye çalışabilir</li>
+    </ol>
+
+    <p>Böylece savunma ekibinin saldırıyı fark etmesi zorlaşabilir</p>
+  </li>
+  <li>
+    <p><strong>Credential Access</strong> (<em>TA0006</em>)</p>
+
+    <p>Bu taktikte saldırganın kullanıcı adı, parola, parola özeti (hash), erişim token’ı veya Kerberos bileti gibi kimlik doğrulama bilgilerini ele geçirmesidir. Saldırganın amacı bu bilgileri kullanarak başka hesaplara, sistemlere veya servislere erişebilmektir.</p>
+
+    <p>Örneğin saldırgan,</p>
+
+    <ul>
+      <li>Parolaları tekrar tekrar deneyerek bulmaya çalışabilir</li>
+      <li>Klavye girişlerini veya kullanıcı girdilerini yakalayabilir</li>
+      <li>Oturum çerezlerini ele geçirebilir</li>
+      <li>İki cihaz arasındaki iletişime girerek kimlik bilgilerini yakalayabilir</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Discovery (</strong><em>TA0007</em><strong>)</strong></p>
+
+    <p>Buradaki taktikte ise bu sefer erişim kazanılmış olan hedef sistemde bilgi toplama taktiği. Reconnaissance’dan farkı erişim sağladıktan sonra sistemin ve ağın içini tanımak.</p>
+
+    <p><strong>Saldırgan hedefe eriştikten sonra nelere bakabilir?</strong></p>
+
+    <ul>
+      <li>Sistemde hangi kullanıcılar var?</li>
+      <li>Hangi bilgisayarlar ve sunucular bulunuyor?</li>
+      <li>Hangi servisler ve uygulamalar çalışıyor?</li>
+      <li>Ağda hangi cihazlar var?</li>
+      <li>Hangi dosyalara ve kaynaklara erişilebilir?</li>
+      <li>Sistem hangi güvenlik ayarlarını kullanıyor?</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Lateral Movement (</strong><em>TA0008</em><strong>)</strong></p>
+
+    <p>On birinci taktikte, saldırganın ele geçirdiği bir sistemden aynı ağdaki başka sistemlere geçiş yapma taktiğidir. Saldırgan ilk bilgisayara eriştikten sonra orada kalmak yerine ağdaki diğer bilgisayarlara, sunuculara veya Domain Controller’a ulaşmaya çalışır.</p>
+
+    <p><strong>Saldırgan neler yapabilir?</strong></p>
+
+    <ul>
+      <li>RDP ile başka bilgisayarlara bağlanabilir</li>
+      <li>SMB üzerinden paylaşılan dosyalara erişebilir</li>
+      <li>SSH ile uzak sunuculara geçebilir</li>
+      <li>Uzak servislerdeki güvenlik açıklarından yararlanabilir</li>
+      <li>Zararlı araçları diğer sistemlere taşıyabilir</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Collection (</strong><em>TA0009</em><strong>)</strong></p>
+
+    <p>Bu taktikte ise amaç, saldırganın ele geçirdiği sistemlerde veya ağda verileri toplamasıdır. Saldırgan bu aşamada bilgileri hemen dışarı çıkarmak zorunda değildir. Önce işine yarayacak verileri bulur ve bir araya getirir.</p>
+
+    <p><strong>Saldırgan neler yapabilir?</strong></p>
+
+    <ul>
+      <li>Bilgisayardaki önemli dosyaları ve belgeleri toplayabilir.</li>
+      <li>E-postaları ve mesajları inceleyebilir.</li>
+      <li>Tarayıcı oturumlarından veri elde edebilir.</li>
+      <li>Kopyalanan metinleri panodan alabilir.</li>
+      <li>Ekran görüntüsü veya video kaydı alabilir.</li>
+      <li>Mikrofon ve kamera üzerinden kayıt yapabilir.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Command and Control (</strong><em>TA0011</em><strong>)</strong></p>
+
+    <p>Bu taktikte, saldırganın ele geçirdiği sistemlerle uzaktan iletişim kurarak onları kontrol etmesi. Saldırgan, ele geçirdiği bilgisayara komut göndermek ve bilgisayardan sonuç almak için bir iletişim kanalı oluşturur. Bu iletişimi normal ağ trafiği gibi göstermeye de çalışabilir.</p>
+
+    <p><strong>Peki saldırgan neler yapabilir?</strong></p>
+
+    <ul>
+      <li>HTTP/HTTPS kullanarak internet sitelerine yapılan bağlantılara benzer bir iletişim kurabilir</li>
+      <li>DNS kullanarak DNS sorgularını iletişim için kullanabilir</li>
+      <li>Şifreleme kullanarak saldırgan ile bilgisayar arasındaki mesajları başkalarının okumasını zorlaştırabilir</li>
+      <li>Proxy kullanarak bağlantısını başka sunucular üzerinden geçirebilir</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Exfiltration (</strong><em>TA0010</em><strong>)</strong></p>
+
+    <p>Bu taktikte de saldırganın amacı ele geçirdiği ve topladığı verileri hedef sistemin veya kurumun dışına çıkarmasıdır. Hem fiziksel hem de dijital yöntemlerle veri dışarı çıkarılmasını kapsar.</p>
+
+    <p><strong>Saldırgan neler yapabilir?</strong></p>
+
+    <ul>
+      <li>Topladığı verileri kurum dışındaki sunuculara gönderebilir</li>
+      <li>USB bellek veya harici disk kullanabilir</li>
+      <li>Verileri e-posta veya web servisleri üzerinden dışarı çıkarabilir</li>
+      <li>Verileri sıkıştırıp arşivleyebilir</li>
+      <li>Verileri şifreleyerek aktarabilir</li>
+      <li>Veri aktarımını otomatikleştirebilir</li>
+      <li>Aktarımı belirli saatlere planlayabilir</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Impact (</strong><em>TA0040</em><strong>)</strong></p>
+
+    <p>Son olarak bu taktikte de amaç saldırganın hedef sistemlere veya verilere zarar vermesi, sistemlerin çalışmasını engellemesi ya da verileri değiştirmesidir.</p>
+
+    <p>Defense Impairment’te amaç savunma sistemlerine zarar vermek, Impact’te amaç hedef sistemlere ve verilere zarar vermektir.</p>
+
+    <p><strong>Saldırgan neler yapabilir?</strong></p>
+
+    <ul>
+      <li>Dosyaları silebilir veya yok edebilir</li>
+      <li>Dosyaları şifreleyerek erişilemez hâle getirebilir</li>
+      <li>Veritabanındaki bilgileri değiştirebilir</li>
+      <li>Web sitelerinin içeriklerini değiştirebilir</li>
+      <li>Kullanıcı hesaplarını kilitleyebilir veya silebilir</li>
+      <li>Sunucu ve sistemleri kapatabilir</li>
+      <li>Kritik servisleri durdurabilir</li>
+      <li>Disklerdeki verileri silebilir</li>
+    </ul>
+  </li>
+</ol>
+
+<p>MITRE ATT&amp;CK’daki bir diğer kısım ise defenses’dir.</p>
+
+<p><strong>Defenses</strong>, MITRE ATT&amp;CK’te savunma odaklı içeriklerin tamamını kapsayan üst başlıktır. Altında 3 bölüm bulunur. Bunlar:</p>
+
+<ul>
+  <li><strong>Mitigations →</strong> Saldırganların kullandığı tekniklerin başarılı olmasını önlemek veya saldırının etkisini azaltmak için uygulanan güvenlik önlemleridir.</li>
+</ul>
+
+<p><img src="/assets/posts/mitre/image (1).png" width="700" /></p>
+
+<ul>
+  <li><strong>Assets →</strong> Savunma amacıyla kullanılan güvenlik ürünlerini, teknolojilerini ve sistemlerini ifade eder. Savunma faaliyetlerinde hangi araç ve teknolojilerden yararlanıldığını gösterir.</li>
+</ul>
+
+<p><img src="/assets/posts/mitre/image (2).png" width="700" /></p>
+
+<ul>
+  <li><strong>Detections →</strong> Saldırganların gerçekleştirdiği teknikleri ve şüpheli aktiviteleri belirlemek için kullanılan tespit yöntemlerini ifade eder. Hangi aktivitelerin izleneceğini ve hangi verilerin analiz edileceğini açıklar. Tespitlerde kendi içinde bölümlere ayrılır:
+    <ul>
+      <li>Detection Strategies: Tespit yaklaşımı.</li>
+      <li>Analytics: Tespit mantığı ve kuralları.</li>
+      <li>Data Components: Tespit için gereken veriler.</li>
+    </ul>
+
+    <p><img src="/assets/posts/mitre/image (3).png" width="700" /></p>
+  </li>
+</ul>
+
+<p><strong>CTI (Cyber Threat Intelligence)</strong>, siber tehdit istihbaratı anlamına gelir. MITRE ATT&amp;CK’in bu bölümü, gerçek dünyada faaliyet gösteren saldırgan grupları, kullandıkları araçları ve gerçekleştirdikleri saldırı kampanyalarını incelemeni sağlar.</p>
+
+<p>CTI altında üç bölüm var:</p>
+
+<ul>
+  <li>
+    <p><strong>Groups (Saldırgan Gruplar)</strong></p>
+
+    <p>Siber saldırılar gerçekleştirdiği bilinen tehdit aktörlerini ve gruplarını tanımlar. Grupların hedeflerini, faaliyetlerini ve kullandıkları saldırı tekniklerini gösterir.</p>
+
+    <p><strong>Örnek:</strong> APT28, Lazarus Group, APT29.</p>
+  </li>
+  <li>
+    <p><strong>Software (Yazılımlar)</strong></p>
+
+    <p>Saldırganların operasyonlarında kullandıkları zararlı yazılımları, araçları ve sistem araçlarını içerir.</p>
+
+    <p><strong>Örnek:</strong> Cobalt Strike, Mimikatz, Emotet. Hangi saldırı teknikleriyle ilişkili olduklarını da görebilirsin.</p>
+  </li>
+  <li>
+    <p><strong>Campaigns (Saldırı Kampanyaları)</strong></p>
+
+    <p>Belirli bir zaman aralığında, ortak hedefler ve amaçlar doğrultusunda gerçekleştirilen saldırı faaliyetlerini tanımlar.</p>
+
+    <p><strong>Örnek:</strong> 2015 Ukrayna Elektrik Şebekesi saldırısı. Bu kampanyada Sandworm grubu BlackEnergy ve KillDisk gibi yazılımlar kullandı.</p>
+  </li>
+</ul>
+
+<h2 id="sonuç">Sonuç</h2>
+
+<p>MITRE ATT&amp;CK, siber saldırganların kullandığı yöntemleri anlamak ve bu yöntemlere karşı savunma stratejileri geliştirmek için önemli bir bilgi kaynağıdır. Taktik ve teknikler sayesinde saldırgan davranışlarını inceleyebilir, Mitigations ile saldırıları önlemeye yönelik önlemleri öğrenebilir, Detections ile şüpheli aktivitelerin nasıl tespit edilebileceğini anlayabiliriz.</p>
+
+<p>Ancak MITRE ATT&amp;CK’i öğrenmek yalnızca teknikleri ve tanımları incelemekten ibaret değildir. Önemli olan, bu bilgileri gerçek sistemler üzerinde uygulayabilmek, saldırı davranışlarını analiz edebilmek ve savunma mekanizmalarını geliştirebilmektir.</p>
+
+<p>Bu nedenle MITRE ATT&amp;CK’i bir ezber kaynağı olarak değil, siber güvenlik alanında saldırı ve savunma süreçlerini anlamaya yardımcı olan bir rehber olarak değerlendirmek gerekir.</p>
+
+    </div>
+
+</article>
+        </main>
+
+    </div>
+
+    <footer>
+    © 2026 Neslihan Gürgen
+</footer>
+
+</body>
+</html>
